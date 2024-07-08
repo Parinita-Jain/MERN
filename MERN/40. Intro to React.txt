@@ -1,0 +1,98 @@
+Express --> Backend (node, npm, modules)---> Rest API EndPoints --   lh:3000/movies
+														lh:3000/movies/23972
+MongodB--> Database ---> Data Supply
+React/ejs--->Frontend (node, npm, modules, destructuring, template strings, Rest and Spread --- ES6 Version+)
+
+Once JSON Data is obtained from Express App, React will create beautiful UI to load those data
+
+FullStack App with React
+
+React+Express+Mongodb --> MERN
+React+Springboot+MySQL
+React+Django+MySQL
+
+Angular+Express+Mongodb --> MEAN
+Angular+Springboot+MySQL
+Angular+Django+MySQL
+
+
+React---> Super set of Libraries of Javascript used to create Apps
+Gives Folder Structure and rules to execute
+
+JS Library used to create UI, Developed by Facebook.
+Eg, Twitter- Frontend
+React - LIBRARY(WEBAPPS) vs React Native - FRAMEWORK OF REACT(MOBILEAPPS)
+Vue, Angular, Next, Svelte ----> Javascript Frameworks(use React Library)
+
+Dev Environment:
+1. Chrome browser
+2. Node, NPM (version 5+)
+3.  VSC
+4. React Dev Tools
+5. VSC, Chrome Extensions
+
+Babel--> JS Compiler that translates High Level Javascript( ES6+) to Browser Compatible level of JS => to make the app run smotthly on the browser
+
+
+Babel comes along with create-react-app package in npm
+
+nodemon,dotenv,express,cow-say
+
+npm install create-react-app
+npx create-react-app firstapp
+
+(No caps, no space- project name)
+
+npm vs npx
+
+Locally installing package with npm:
+1. current folder will have the node_modules with all the files
+2. after we use the files, ALWAYS PRESENT IN CURRENT PROJ FOLDER EVEN IF WE DONT USE IT ---- UNNECESSARY USE OF MEMORY
+
+Use Package with npx:
+1. the package will be installed only whenevr we use it.
+2. it will not be present in node_modules folder always. use it- remove it automatically. MEMORY IS NOT WASTED UNNECESSARILY - MEMORY UTILISATION ALONE HAPPENS
+
+Since create-react-app folder is needed only when we create new react project, we can use npx here. also once the create-react-app is used, we will never reuse it again, only if i want another project, I may use it
+
+react.dev/learn -------> Official Documentation of React
+
+
+npx create-react-app firstapp
+
+cd firstapp
+npm start
+
+index.html( id=root)----> index.js (root=>App.js)---> App.js (In javascript file, HTML content is written)----> its visible on the screen
+
+DONT DISTURB THIS STRUCTURE
+We will create component on top of App.js
+
+We should clear App.js to continue with our logic
+
+Remove unnecessary files:
+manifest.json
+robots.txt
+reportWebVitals.js
+setupTests.js
+app.test.js
+
+Erase everything from App.css
+Erase evrythng from index.css
+
+Erase line 5,16 in index.js
+
+Page is Empty
+
+We will write our code on top of App.js file!
+
+
+
+
+
+
+
+
+
+
+

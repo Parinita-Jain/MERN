@@ -1,0 +1,220 @@
+import React, { useState } from 'react'
+
+const MultipleInputForms = () => {
+    const [person,setPerson] = useState({uname:'',mail:"",age:'',passw:''});
+    const [people,setPeople] = useState([]);
+    const handleChange=(e)=>{
+        const name = e.target.name;//uname,mail,age,passw
+        const value = e.target.value;//naga,naga.g.c,34,1327484
+        setPerson({...person,[name]:value});//structure person object
+        //{uname:"naga",mail:"n@g.c",age:34,passw:1427893}
+        //console.log(person)
+    }
+    const handleSubmit=(e)=>{
+        e.preventDefault();//browsers tend to automatically refresh when any form is submitted. but we dont want the foprm to be refreshed automatically as 
+        //react had some o/ps or some tasks which is done and not completed - it flushes the screen, React was not able to continue
+        //we need to suppress browser's auto defaut setting fo avoiding unnecesssary refreshes - we use this
+        var {uname, age,mail,passw} = person;
+        if(uname && age && mail && passw){
+            const personGroup = {id: new Date().toString(),uname:person.uname, age:person.age, mail:mail,passw:passw};
+            
+            setPeople([...people,personGroup]);
+            setPerson({uname:'',age:'',mail:'',passw:''})
+        }
+    }
+  return (
+    <>
+    
+    <form onSubmit={handleSubmit}>
+        <div>
+            <label>Username</label>
+            <input type="text" id="uname" name="uname" value={person.uname} onChange={handleChange}  />
+        </div>
+        <div>
+            <label>Email</label>
+            <input type="email" id="mail" name="mail" value={person.mail} onChange={handleChange} />
+        </div>
+        <div>
+            <label>Age</label>
+            <input type="number" id="age" name="age" value={person.age} onChange={handleChange} />
+        </div>
+        <div>
+            <label>Password</label>
+            <input type="password" id="passw" name="passw" value={person.passw} onChange={handleChange} />
+        </div>
+        <button type="submit">ADD</button>
+    </form>
+    <ul>
+    {people.map((p)=>{
+        var {uname,id,age,mail,passw} = p;
+        return(<div key={id}>
+            <li>{uname} {age} {mail}</li>
+        </div>)
+    })}
+    </ul>
+    </>
+  )
+}
+
+export default MultipleInputForms
+--------------
+
+useRef - Pick a particular DOM element from JSX that we are trying to refer.
+Preserves the value, Doesnot trigger rerender of the react app. targets a particular DOM Node/Element.
+useRef - Reset a form, focus on any particular form field
+
+useRef returns a mutable ref object whose .current property is initialized to the passed argument (initialValue). The returned object will persist for the full lifetime of the component.
+
+const [text,setText] = useState();
+useEffect(()=>{
+return ()=>{}
+},[]);
+
+const refContainer = useRef(null);
+//refContainer is an object that contains current as a key, null is a value
+
+--
+import React,{useRef, useEffect, useState} from 'react'
+
+const UseRefHook = () => {
+    const refContainer = useRef(null);
+    const divContainer = useRef(null);
+    const [data,setData] = useState('');
+    console.log(refContainer);
+    useEffect(()=>{
+        refContainer.current.focus();
+    },[])
+    const handleSubmit=(e)=>{
+        e.preventDefault();
+        console.log(refContainer.current.id); 
+        setData( refContainer.current.value);
+    }
+    
+    const divChanges=()=>{
+        divContainer.current.style.border="1px solid red";
+        divContainer.current.style.backgroundColor="pink";
+    }
+  return (
+    <>
+    <form onSubmit={handleSubmit}>
+        <input type='text' id="abc" ref={refContainer}/>
+        <button type='submit'>Submit</button>
+    </form>
+    <div ref={divContainer} onClick={divChanges}>
+        <h1>Welcome</h1>
+        <p>Bye!</p>
+    </div>
+    <h1 style={{color:"blue",fontFamily:'fantasy'}}>{data}</h1>
+    </>
+  )
+}
+
+export default UseRefHook
+---
+--------------------------
+gITHUB sEARCH uSER aPP -> api.github.com/users
+
+Display all users on the screen
+--> add a search form --> user name: _____ - search
+-------> show the user info at bottom
+-------> show, Sorry user doesnot exit
+
+-UseState, useEffect, Forms, conditional Rendering-
+
+useRef hook
+PropDrilling
+useContext
+Routing
+useReducer -counter
+ShoppingCart
+useContext+useReducer- counter
+Redux -counter
+Redux ToolKit -counter
+---
+shopping cart using redux Toolkit --- based on reference
+--------------------------**---------------
+
+Authentication Project using MERN
+PropDrilling- If we have longer nested components, We need to drill down the needed properties from top most component to bottom most component. "PROPS"
+-> books data is used by Books, List, SingleBook 
+-> attach a remove book function inside Books (Top Level component)
+Books component contains remove book function but its needed by SingleBook - so we areforcefully sending that function via List. but List Component doesnt use removeBook fn
+
+DISADVANTAGE - Sending props to components that dont use the props
+A->B->C->D->E A component has a data that is needed by E component --> that data should travel through unnecessary components(those who dont want that data) B->C->D doesnt want data but there is no other go.
+
+import React, { useState } from 'react';
+import {books} from './books';
+
+const PropDrillingBooks = () => {
+    const [data,setData] = useState(books);
+    const removeBook=(id)=>{
+        var remainingBooks = data.filter((d)=>{return d.id !== id})
+        setData(remainingBooks);
+    }
+  return (
+    <>
+    <List data={data} removeBook={removeBook}></List>
+    </>
+  )
+}
+
+const List=(props)=>{
+    var {data,removeBook} = props;
+    return(<>
+    {data.map((d)=>{
+        return <SingleComponent removeBook={removeBook} key={d.id} d={d}></SingleComponent>
+    })}
+    </>)
+}
+
+const SingleComponent=(props)=>{
+    var {d,removeBook} = props;
+    return(<>
+    <h1>{d.title}</h1>
+    <i>{d.author}</i>
+    <img src={d.imgPath} alt="not found" />
+        <button onClick={()=>{removeBook(d.id)}}>Delete</button>
+    </>)
+}
+export default PropDrillingBooks
+---
+import React, {useState} from 'react'
+
+const GiftDrilling = () => {
+    var [gift,setGift] = useState("Ring")
+  return (
+   <B gift={gift}></B>
+  )
+}
+const B=(props)=>{
+    var {gift} = props;
+    return(<>
+    <C gift={gift}></C>
+    </>)
+}
+const C=(props)=>{
+    var {gift} = props;
+    return(<>
+    <D gift={gift}></D>
+    </>)
+}
+const D=(props)=>{
+    var {gift} = props;
+    return(<>
+    <E gift={gift}></E>
+    </>)
+}
+const E=(props)=>{
+    var {gift} = props;
+
+    return(<>
+    <h1> The Gift Is {gift}</h1>
+    </>)
+}
+
+export default GiftDrilling
+
+Exampaper Scenario
+
+useContext - cure disadvantage of prop drilling

@@ -1,0 +1,376 @@
+Switch Statements:
+
+if | switch whatever we write in if-> we cant rewrite with switch
+But if we write something in switch, we can replace it with if condition
+
+Find if the alphabet is vowel or consonant
+Game Selection
+ATM Selection
+Auto Voice Calling
+Random Card Picking
+
+switch.html
+switch.js
+var choice = prompt('Enter an alphabet');
+switch(choice){
+case 'a': document.write(choice, ' is vowel');
+break;
+case 'e': document.write(choice, ' is vowel');
+break;
+case 'i': document.write(choice, ' is vowel');
+break;
+case 'o': document.write(choice, ' is vowel');
+break;
+case 'u': document.write(choice, ' is vowel');
+break;
+default: document.write(choice, ' is not a vowel');
+break;
+}
+
+LOOPS - Avoid repetition, time and space complexity is maintained, follows DRY (Donot Repeat Yourselves)
+
+for
+for(initialization;condition;increment/decrement){
+-
+-
+-
+-
+}
+
+var fname= prompt("Enter your name");
+concatname='';
+for(let i=1;i<=10;i++){
+concatname = concatname+name+"<br>";
+}
+document.getElementById("answer").innerHTML = concatname;
+
+fname = Anup;
+concatname = '';
+
+i=1;1<=10T;1++
+concatname = '' + Anup + "<br>"
+concatname = Anup<br>
+
+i=2;2<=10T;2++
+concatname = Anup<br> + Anup + "<br>"
+concatname = Anup<br>Anup<br>
+
+i=10;10<=10T;10++
+concatname = Anup<br>Anup<br>Anup<br>Anup<br>Anup<br>Anup<br>Anup<br>Anup<br>Anup<br> + Anup + "<br>"
+concatname = Anup<br>Anup<br>Anup<br>Anup<br>Anup<br>Anup<br>Anup<br>Anup<br>Anup<br>Anup<br>
+
+document.getElementById("answer").innerHTML = Anup<br>Anup<br>Anup<br>Anup<br>Anup<br>Anup<br>Anup<br>Anup<br>Anup<br>Anup<br>
+
+ITERATION:
+i = 1;1<=10T;---
+->My name is Naga
+i=2 ; 2<=10T; 2++
+->My name is Naga
+i=9; 9<=10T; 9++
+->My name is Naga
+i=10;10<=10T;10++
+->My name is Naga
+i=11;11<=10 F-----
+-------------
+
+//Get Range of values from the user - PRint the Squares of Odd numbers and Print the cube of even numbers.
+
+var a = parseInt(prompt("enter 1st number"));
+var b = parseInt(prompt("enter 2nd number"));
+for(let i=a;i<=b;i++){
+if(i%2 ==0 ){
+	document.write(i*i*i);
+}else{
+	document.write(i*i);
+}
+}
+
+ITERATION:
+
+var a=20;
+var b=30;
+for(i=20;20<=30;20++){
+20%2==0 T
+20*20*20
+}
+
+for(i=21;21<=30;21++){
+21%2==0 F
+-
+else
+21*21
+}
+
+for(i=22;22<=30;22++){
+22%2==0 T
+22*22*22
+}
+
+for(i=30;30<=30;30++){
+30%2==0 T
+30*30*30
+}
+for(i=31;31<=30----)
+
+
+arr1
+0	1		2	3
+8	naga	23	male
+
+for(let i=0;i<arr1.length;i++){
+document.write(arr1[i]);
+}
+for(let i=1;i<=arr.length;i++){
+document.write(arr1[i-1]);
+}
+
+while 
+
+5X1=5...... 5X12=60
+
+var number = parseInt(prompt("Enter a number"));
+var i = 1;
+var c = '';
+while(i<=12){
+c=c+number+'X'+i+'='+(i*number)+"<br>";
+i++;
+}
+document.getElementById("answer").innerHTML = c;
+
+ITERATION
+c=c+number+'X'+i+'='+(i*number)+"<br>";
+c=''5X1=5
+c = 5X1=5 + 5X2=10
+c= 5X1=5 + 5X2=10 5X3=15
+
+i=1;
+while(i<=10){
+console.log(i);
+i++
+}
+12345678910 -> condition checked for 10 times, values are printed for 10 times
+
+do-while - Condition checking is skipped for the first time!
+
+i=1;
+do{
+console.log(i); //1 is printed
+i++; //i becomes 2
+}while(i<=10); //2<=10T
+
+12345678910 -> condition is checked for 9 times, values are printed for 10 times
+
+do{
+
+}while(i<=4);
+
+
+start
+1. Deposit
+2. Withdraw
+3. Balance
+4. Exit
+
+let a=1;
+do{
+var choice = parseInt(prompt("1. Deposit 2. Withdraw 3. Balance 4. Exit"));
+switch(choice){
+case 1: 
+	console.log("Money Deposited!");
+	break;
+case 2: 
+	console.log("Money Withdrawn!");
+	break;
+case 3: 
+	console.log("Balancce Details printed!");
+	break;
+case 4: 
+	console.log("Have a good Day!");
+	a=0;
+	break;
+default: 
+	console.log("Enter a valid choice");
+	break;
+}
+}while(a==1);
+
+
+let a;
+do{
+var choice = parseInt(prompt("1. Deposit 2. Withdraw 3. Balance 4. Exit"));
+switch(choice){
+case 1: 
+	console.log("Money Deposited!");
+	break;
+case 2: 
+	console.log("Money Withdrawn!");
+	break;
+case 3: 
+	console.log("Balancce Details printed!");
+	break;
+case 4: 
+	console.log("Have a good Day!");
+	a='stop';
+	break;
+default: 
+	console.log("Enter a valid choice");
+	break;
+}
+}while(a!='stop');
+
+a=undefined;
+do{
+var choice = 2;
+case1------
+case 2 works ---> "Money Withdrawn" break;
+}while(undefined !='stop') //und is not equ to stop -----> true
+a=undefined;
+do{
+var choice=3'
+case1---
+case2----
+case 3 works---> "Balance" break;
+}while(undef !='stop')//true
+a=undefined;
+do{
+var choice=9
+default--> "enter valid"
+}while(true);
+a=undefined
+do{
+var choice = 4
+case 4 works----> "have a good day", a='stop'; break;
+}while('stop'!='stop)=> stop is not equ to stop----> false
+--LOOP WILL TERMINATE!---
+
+BREAK - Abruptly Stops the working of a Loop
+CONTINUE - Will skip the current iteration, moves on to the next iteration
+
+var num = parseInt(prompt("Enter a number between 1-10"));
+
+for(let i=1;i<=10;i++){
+    if(i==num){
+        continue;
+    }
+     console.log(i);
+     console.log("hello");
+}
+
+for(let i=1;i<=10;i++){
+    if(i==num){
+        break;
+    }
+     console.log(i);
+     console.log("hello");
+}
+
+FUNCTIONS: 
+
+abc.js
+----abcde();
+function abcde(){
+-
+-
+-
+-
+-
+}
+----abcde();
+
+Block of code that will be executed when the block is called - functions
+3 parts
+Function Initialization/declaration
+Function Definition
+Function Calling
+
+3 ways of expressing a function:
+
+Regular Functions
+Anonymous Functions
+Arrow Functions
+
+Regular Functions:
+
+function Welcome(){
+console.log("Hi");
+}
+Welcome();
+
+function Welcome(id,name){
+console.log("Hi", id, name);
+return "Good Day!"
+}
+//3-5 RECIPIENT
+var a = Welcome(4,"Naga");//CALLER
+console.log(a);
+console.log(Welcome(4,"Naga"))
+document.write(Welcome(4,"Naga"))
+
+//If caller wants to give some data to reciepient - thru Arguments
+//If recipient want to give data to caller - thru return
+
+ARGUMENTS: 
+the parameters that we feed when a function is called
+
+ANONYMOUS FUNCTIONS:
+//Anonymous - used as function argument
+
+var Welcome = function (id, name){
+   console.log("Hi");  
+   console.log(id, name);
+   return "Good Day";
+}
+console.log(Welcome(4, "Naga"));
+
+------------------------------
+ANONYMOUS+REGULAR:
+
+
+var Welcome = function (id, name){
+   console.log("Hi");  
+   console.log(id, name);
+   return "Good Day";
+}
+
+function Greeting(r){
+    var a=10, b=20,c
+    c=a+b;
+   console.log(c);
+   console.log(r);
+}
+
+Greeting(Welcome(5,"Shital"));//Greeting("Good Day");
+
+--------------------------------------------
+var Welcome = function (){
+   console.log("Hi");  
+}
+
+function Greeting(){
+    var a=10, b=20,c
+    c=a+b;
+   console.log(c);
+}
+
+Greeting(Welcome());
+------------------------------------------------------
+
+
+function Greeting(Welcome){
+    Welcome();
+    var a=10, b=20,c
+    c=a+b;
+   console.log(c);
+}
+
+Greeting(function (){console.log("Hi")});
+-----------------------------------------------------------
+function Greeting(GoodBye)
+{
+    GoodBye();
+    var a=10, b=20,c
+    c=a+b;
+   console.log(c);
+}
+
+Greeting(function(){console.log("Hi")});

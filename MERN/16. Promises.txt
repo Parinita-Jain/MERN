@@ -1,0 +1,396 @@
+PROMISES:
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+
+The Promise object represents the eventual completion (or failure) of an asynchronous operation and its resulting value.
+
+A Promise is in one of these states:
+
+pending: initial state, neither fulfilled nor rejected.
+fulfilled: meaning that the operation was completed successfully.
+rejected: meaning that the operation failed.
+
+Creates a new Promise.
+
+@param executor
+A callback used to initialize the promise. This callback is passed two arguments: a resolve callback used to resolve the promise with a value or the result of another promise, and a reject callback used to reject the promise with a provided reason or error.
+
+Attaches callbacks for the resolution and/or rejection of the Promise.
+
+@param onfulfilled — The callback to execute when the Promise is resolved.
+
+@param onrejected — The callback to execute when the Promise is rejected.
+
+var isAdmin=false;
+const myPromise = ()=>{
+    return new Promise((resolve,reject)=>{
+        if(isAdmin)
+            resolve(one()); //Asking to call one()
+        else
+            reject(console.log("Sorry you are not an admin"));
+    });
+}
+function one(){
+    console.log("Welcome Admin!")
+}
+ myPromise()
+.then(()=>{
+    console.log("Success")
+}).then(()=>{
+    console.log("Success1")
+}).then(()=>{
+    console.log("Success2")
+}).then(()=>{
+    console.log("Success3")
+}).then(()=>{
+    console.log("Success4")
+})
+.catch(()=>{
+    console.log("Log out!")
+});
+
+If he is an admin--> say welcome
+If he is not an admin --> reject promise
+
+Assume he does chained tasks:
+1. login-3sec, play-4sec, logout-2sec - if he is an admin
+
+ChainePromises.js
+var isAdmin=false;
+
+const checkAdmin=(task,time)=>{
+    return new Promise((res,rej)=>{
+        if(isAdmin){
+            setTimeout(()=>{
+                res(task());
+            },time);   
+        }else{
+            rej(new Error("Sorry, You are not an Admin"));
+        }
+    })
+}
+
+function login(){
+console.log("Welcome- Admin is logged in");
+}
+
+function play(){
+    console.log("Admin is playing");
+}
+
+function logout(){
+    console.log("Admin has logged out");
+}
+
+// checkAdmin(login,4000)
+// .then(()=>checkAdmin(play,3000))
+// .then(()=>checkAdmin(logout,2000))
+// .catch((err)=>{
+//     console.log("Something went wrong", err.message);
+// })
+
+checkAdmin(login,4000)//1
+.then(()=>{
+    return checkAdmin(play,3000)
+})
+.then(()=>{
+    return checkAdmin(logout,2000)
+})
+.catch((err)=>{
+    console.log("Something went wrong", err.message);
+})
+
+
+If the time is 7---> function wake up()
+If the time is not 7 ---> reject the promise
+
+GET READY!
+
+When time is 7 am
+wakes up ---- 2
+brush---- 3
+bath ----4
+gets ready----2
+has breakfast-----2
+drive---3
+reach--2
+----------------------> total: 18sec
+
+-------
+
+var time = 7;
+
+var startTasks=(task,ms)=>{
+    return new Promise((res,rej)=>{
+        if(time==7){
+            setTimeout(()=>{
+                res(task());
+            },ms)
+            
+        }else{
+            rej();
+        }
+    }); 
+}
+
+var wakeUp=()=>{
+   
+       console.log("Woken UP!") 
+  
+}
+var brush=()=>{
+    
+       console.log("Brushed!") 
+   
+}
+var bath=()=>{
+    
+       console.log("Bathed!") 
+ 
+}
+startTasks(wakeUp,2000)
+.then(()=>{
+   return startTasks(brush,3000);
+})
+.then(()=>{
+     return startTasks(bath,2000);
+})
+.catch(()=>{
+    console.log("Time is not 7")
+});
+
+var time = 7;
+
+var startTasks=(task,ms)=>{
+    return new Promise((res,rej)=>{
+        if(time==7){
+            setTimeout(()=>{
+                res(task());
+            },ms)
+            
+        }else{
+            rej();
+        }
+    }); 
+}
+
+var wakeUp=()=>{
+   
+       console.log("Woken UP!") 
+  
+}
+var brush=()=>{
+    
+       console.log("Brushed!") 
+   
+}
+var bath=()=>{
+    
+       console.log("Bathed!") 
+ 
+}
+var GotReady=()=>{
+   
+       console.log("Got Ready!") 
+  
+}
+var Breakfast=()=>{
+    
+       console.log("Had Breakfast!") 
+   
+}
+var Drive=()=>{
+    
+       console.log("Drove!") 
+ 
+}
+var Reach=()=>{
+    
+       console.log("Reached!") 
+ 
+}
+startTasks(wakeUp,2000)
+.then(()=>{
+   return startTasks(brush,3000);
+}).then(()=>{
+     return startTasks(bath,2000);
+})
+.then(()=>{
+     return startTasks(GotReady,2000);
+}).then(()=>{
+   return startTasks(Breakfast,3000);
+})
+.then(()=>{
+     return startTasks(Drive,2000);
+})
+.then(()=>{
+     return startTasks(Reach,2000);
+})
+.catch(()=>{
+    console.log("Time is not 7")
+})
+.finally(()=>{
+    console.log("The End!")
+});
+------------------------------
+
+1. fetch() --> inbuilt method used to extract data from an API - returns a promise
+2. fs.promises.readFile() --> reads a file
+
+fetch('https://api.github.com/users')
+.then((res)=>{
+    return res.json();
+})
+.then((data)=>{
+    console.log(data);
+}).catch((err)=>{
+    console.log("Something went wrong")
+})
+
+--------------------
+
+var fs = require('fs');
+
+fs.promises.readFile('./abc.txt',{encoding:'utf-8'})
+.then((data)=>{
+console.log(data);
+}).catch((err)=>{
+    console.log("Something went wrong")
+})
+
+----------------------
+
+ASYNC/AWAIT:
+
+can also be used to a function call --> that function should return a promise.
+
+The function in which we are trying to put await should be surrounded with  normal fn-> pass----> async keyword - To mention that this function is going to do some async task - delayed function 
+
+The place where  fnctins returning a promise are going to be called ---> use await keyword - to mention next lines to wait until the current call is done.
+
+Why these keywords: To reduce the complexity of .then, .catch methods & to keep these lines of code similar to SYNCH SYNTAX!
+
+async function DataFetchFromAPI(){
+    try{
+    var response = await fetch('https://api.github.com/users');
+    var data =await response.json();
+    console.log(data);
+    }catch(err){
+        console.log("problem")
+    }
+}
+
+DataFetchFromAPI();
+
+---------------
+
+var fs = require('fs');
+
+async function readingFile(){
+
+    try{
+        var data = await fs.promises.readFile('./ac.txt',{encoding:'utf-8'})
+        console.log(data);
+    }catch(err){
+        console.log("Problem here!")
+    }
+
+}
+
+readingFile();
+
+--------
+
+var time = 7;
+
+var startTasks=(ms)=>{
+    return new Promise((res,rej)=>{
+        if(time==7){
+            setTimeout(()=>{
+                res();
+            },ms)
+            
+        }else{
+            rej();
+        }
+    }); 
+}
+
+var wakeUp=()=>{
+   
+       console.log("Woken UP!") 
+  
+}
+var brush=()=>{
+    
+       console.log("Brushed!") 
+   
+}
+var bath=()=>{
+    
+       console.log("Bathed!") 
+ 
+}
+var GotReady=()=>{
+   
+       console.log("Got Ready!") 
+  
+}
+var Breakfast=()=>{
+    
+       console.log("Had Breakfast!") 
+   
+}
+var Drive=()=>{
+    
+       console.log("Drove!") 
+ 
+}
+var Reach=()=>{
+    
+       console.log("Reached!") 
+
+}
+
+async function DoStart(){
+    try{
+await startTasks(2000)//timer causes delay
+wakeUp();
+await startTasks(3000)
+brush();
+await startTasks(2000)
+bath();
+await startTasks(3000)
+GotReady();
+await startTasks(2000)
+Breakfast();
+await startTasks(3000)
+Drive();
+await startTasks(2000)
+Reach();
+await startTasks(3000)
+}catch(err){
+    console.log("Something went wrong")
+}
+}
+
+DoStart();
+
+
+
+
+
+async------> async function abc(){
+				await function_call();
+			}
+await -----> await function_call();----> This function return a promise
+
+
+
+
+
+
+
+
+
+

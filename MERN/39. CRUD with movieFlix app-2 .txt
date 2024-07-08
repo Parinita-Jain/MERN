@@ -1,0 +1,86 @@
+Controller/MovieController.js
+ 
+exports.getAllMovies = async(req,res)=>{
+    try{
+        const movies = await MovieModel.find();
+        res.status(200).json({
+            status:"success", data:{movies}
+        })
+    }catch(err){
+        res.status(404).json({
+            status:"fail", message:err.message
+        })
+    }
+ }
+ 
+
+//DELETE ALL MOVIES
+exports.deleteAllMovies = async(req, res)=>{
+    try{
+        await MovieModel.deleteMany({});
+        res.status(200).json({
+            status:"success"            
+        })
+    }catch(err){
+        res.status(404).json({
+            status:"fail", message:err.message
+        })
+    }
+}
+
+//GET ONE MOVIE USING ID
+exports.getOneMovie = async(req,res)=>{
+try{
+    const movie = await MovieModel.findById({_id:req.params.uid});
+    res.status(200).json({
+        status:"success",
+        data:{movie}
+    })
+}catch(err){
+    res.status(404).json({
+        status:"fail", message:err.message
+    })
+}
+}
+
+exports.deleteOneMovie = async(req,res)=>{
+    try{
+        const movie = await MovieModel.findByIdAndDelete({_id:req.params.uid})
+        res.status(200).json({
+            status:"success",
+            data:{movie}
+        })
+    }catch(err){
+        res.status(404).json({
+            status:"fail", message:err.message
+        })
+    }
+}
+
+exports.putOneMovie = async(req, res)=>{
+try{
+    const movie = await MovieModel.findByIdAndUpdate(req.query.uid,req.body,{new:true,runValidators:true})
+    res.status(200).json({
+        status:"success",
+        data:{movie}
+    })
+}catch(err){
+    res.status(404).json({
+        status:"fail", message:err.message
+    })
+}
+}
+
+exports.patchOneMovie = async(req, res)=>{
+    try{
+        const movie = await MovieModel.findByIdAndUpdate(req.query.uid,req.body,{new:true,runValidators:true})
+        res.status(200).json({
+            status:"success",
+            data:{movie}
+        })
+    }catch(err){
+        res.status(404).json({
+            status:"fail", message:err.message
+        })
+    }
+}

@@ -1,0 +1,321 @@
+import React, { useState } from "react";
+import { booksInfo } from "../booksInfo";
+
+const UseStateArrayOfObjects = () => {
+  var [books, setBooks] = useState(booksInfo);
+  var removeAllBooks=()=>{
+    setBooks([]);
+  }
+  var addAllBooks=()=>{
+    setBooks(booksInfo);
+  }
+  var removeBook=(bid)=>{
+    var balanceBooks = books.filter((book)=>{
+        return book.id!==bid;
+    })
+    setBooks(balanceBooks);
+  }
+  return (
+    <div>
+        {books.length!==0?<button onClick={removeAllBooks}>Remove All Books</button>:<button onClick={addAllBooks}>Add All Books</button>}
+
+      <table>
+        <thead>
+          <th> Book Id</th>
+          <th> Book Title</th>
+          <th> Book Image</th>
+          <th> Book Author</th>
+        </thead>
+        <tbody>
+          {books.map((book) => {
+            var {id, title, imgPath, author} = book;
+            return <tr key={id}>
+                <td>{id}</td>
+                <td>{title}</td>
+                <td>
+                    <img src={imgPath} alt="not found" width="70px" height="100px"/>
+                </td>
+                <td>{author}</td>
+                <td>
+                   <button onClick={()=>{removeBook(id)}}> Remove Book</button>
+                    </td>
+            </tr>
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default UseStateArrayOfObjects;
+
+USE EFFECT/ SIDE EFFECT
+
+One of the hooks/functions in react like map
+This useEffect 
+useEffect(()=>{},[]);
+1st parameter of useEffect is a function - the body of the method is the action performed by useEffect
+2nd parameter of useEffect is an array
+
+useEffect will always be called whenever the application is reloading and first time loading too
+2 ways app will reload
+1--> whenever we do hard refresh (clients clicking on browser reload)
+2--> whenever use state- dispatcher method gets called (when we call setStu, setCount, setFnames)
+setBooks()---> reload app---> useEffect()
+
+if something main is happening, there are some other happenings that is occuring because of the main change
+
+setBooks([])---> reload app---> useEffect("I am very happy")
+setBooks([])---> reload app---> useEffect("Books removed successfully")
+
+Main: Remove all the books---> update the books useState --> we use dispatcher to reload app
+
+While book removal is happening==> yu get a message I am very happy--> side effect
+
+USE EFFECT WILL BE CALLED
+1. WHEN APP LOADS FOR FIRST TIME
+2. WHEN APP IS RELOADING (BROWSER REFRESH, DISPATCHER METHOD-SETBOOKS, SETSTU,SETFNAME, SETCOUNT)
+
+useState - React hook which creates a variable and has a dispatcher function ->capable f reloading the app - when app reloads-> the changes in variable will be shown in the UI.
+
+useEffect - React hook which is called inside a component - Whenever the app reloads.
+
+2 ways when the app reloads - useEffect will be called:
+	1. When we press browser refresh button externally - HARD REFRESH
+	2. Internally whenever useState dispatcher fns (setName, setNovel, setData) are called
+
+useEffect(()=>{},[]);
+()=>{}-> callback method - logic that needs to work when app reloads
+[] -> dependancy array
+
+import React,{useEffect, useState} from 'react'
+const UseEffectBasics = () => {
+    var [name,setName] = useState("Geeta");
+    var change = ()=>{
+        name="Sita";
+        setName(name);
+    }
+    useEffect(()=>{
+        alert("useEffect is Called!")
+    });
+  return (
+    <div>
+      <h1> Welcome to useEffect hook</h1>
+      <h1>{name}</h1>
+      <button onClick={change}>Change name</button>
+    </div>
+  )
+}
+export default UseEffectBasics
+
+//WHAT IF WE  WANT USEEFFECT TO WORK WHEN WE DO HARD REFRESH ALONE, not anywhere else!
+------>Keep the dependancy array empty <----
+
+//WHATIF WE WANT USE EFFECT TO BE CALLED WHEN WE DO HARD REFRESH + VISHAL->DANIEL ALONE! not while Geeta->fiara
+--->add those variable names whichever yu wanna call useEffect - inside dependancy array<--
+
+//WHAT IF I WANNA STOP USEEFFECT GETTING CALLED DURING HARD REFRESH
+--> create a boolean value initially false, set it to true whenever yu want useEffect to be called, dont forget to add those useState variables in your Dep.Array
+
+import React, { useEffect, useState } from 'react'
+
+const DependancyArray = () => {
+    var [name1,setName1] = useState("Geeta");
+    var [name2,setName2] = useState("Vishal");
+    var [count,setCount] = useState(0);
+    var [mount,setMount] = useState(false);
+    useEffect(()=>{
+        if(mount)
+        alert("Hi");
+        else
+        setMount(false)
+    },[mount,name2,count])
+  return (
+    <div>
+        {name1}
+        <button onClick={()=>{setName1("Fiara")}}>change</button>
+        {name2}
+        <button onClick={()=>{setName2("Daniel");setMount(true)}}>change</button>
+        {count}
+        <button onClick={()=>{setCount(count+1);setMount(true)}}>Add</button>
+
+    </div>
+  )
+}
+
+export default DependancyArray
+
+tHERE IS no need to bring the DB, do api connection in the dashboard page itself. we want tconnectivity to happen only when we require it to happen
+1. click on search button--> search result display (goes to db, searches info and bring back. no need to bring all the info before we are asking for)
+2. Do payment/ Checkout button (payment gateway integration should happen)
+
+THE APP PERFORMANCE WILL SLOW DOWN IF THE DB IS RUNNING ON BACKEND UNNECESSARYLY - LEADING TO FROZEN PAGES, LONG TIME LOADING PAGES
+
+
+GITHUB USERS DISPLAY USING USE EFFECT - FETCH API:
+ 
+import React, { useEffect, useState } from 'react'
+
+const UseEffectAPIFetch = () => {
+    const [results, setResults] = useState([]);
+    //hard refresh - useEffect called first time
+    useEffect(()=>{
+        getData();
+    },[])
+    const getData=async ()=>{
+        var response = await fetch('https://api.github.com/users');
+        var data = await response.json();
+        setResults(data);//initiate app reload+ to feed result []=>[30 info]
+        console.log(data);
+    }
+  return (
+    <>
+    {/* <button onClick={()=>{getData()}}>Fetch Data</button> */}
+    {results.map((result)=>{
+        return <GithubUsers key={result.id} {...result}></GithubUsers>
+    })}
+    </>
+  )
+}
+
+const GithubUsers = (props)=>{
+    var {html_url, avatar_url,login} = props;
+    return(
+        <>
+        <h1>{login}</h1>
+        <img src={avatar_url} alt="not found" />
+        <a href={html_url} rel="noreferrer" target='_blank'>Click here to visit profile</a>
+        </>
+    )
+}
+
+export default UseEffectAPIFetch
+
+CLEAN UP FUNCTION:
+
+for each reload-> a function call is happening, which may affect the smooth working of the app because at the background - useEffect is repeatedly called and memory may be full  disturbing the normal flow of spped/ performance of the app
+
+useEffect(()=>{
+-
+-//creating any object, create any variable, add listeners (1000)
+-
+return ()=>{
+//contains clean up logic -- remove obj, close the listeners
+}
+});
+
+WINDOW RESIZE - WITH CLEANUP:
+import React, { useEffect, useState } from 'react'
+
+const UseEffectWindowResize = () => {
+    var [width, setWidth] = useState(window.innerWidth);
+
+    var checkWidth =()=>{
+        setWidth(window.innerWidth);
+    }
+
+    useEffect(()=>{
+        //event to listen to resize
+        window.addEventListener('resize',checkWidth);
+
+        return ()=>{ window.removeEventListener('resize',checkWidth)}
+        //removes previous event listeners which may bulk up the memory by clean up function
+    })
+  return (
+    <div>
+       <h1>{width}</h1>
+       {/* <button onClick={checkWidth}>Check Width</button> */}
+
+    </div>
+  )
+}
+
+export default UseEffectWindowResize
+
+STOP WATCH USING USEEFFECT:
+
+import React, { useState, useEffect } from 'react';
+
+const Stopwatch = () => {
+  const [time, setTime] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    let interval;
+
+    if (isRunning) {
+      interval = setInterval(() => {
+        setTime(prevTime => prevTime + 1);
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(interval);
+  }, [isRunning]);
+
+  const startStop = () => {
+    setIsRunning(!isRunning);
+  };
+
+  const reset = () => {
+    setTime(0);
+    setIsRunning(false);
+  };
+
+  return (
+    <div>
+      <h1>Stopwatch</h1>
+      <p>{time}s</p>
+      <button onClick={startStop}>{isRunning ? 'Stop' : 'Start'}</button>
+      <button onClick={reset}>Reset</button>
+    </div>
+  );
+};
+
+export default Stopwatch;
+
+STEPS:
+1. create 2 useSatte variables, time - 0, isRunning - false
+const [time, setTime] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+2. display time. have 2 buttons (start/stop + reset)
+return (
+    <div>
+      <h1>Stopwatch</h1>
+      <p>{time}s</p>
+      <button onClick={startStop}>{isRunning ? 'Stop' : 'Start'}</button>
+      <button >Reset</button>
+    </div>
+  );
+3. togllle button to start and stop -content inside the button alone changes - time will not change. cover it in useeffect
+const startStop = () => {
+    setIsRunning(!isRunning);//toggle t->f, f->t + useEffect - called
+  };
+check o/p
+4. write reset function
+<button onClick={reset}>Reset</button>
+const reset = () => {
+    setTime(0); //will not call useEffect - its not in dependancy array
+    setIsRunning(false);//calls useeffect - else part works
+  };
+4. when isRunning is true - make time increase, if it becomes false - we may pause/stop the timer
+useEffect(() => {
+    let interval;
+
+    if (isRunning) {
+      interval = setInterval(() => {
+        setTime(prevTime => prevTime + 1);// time=>0-1-2.. + app reload + calls useEffect
+      }, 1000);
+    } else {
+      clearInterval(interval);//pause working if startstop calls useEffect/stop work if reset calls useEffect
+    }
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(interval);
+  }, [isRunning]);
+we want useEffect to be called only when isRunning is changing - thats why we put isRunning in dependancy array
+5. cleanup function is used because whenever isRunning becomes true - a new interval is created, the previous interval needs to be removed - add cleanup function
+
+

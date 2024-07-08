@@ -1,0 +1,438 @@
+SPREAD OPERATOR:
+...
+used to keep the non destructured items in a seperate object
+//whichever data yu need, yu can destructure and keep the balance or rest of the items in a seperate object
+//used while destructuring ONLY
+//use spread operator if yu want some details as a seperate object
+
+var employee = {eid:1, ename:"Dev", eage:40, esalary:30000, egender:"Male", isMarried:true};
+//whichever data yu need, yu can destructure and keep the balance or rest of the items in a seperate object
+var {ename, esalary, ...ePersonal} = employee;
+console.log(ename);
+console.log(esalary);
+console.log(ePersonal);//{ eid: 1, eage: 40, egender: 'Male', isMarried: true }
+console.log(ePersonal.egender);//Male
+
+NEVER USE SPREAD OPERATOR AT THE START OF DESTRUCTURING - not at start/middle 
+Error: A rest element must be last in a destructuring pattern.ts(2462)
+
+//var {ename, esalary, ...ePersonal} = employee;
+var {ename,...ePersonal, esalary } = employee;//ERROR-Rest element must be last element
+var {ename, esalary, ...ePersonal} = employee;//ERROR-Rest element must be last element
+
+Activity : Predict the output- objects+spread operator
+
+DESTRUCTURING ARRAYS:
+
+var arr =["Naga", 34, 67.89, true];
+console.log(arr[0],arr[1],arr[2],arr[3]);
+//destructure the array to avoid using square brackets and index numbers
+var [name, age, score, isMarried] = arr;
+console.log(name,age,score,isMarried);
+//Its not mandatory to give names to all the data
+//we will try to destructure age and isMarried alone
+//MAINTAIN THE ORDER IN WHICH YOU WANT TO ASSIGN VARIABLE NAME
+var [,age,,isMarried] = arr;
+console.log(age,isMarried);
+
+//direct destructuring without array name:
+var [name,age,score,isMarried]=["Naga",34, 67.89,true];
+console.log(name,age,score,isMarried);
+
+USING SPREAD OPERATOR IN ARRAYS:
+
+var arr = [99,88,77,66,55,44,33,22,11];
+
+//wish to keep balance data in a seperate array
+//spread operator should be used at the last item of destructuring.
+//we cant disturb the position of the elements
+// leave 1st data and put rest of the data in spread array
+
+var [a,b,...c] = arr;
+console.log(a,b,c);
+console.log(c[1]);//66
+
+//we dont wish to give names like a, b at all, only for rest of the items I wish to keep name
+var [,,,...x] = arr;
+console.log(x);
+
+//Swap 2 names
+
+name1="Akash";
+name2="Dev";
+name2---->Akash, name1---->Dev
+HINT: use Destructuring arrays/ Destructuring Object Concept
+
+//OBJECT DESTRUCTURING
+var name1="Akash", name2="Dev";
+var names={name1:"Akash",name2:"Dev"};
+var {name1,name2} = names;
+console.log(name1,name2);
+var {name1:name2,name2:name1} = names;
+console.log(name1,name2);
+//-----------------------------------------//
+//ARRAY DESTRUCTURING
+var n1="Akash", n2="Dev";
+console.log(n1,n2);
+[n1,n2] = [n2,n1];
+console.log(n1,n2);
+
+
+REST OPERATOR:
+...
+
+While Destructuring an array or object - if we use ... - its called as Spread
+If we use ... while expressing the function arguments ---> its Rest
+iF THERE Is lot of arguments passed during function call, right time to use rest operator
+
+Items Purchased in the Super Market. The guy had 600 Rs.
+Milk 25
+Maggi 30
+Juice 45
+Fruits 150
+Veggies 200
+How much is the balance? (150)
+
+WITHOUT REST OPERATOR:
+function calculateBalance(total,milk,maggie,juice,fruits,veggies){
+    var spentTotal = milk+maggie+juice+fruits+veggies
+    var balance = total-spentTotal;
+    console.log(balance);
+}
+calculateBalance(600,25,30,45,150,200);
+
+USING REST:
+function calculateBalance(...data){
+    console.log(data);
+    //how to get the total of 2nd data to last data?
+}
+calculateBalance(600,25,30,45,150,200);
+
+SOLUTION:
+function calculateBalance(total,...data){
+    var spentTotal=0;
+    for(var i=0;i<data.length;i++){
+        spentTotal=spentTotal+data[i];
+    }
+    var balance = total-spentTotal;
+    console.log(balance);
+    
+}
+calculateBalance(600,25,30,45,150,200);//while passing data here, keep the group of data at last only then yu can easily use rest
+
+Average of one Student
+English 80
+Hindi 70
+Math 85
+Science 60
+Social 75
+Total Number of subjects  5
+Average = Sum of Subjects/ Number of Subjects
+
+SOLUTION:
+function Average(noOfSub,...data)
+{
+ 
+    var Total=0;
+    for(var i=0;i<data.length;i++){
+        Total=Total+data[i];
+    }
+ var avg=Total/noOfSub;
+ console.log("average ="+avg);
+}
+Average(5,80,70,85,60,75);
+
+FUNCTION WITH PARAMETER WITH RETURN TYPE:
+
+function Average(noOfSub,...data)
+{
+ 
+    var Total=0;
+    for(var i=0;i<data.length;i++){
+        Total=Total+data[i];
+    }
+ var avg=Total/noOfSub;
+ return avg;
+}
+
+var a=Average(5,80,70,85,60,75);
+console.log("average ="+a);
+
+Arguments/Parameters- fn call to defn
+Return - fn def last line to func call
+-----------------
+Array Functions:
+sort - order values in asc/desc
+reduce - sum,mul total from an array - one data as the o/p
+find - search a value from list of data in an array based on a condition - one data as the o/p
+filter - search many values from list of data in an array based on a condition - array as an o/p
+map - traverse the entire array and manipulates the array - gives array as an o/p
+Factory Functions
+Classes&Objects
+Inheritance
+
+SORT FUNCTION:
+
+var num = [67,92,17,32,99,40]; //bubble sort
+
+num.sort((a,b)=>{
+    if(a<b) return -1;
+    if(a>b) return 1;
+    return 0;
+});
+
+num.sort((a,b)=>{
+    return a-b;//ascending
+})
+
+num.sort((a,b)=>{
+    return b-a;//descending
+})
+
+console.log(num);
+
+MAP FUNCTION:
+
+var num = [67,92,17,32,99,40]; 
+//Map-traverse the entire array, visit each element in the array
+var num2;
+//multiply all the data in the array by 10
+num2 = num.map((n)=>{
+    return n*10;
+})
+
+console.log(num2);
+
+FIND FUNCTION:
+
+var num = [67,92,17,32,99,40]; 
+//FIND - BASED ON ANY CONDITION - RETURNS ONLY ONE ELEMENT THAT SUITS THE CONDITION
+var num2;
+num2 = num.find((n)=>{
+    if(n%2==0)
+    return n;
+})
+
+console.log(num2);//92
+
+var num = [67,92,17,32,99,40]; 
+//FILTER - BASED ON ANY CONDITION - RETURNS ARRAY OF ELEMENTS THAT SUITS THE CONDITION BY FINDING TILL THE END
+var num2;
+num2 = num.filter((n)=>{
+    if(n%2==0)
+    return n;
+})
+
+console.log(num2);//[ 92, 32, 40 ]
+
+var num = [1,2,3,4,5,6]; 
+
+//REDUCE - accumulate the element data by doing some operation and returns one data as a result
+var num2;
+num2 = num.reduce((acc,curr)=>{
+    return acc+curr;
+},0)
+//0+1=1->acc
+//1+2=3->acc
+//3+3=6->acc
+//6+4=10->acc
+//10+5=15->acc
+//15+6=21->acc
+console.log(num2);
+
+ACTIVITY:
+
+let num=[48,51,12,24,98,65,12];
+
+1. Sort the values to ascending -SORT
+2. Sort the values to descending -SORT
+3. Search for number 12 in the array -FIND
+4. Find how many times number 12 is present in the array -FILTER
+5. Based on the order of elements, mark the numbers divisible by 12 or not divisible by 12 -MAP
+6. Print the sum of even numbers in the array -REDUCE
+
+
+let num=[48,51,12,24,98,65,12];
+
+// 1. Sort the values to ascending -SORT
+num.sort((a,b)=>{
+    return a-b;
+})
+console.log(num);
+// 2. Sort the values to descending -SORT
+num.sort((a,b)=>{
+    return b-a;
+})
+console.log(num);
+// 3. Search for number 12 in the array -FIND
+var findData=num.find((n)=>{
+    if(n==12)
+    return n;
+})
+console.log(findData);
+// 4. Find how many times number 12 is present in the array -FILTER
+var filterData=num.filter((n)=>{
+    if(n==12)
+    return n;
+})
+console.log(filterData.length);
+// 5. Based on the order of elements, mark the numbers divisible by 12 or not divisible by 12 -MAP
+var markData = num.map((n)=>{
+    if(n%12==0)
+    return "Div by 12";
+    else
+    return "Not div by 12";
+})
+console.log(markData);
+// 6. Print the sum of even numbers in the array -REDUCE
+var even = num.filter((n)=>{
+if(n%2==0)
+return n;
+})
+var sum = even.reduce((acc,curr)=>{
+    return curr+acc;
+})
+console.log(sum);
+
+
+FACTORY FUNCTIONS:
+
+Function that produces objects is known as factory functions
+
+function abc(){
+    return {id:1, name:"Naga"};
+}
+var returnedObj = abc();
+console.log(returnedObj);
+
+------
+
+var person1= {
+    name:"Akash",
+    age:25,
+    greet:function(){
+        console.log("Hello from "+this.name)
+    }
+};
+var person2= {
+    name:"Dev",
+    age:26,
+    greet:function(){
+        console.log("Hello from "+this.name)
+    }
+};
+//this used to refer current object
+//each and everytime we cant write an object name explicitly
+console.log(person1.name, person2.name);
+person1.greet();
+person2.greet();
+------
+
+WE WILL CREATE AN OBJECT GENERATOR WHICH GENERATES OBJECTS FOR US- WE WILL SUPPLY THE DATA WHILE WE CALL THE GENERATOR FUNCTION
+
+function createPersons(name,age){
+    return {
+        name:name,
+        age:age,
+        greet:function(){
+            console.log("Hello from "+this.name);
+        }
+    };
+}
+
+var person1 = createPersons("Akash",25);
+var person2 = createPersons("Dev",21);
+var person3 = createPersons("Gopal",23);
+var person4 = createPersons("Jeya",27);
+
+console.log(person1,person2,person3,person4);
+console.log(person1.name);
+person1.greet();
+console.log(person2.name);
+person2.greet();
+-----------------------------------------------
+
+function createPersons(name,age){
+    return {
+        name,
+        age,
+//ES6 - SHORTER SYNTAX PROPERTT: If key and value are having same name, no need to write it twice
+        greet:function(){
+            console.log("Hello from "+this.name);
+        }
+    };
+}
+
+var person1 = createPersons("Akash",25);
+var person2 = createPersons("Dev",21);
+var person3 = createPersons("Gopal",23);
+var person4 = createPersons("Jeya",27);
+
+console.log(person1,person2,person3,person4);
+console.log(person1.name);
+person1.greet();
+console.log(person2.name);
+person2.greet();
+-------
+
+Add, Update and Remove the properties, functions
+
+function createPersons(name,age){
+    return {
+        name,
+        age,
+//ES6 - SHORTER SYNTAX PROPERTT: If key and value are having same name, no need to write it twice
+        greet:function(){
+            console.log("Hello from "+this.name);
+        }
+    };
+}
+
+var person1 = createPersons("Akash",25);
+var person2 = createPersons("Dev",21);
+var person3 = createPersons("Gopal",23);
+var person4 = createPersons("Jeya",27);
+
+console.log(person1,person2,person3,person4);
+console.log(person1.name);//1 way to fetch obj prop- static way
+console.log(person1["name"]);//2 way to fetch obj prop - dynamic way
+person1.greet();
+console.log(person2.name);
+person2.greet();
+
+console.log(person1);
+//extra properties - isMarried:false, drive()
+person1.isMarried=false;
+person1.drive=function(){
+    console.log(this.name+" has started to drive");
+}
+console.log(person1);
+
+//update or remove data from existing properties
+person1.age=0;
+person1.isMarried ='';
+console.log(person1);
+-----------------------------------------------
+
+Activity: 
+generate 4 users object using factory functions with name,email properties, login and logout functions
+
+function createUsers(username,useremail){
+    return {
+    username,
+    useremail,
+    login:function(){
+        console.log(this.username+" has successfully logged in");
+    },
+    logout:function(){
+        console.log(this.username+" has successfully logged out");
+    }
+};
+}
+
+var user1=createUsers("Naga","naga@gmail.com");
+var user2=createUsers("Muthu","muthu@gmail.com");
+var user3=createUsers("Lakshmi","lakshmi@gmail.com");
+var user4=createUsers("Suji","suji@gmail.com");
+
+console.log(user1,user2,user3,user4)

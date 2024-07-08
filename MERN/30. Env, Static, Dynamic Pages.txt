@@ -1,0 +1,60 @@
+MVC Pattern change--> pending
+1. env
+2.html - static -- welcome to movieflix-> lh:4000
+3. dont do ejs part in movieflix now ---> its just demo shown -- first complete blog app- then touch ejs part of movieflix
+4. create new project - ejs basics and do about, gallery,contact ---> first task to be completed by tomorrow --- EJSBASICS PROJECT
+
+Environment files + Static Web pages + Dynamic Web pages
+
+SET ENVIRONMENT VARIABLES IN EXPRESS APP:
+
+npm i dotenv
+
+server.js
+const dotenv = require('dotenv');
+dotenv.config({path:'./config.env'});
+
+var appServer = require('./index.js');
+
+if(process.env.NODE_ENV =='development'){
+appServer.listen(process.env.PORT, ()=>{
+    console.log("Vistt browser");
+ })
+}else{
+    appServer.listen(4000, ()=>{
+        console.log("Vistt browser");
+     })
+}
+
+config.env
+PORT=3000
+NODE_ENV = development
+
+----
+node server
+
+if env is development ---> lh:3000/movieflix
+if env is qa -------------------> lh:4000/movieflix
+-----------------------------
+
+STATIC FILES IN EXPRESS APPS:
+
+http://localhost:3000/public/templates/index.html ---> Express cant access html page directly!
+To access these files we need middleware
+
+appServer.use(express.static('./public'));
+
+http://localhost:3000/templates/index.html ---> nOW IT WILL BE VISIBLE!
+
+Its not mandatory to keep the folder name as public
+
+If we use static files like html - we can host only static info, we cant do any dynamic activity -- take data from user end and put it in db and do viseversa.
+
+We need View Engines to create Dynamic web pages.
+
+VIEW ENGINES: allows us to render web pages using template files filled with data and served to the client.
+
+WebAPI powered web pages - web page are rendered on browser end
+
+pug ejs 
+

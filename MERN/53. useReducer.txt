@@ -1,0 +1,357 @@
+Counter - useState -/+ <same data>
+useState will be powerful even if more than one event tries to change the state of same variable
+MANY BUTTONS TRYING TO ACCESS ONE DATA--IN SAME COMPONENT --- USESTATE!
+-----
+Imagine If a button click is going to manipulate a data which is shared across many components
+ONE EVENT CHANGE IN ONE COMPONENT NEEDS TO BE INFORMED TO MANY COMPONENTS ACROSS THE ENTIRE PROJECT
+
+useReducer Hook:
+
+Many Events are going to trigger only one state
+useReducers are used if there are many events and its manipulate only one or few useStates -its state is shared across many components - To enhance livelyness of the appln..
+
+useState - Main state management tool. great for independant pieces of state data.
+better when we deal with simple state updates
+
+useReducer - great when yu need more powerful state management tool. considered for satte management when dealing with related data or state. better when we have states with different course of action.
+
+const [data, setData]=useState('hello'); //AD data='hello'
+const{keyOfthObjectinValueofContainer}=useContext(Container); //OD
+const Container = createContext();
+const pid = useParams(); //in App.js path="/products/:pid"
+const navigate = useNavigate();
+useEffect(()=>{});
+const [state, dispatcher]=useReducer(reducer, 0); //AD
+const focusReference = useRef(null);
+
+
+const [state, dispatcher]=useReducer(reducer, 10);
+ //state=10
+//dispatcher(); internally calls the reducer function - passes a word/number to reducer()
+//reducer(); maintain logic - if else/ switch condition - retruns obj back to dispatcher
+
+ReducerCounter.js
+
+const ReducerCounter=()=>{
+
+const decrease = ()=>{dispatcher('-')};
+
+const reducer=(state, action)=>{
+switch(action){
+case '+' : return {count: state.count + 1 }
+case '-' : return {count: state.count - 1}
+default : return {count: 0}
+}
+}
+const [state, dispatcher] = useReducer(reducer,{count:0});
+return(<>
+<button onClick={()=>{dispatcher('+')}>Add</button>
+<h1> {state.count} </h1>
+<button onClick={decrease}>Sub</button>
+</>
+)
+}
+-----
+Activity: Todo Add/Remove --- USEREDUCER
+
+Shared Counter: ----- USECONTEXT
+
+
+ThemeSharing App:---usecontext
+
+
+Shared Components
+
+useContext - To pick data from a container and use it in whatever hierarchy the component is available. - ACHIEVED
+
+wHEN we implement useState with useContext -->Data is shared because its in the container. But for changes??? we need to REWRITE THE SNIPPETS across all the components- add(), sub() written 3 times
+
+useReducer - To manipulate a data from any hierarchy of component
+So to avoid rewriting of the same event logic, use useReducer. 
+
+var [count,setCount] = useState(0);
+var [state,dispatcher] = useReducer(reducer,{count:0});
+
+We can write manipulation logic for add and sub inside reducer() so that REWRITING can be avoided
+
+SharedCounter.js
+import React, { createContext, useState } from 'react';
+import AComponent from './AComponent';
+import BComponent from './BComponent';
+import CComponent from './CComponent';
+
+export var Container = createContext();
+const SharedCounter = () => {
+    var [count,setCount] = useState(0);
+  return (
+    <>
+    <h1>{count}</h1>
+    <Container.Provider value={{count,setCount}}>
+        <AComponent></AComponent>
+        <BComponent></BComponent>
+        <CComponent></CComponent>
+    </Container.Provider>
+    </>
+  )
+}
+
+export default SharedCounter
+--
+AComponent.js
+
+import React, { useContext } from 'react'
+import { Container } from './SharedCounter'
+
+const AComponent = () => {
+  var {count,setCount} = useContext(Container);
+
+  var add=()=>{
+    setCount(count+1);
+  }
+  var sub=()=>{
+    setCount(count-1)
+  }
+  return (
+<>
+<h1>AComponent</h1>
+<button onClick={add}>Increase</button>
+<button onClick={sub}>Decrease</button>
+</>
+    )
+}
+
+export default AComponent
+--
+BComponent.js
+import React from 'react'
+import DComponent from './DComponent'
+
+const BComponent = () => {
+  return (
+    <>
+    {/* <h1> This is BComponent - trying to display DComponent</h1> */}
+    <DComponent></DComponent>
+    </>
+  )
+}
+
+export default BComponent
+--
+CComponent.js
+import React from 'react'
+import EComponent from './EComponent'
+
+const CComponent = () => {
+  return (
+    <EComponent></EComponent>
+  )
+}
+
+export default CComponent
+--
+DComponent.js
+import React, { useContext } from 'react'
+import { Container } from './SharedCounter'
+
+const DComponent = () => {
+  var {count,setCount} = useContext(Container);
+
+  var add=()=>{
+    setCount(count+1);
+  }
+  var sub=()=>{
+    setCount(count-1)
+  }
+  return (
+<>
+<h1>DComponent</h1>
+<button onClick={add}>Increase</button>
+<button onClick={sub}>Decrease</button>
+</>
+    )
+}
+
+export default DComponent
+--
+EComponent.js
+import React from 'react'
+import FComponent from './FComponent'
+
+const EComponent = () => {
+  return (
+    <>
+    <FComponent></FComponent>
+    </>
+  )
+}
+
+export default EComponent
+---
+FComponent.js
+import React, { useContext } from 'react'
+import { Container } from './SharedCounter'
+
+const FComponent = () => {
+  var {count,setCount} = useContext(Container);
+
+  var add=()=>{
+    setCount(count+1);
+  }
+  var sub=()=>{
+    setCount(count-1)
+  }
+  return (
+<>
+<h1>FComponent</h1>
+<button onClick={add}>Increase</button>
+<button onClick={sub}>Decrease</button>
+</>
+    )
+}
+
+export default FComponent
+---
+
+LETS TRY TO AVOID REWRITING BY USING USEREDUCER:
+
+SharedCounter.js
+import React, { createContext, useReducer, useState } from 'react';
+import AComponent from './AComponent';
+import BComponent from './BComponent';
+import CComponent from './CComponent';
+
+export var Container = createContext();
+const SharedCounter = () => {
+    //var [count,setCount] = useState(0);
+    var reducer = (state,action)=>{
+      switch(action){
+        case '+': return state+1;
+        case '-':return state-1;
+        default: return 0;
+      }
+    }
+    var [count,dispatcher] = useReducer(reducer,0);
+  return (
+    <>
+    <h1>{count}</h1>
+    <Container.Provider value={{count,dispatcher}}>
+        <AComponent></AComponent>
+        <BComponent></BComponent>
+        <CComponent></CComponent>
+    </Container.Provider>
+    </>
+  )
+}
+
+export default SharedCounter
+--
+AComponent.js
+import React, { useContext } from 'react'
+import { Container } from './SharedCounter'
+
+const AComponent = () => {
+  var {dispatcher} = useContext(Container);
+  return (
+<>
+<h1>AComponent</h1>
+<button onClick={()=>{dispatcher('+')}}>Increase</button>
+<button onClick={()=>{dispatcher('-')}}>Decrease</button>
+</>
+    )
+}
+
+export default AComponent
+---
+DComponent.js
+import React, { useContext } from 'react'
+import { Container } from './SharedCounter'
+
+const DComponent = () => {
+  var {dispatcher} = useContext(Container);
+  return (
+<>
+<h1>DComponent</h1>
+<button onClick={()=>{dispatcher('+')}}>Increase</button>
+<button onClick={()=>{dispatcher('-')}}>Decrease</button>
+</>
+    )
+}
+
+export default DComponent
+-----
+FComponent.js
+import React, { useContext } from 'react'
+import { Container } from './SharedCounter'
+
+const FComponent = () => {
+  var {dispatcher} = useContext(Container);
+  return (
+<>
+<h1>FComponent</h1>
+<button onClick={()=>{dispatcher('+')}}>Increase</button>
+<button onClick={()=>{dispatcher('-')}}>Decrease</button>
+</>
+    )
+}
+
+export default FComponent
+------
+
+action --> object that contains keys-> type, payload
+
+To add user defined data into dispatcher we need to share data as action object 
+
+ReducerCounter.js
+import React, { useReducer, useState } from 'react'
+
+const ReducerCounter = () => {
+    var [data,setData] = useState('');
+
+    var increase =()=>{
+        dispatcher({type:'Add'})
+    }
+    var decrease =()=>{
+        dispatcher({type:'Sub'})
+    }
+    var multiply =(e)=>{
+        e.preventDefault();
+        dispatcher({type:'mul',payload:data})
+    }
+    var reducer =(state, action)=>{
+        switch(action.type){
+            case 'Add': return {count: state.count+1}
+            case 'Sub': return {count: state.count-1}
+            case 'mul' : return {count: state.count * action.payload}
+            default: return {count: 0};
+        }
+    }
+    var [state, dispatcher] = useReducer(reducer, {count:0});
+  return (
+   <>
+   <form onSubmit={multiply}>
+    <input type="text" id="data" name="data"  value={data} onChange={(e)=>{setData(e.target.value)}}/>
+    <button type="submit">multiply</button>
+   </form>
+   <button onClick={increase}>+</button>
+   <h1>{state.count}</h1>
+   <button onClick={decrease}>-</button>
+   
+   <button onClick={()=>{dispatcher('Refresh')}}>Refresh!</button>
+   </>
+  )
+}
+
+export default ReducerCounter
+----
+
+useReducer- maintains state and logic together
+PropDrilling/useContext-share the reducer data and logic across many components
+
+USEREDUCER+USECONTEXT- VERY COMPLEX DATA AND LOGIC CAN BE SHARED ACROSS ANY HIERARCHY OF COMPONENTS
+-------
+
+
+
+
+
+

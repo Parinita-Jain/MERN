@@ -1,0 +1,158 @@
+props   -  Arguments passed to react components while calling the component.
+
+import React from 'react'
+
+const BookList = () => {
+  return (
+    <section className='booklist'>
+      <Book title = "Shades of Life" imgPath="https://m.media-amazon.com/images/I/51HBcmFYKYL._AC_UY218_.jpg" author="Dr. T. S. Parmar" />
+      <Book title="A Book of Secrets" author="Derren Brown" imgPath="https://m.media-amazon.com/images/I/71Bzl1DX1UL._AC_UY218_.jpg" />
+      <Book title="Don't Believe Everything You Think" imgPath="https://m.media-amazon.com/images/I/715qi-cIbML._AC_UY218_.jpg" author="Joseph Nguyen " />
+      <Book title="Chanakya Neeti" imgPath="https://m.media-amazon.com/images/I/61cTGsnqI7L._AC_UY218_.jpg" author="Radhakrishnan Pillai " />
+      <Book title="The Little Red Book" imgPath="https://m.media-amazon.com/images/I/519VZX3m0mL._AC_UY218_.jpg" author="Bill P. " />
+      <Book title="Atomic Habits" imgPath="https://m.media-amazon.com/images/I/81IL8Dy4vmL._AC_UY218_.jpg" author="James Clear" />
+      <Book title="Don't Polish Your Ignorance" imgPath="https://m.media-amazon.com/images/I/714yDjC6UVL._AC_UY218_.jpg" author="Sathguru" />
+      <Book title="Rumi's Little Book of Life" imgPath="https://m.media-amazon.com/images/I/91eize2JOzL._AC_UY218_.jpg" author="Rumi, Marayam H Mafi, et al." />
+    </section>
+  )
+}
+
+
+const Book=(props)=>{
+    return (
+        <article className='book'>
+          <h1>{props.title}</h1>
+        <img src={props.imgPath} alt=" Not Found" />
+        <h4 style={{color:'black', backgroundColor:"bisque", width: 'fit-content',fontSize:'0.9rem'}}>{props.author}</h4>
+        </article>
+    )
+}
+
+export default BookList
+
+------------------------
+DESTRUCTURING:
+
+Destructuring is the concept used in object and arrays. es6=> which tells us - ARE YU TIRED OF USING OBJ NAME, AND DOT OPERATOR?
+---> way to avoid the use objname, dot, so that the keys wil act as a variable
+
+const Book=(props)=>{
+  var {title, imgPath, author} = props;
+    return (
+        <article className='book'>
+          <h1>{title}</h1>
+        <img src={imgPath} alt=" Not Found" />
+        <h4 style={{color:'black', backgroundColor:"bisque", width: 'fit-content',fontSize:'0.9rem'}}>{author}</h4>
+        </article>
+    )
+}
+---
+const Book=({title, imgPath, author})=>{
+    return (
+        <article className='book'>
+          <h1>{title}</h1>
+        <img src={imgPath} alt=" Not Found" />
+        <h4 style={{color:'black', backgroundColor:"bisque", width: 'fit-content',fontSize:'0.9rem'}}>{author}</h4>
+        </article>
+    )
+}
+----------------
+PROPS-CHILDREN
+import React from 'react'
+
+const BookList = () => {
+  return (
+    <section className='booklist'>
+      <Book title = "Shades of Life" imgPath="https://m.media-amazon.com/images/I/51HBcmFYKYL._AC_UY218_.jpg" author="Dr. T. S. Parmar" > Book 1 </Book>
+      <Book title="A Book of Secrets" genre="Humour" author="Derren Brown" imgPath="https://m.media-amazon.com/images/I/71Bzl1DX1UL._AC_UY218_.jpg" >Book 2 </Book>
+      <Book title="Don't Believe Everything You Think" imgPath="https://m.media-amazon.com/images/I/715qi-cIbML._AC_UY218_.jpg" author="Joseph Nguyen " >Book 3 </Book>
+      <Book title="Chanakya Neeti" imgPath="https://m.media-amazon.com/images/I/61cTGsnqI7L._AC_UY218_.jpg" author="Radhakrishnan Pillai " >Book 4 </Book>
+      <Book title="The Little Red Book" genre="Horror" imgPath="https://m.media-amazon.com/images/I/519VZX3m0mL._AC_UY218_.jpg" author="Bill P. " >Book 5 </Book>
+      <Book title="Atomic Habits" genre="Chemistry" imgPath="https://m.media-amazon.com/images/I/81IL8Dy4vmL._AC_UY218_.jpg" author="James Clear" >Book 6 </Book>
+      <Book title="Don't Polish Your Ignorance" imgPath="https://m.media-amazon.com/images/I/714yDjC6UVL._AC_UY218_.jpg" author="Sathguru" >Book 7 </Book>
+      <Book title="Rumi's Little Book of Life" imgPath="https://m.media-amazon.com/images/I/91eize2JOzL._AC_UY218_.jpg" author="Rumi, Marayam H Mafi, et al." >Book 8 </Book>
+      <Book title="abc" genre="xyz" author="klm"> <Dummy></Dummy> </Book>
+    </section>
+  )
+}
+
+
+const Book=(props)=>{
+  var {title, imgPath, author, children, genre} = props;
+  console.log(props);
+    return (
+        <article className='book'>
+          <h4>{children}</h4>
+          <h1>{title} </h1> 
+          <i>{genre}</i><br/>
+        <img src={imgPath} alt=" Not Found" />
+        <h4 style={{color:'black', backgroundColor:"bisque", width: 'fit-content',fontSize:'0.9rem'}}>{author}</h4>
+        </article>
+    )
+}
+
+const Dummy=()=>{
+  return(
+    <div style={{backgroundColor:"khaki"}}>
+        <h1> Dummy Component! </h1>
+        <h2>Extra Info</h2>
+        <h3>Child of Book Component!</h3>
+    </div>
+  )
+}
+
+export default BookList
+--------------------
+
+MAP-ITERATION
+
+Iteration.js
+import React from 'react'
+
+var names=["Isha","Dev","Disha","Yaz","Mikky"];
+
+const Iteration = () => {
+  return (
+    <div>
+        {names.map((name)=>{
+            return <h1 key={name}>{name}</h1>
+        })}
+    </div>
+  )
+}
+
+export default Iteration
+
+Iteration2.js
+import React from 'react'
+
+var students=[{id:1,name:"Jay"},{id:2,name:"Parker"},{id:3, name:"Cathy"},{id:4,name:"Kiara"}]
+
+const Iteration2 = () => {
+  return (
+    <div>
+    <table>
+        <thead>
+            <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            </tr>
+        </thead>
+        <tbody>
+    {students.map((student)=>{
+        var {id,name} = student;
+                return(
+                    <tr key={id}>
+                        <td>{id}</td>
+                        <td>{name}</td>
+                    </tr>
+                )
+            })}
+            </tbody>
+    </table>
+            
+    </div>
+  )
+}
+
+export default Iteration2

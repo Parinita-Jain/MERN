@@ -1,0 +1,194 @@
+ROUTING: 
+"req.url" --> needed to track the route in url
+
+const http = require('node:http');
+const fs = require("node:fs");
+const htmlData = fs.readFileSync('./error.html',{encoding:'utf-8'})
+
+const appServer = http.createServer((req, res)=>{
+    
+    if(req.url == '/home' || req.url == '/'){
+        res.writeHead(200,{"content-type":"text/plain", "authentication-token":"12345"});
+        res.end("Hello, Welcome to The First Page!");
+    }else if(req.url == '/about'){
+        res.writeHead(200,{"content-type":"text/html"})
+        res.end("<h1> Welcome to About Page </h1>")
+    }else if(req.url == '/contact'){
+        res.writeHead(200, {"content-type":"application/json"});
+        var jsonData = {id:1, name:"Naga"};
+        res.end(JSON.stringify(jsonData));
+    }else{
+        res.writeHead(404,{"content-type":"text/html"});
+        res.end(htmlData);
+    }
+    
+})
+
+appServer.listen(3000,()=>{
+    console.log("Started App")
+})
+---------------------
+
+Activity 
+
+localhost3030 ----------------- Welcome to the Home! -- welcome.html (200,headers - authtoken,content-type, pagenum)
+localhost3030about ---------- Definition ---- plain text (304, headers - authtoken,content-type, pagenum)
+localhost3030vfsljdfjldf ------- Sorry! ---- html content (404, header - information)
+
+const http = require('http');
+const fs = require('fs');
+const data = fs.readFileSync('.wlelcome.html',{encodingutf-8})
+
+var server = http.createServer((req,res)={
+    if(req.url == 'about'){
+        res.writeHead(200,{authentication-token12345, pagenumber100, content-typetexthtml})
+        res.end(data)
+    }else if(req.url==aboutt){
+        res.writeHead(201,{authentication-token12345, pagenumber100, content-typetextplain})
+        res.end(about · of; concerning; in regard to instructions about the work;a book about the Civil War. · connected or associated with There was an air of mystery about ..)
+    }else{
+        res.writeHead(404, {informationSorry, This page is unavailable})
+        res.end(Page not found -404 Error!)
+    }
+});
+
+server.listen(3000,()={
+    console.log(Server Started..)
+})
+--------------
+Builtin modules are stored in our local location - ProgramFilesnodelibbuilitin modulles-fs,http,events
+Thirdparty modules are stored in web - like registry or cloud the modules are stored
+
+NPM, PNPM, YARN --- these registry contain many important modules that are stores - we can install them and use them inside our project - save memory and use whenever we need
+
+www.npmjs.com
+
+express
+mongoose
+react
+react-dom
+
+------------
+lot of papers at home --- each paper you put margin, page num- yu write a story - once completed -- stitch all papers together - bind it to form a book ----- LOCAL MODULES
+
+Shelf at home- buy books from outside -- arrange all those books n your bookshelf -- BUILTIN MODULE
+If you have any doubt,read -- you go that shelf already inside your home-- refer
+
+If you create a book from scratch - take time  If you search inside shelf- that book is not there- What will you do Go out of the house and check in library --- Extrnally searching, you will not take ownership, get it use it, give it back---- modules will always be present in npmjs.com -- when yu need yu install and store inside yur project foldercompter out of project folder --- THIRD PARTY MODULES
+
+NPM- World's largest software libraryregistry --- sOFTWARE Package Manager
+Library - lot of books we=ritten by diff authors ... lot of modules -by diff developer across globe
+
+NPm - contains code packages written by variuos developers. Large public repo  db of JS code that deveopers from across world can use, share, put, borrow code.
+If you are an author- created a code package and wish to keep it safe somewhere and share with everyone--- put inside npm registry
+If you come acros a code package in npm that can solve your problem, you can just pick it and make life easier
+
+NPM - avoids reinventing same code
+
+- How topublish and consume a code package
+- How to update an already created package
+
+npm is the default package manager for nodejs
+
+when we installed node-- npm also comes along.
+CProgram Filesnodejsnode_modulesnpm
+CProgram Filesnodejsnode_modulesnpmnode_modules - Some modules are already present
+If you want some extra module - visit npmjs.com
+
+STEPS TO CREATE A PROJECT AND USE NPM MODULE
+
+node --version
+npm --version -------- 9.6.1
+
+1. create package.json
+2. install modules from npm
+3. create code file (app.js)
+4. refer in npmjs.com of how to use that module
+
+1. CREATE PACKAGE.JSON - is a file that stores an object where the keys - name,version,keywords,author,license,dependancies name and versions will be stored -  ENTIRE DETAILS META DATA OF A PROJECT WILL BE WRITTEN HERE.
+
+manually
+npm init - create a package.json file without default settings whre we add the setings in terminal only
+npm init --y create a predefined package.json file with some default values
+
+2. INSTALL MODULES FROM NPM
+		2.1-- INSTALL LOCALLY -  The modules that is installed from npm will be stored in project folder
+		2.2-- INSTALL GLOBALLY - The modules will be installed at a hidden location inside our system
+(CUsersnmlakAppDataRoamingnpm)
+
+Eg Nodemon module -- it helps to avoid repeated running of command node filename
+Whatever changes we do to the js file will not be reflected at the output automatically, we need to restrat the server file to get the output at browser.
+nodemon is a tool that helps develop Node.js based applications by automatically restarting the node application when file changes in the directory are detected.
+
+nodemon does not require any additional changes to your code or method of development. nodemon is a replacement wrapper for node. To use nodemon, replace the word node on the command line when executing your script.
+
+COMMAND TO LOCALLY INSTALL NODEMON
+npm install nodemon
+-once we install a package - creates a dependancy object in package.json where name and version no is stored. creates a node_modules folder all the code files will be taken frm npmjs.com and added at the project location
+ npmdemo1 project can now use nodemon module inside the project
+
+UNINSTALL LOCALLY
+npm uninstall nodemon
+-node_modules - inside this folder, any file or folder related to nodemon will be removed
+-package.json - nodemon1.2.3 will be removed from dependancies {}
+
+now run file using nodemon index.js
+
+changes will be tracked, no need to restart!
+
+cowsay
+express
+ejs
+
+COMMAND TO GLOBALLY INSTALL NODEMON
+Not be stored in node_modules folder of project loaction, dependancies{} wil not be added in package.json, data will be available at that app data location
+
+npm install -g nodemon ----------------globally installing a package
+1. the nodemon will be available to all the folders inside your computer.
+2. node_modules folder will not be present inside current folder location, in will be in a hidden place
+CUsersnmlakAppDataRoamingnpm
+C:\Users\nmlak\AppData\Roaming\npm
+3. package.json will not have the installed library name and version in dependancies 
+4. no need to install any library again and again for all project in your computer- Reuse.
+
+npm install nodemon --------------------locally installing a package
+1. the nodemon will be available only to the specific folder inside which you have installed.
+2. inside the current folder, node_modules folder will be created and nodemon files will beplaced
+3. package.json will have the installed library name and version in dependancies 
+4. installing locally will keep the entry of the lib name in package.json, if there any new person seeing our project or willing to use our project in their computer - local installing is very useful
+
+-every time which should install nodemon locally or globally
+WHEN YOU WANT THAT MODULE TO BE USED FOR ALL THE PROJECTS IN YOUR COMPUTER - INSTALL GLOBALLY
+IMAGINE YOU ARE PLANNING TO PUT THE ENTIRE PROJECT CODE FILES IN GITHUB - YU WANT EVERYONE TO USE YOUR PROJECT ---- DEFINETLY LOCALLY INSTALL ONLY - BECAUSE DEPENDANCIES OBJECT WILL ONLY GIVE AN IDEA TO ANY OTHERS OF WHAT ARE THE MODULES NEEDED IN THIS PROJECT TO RUN!
+
+- while developing project we mostly globally install to avoid reinstallations
+- once project is fully built and we are planing to put code in git hub - finally we will locally install and mark it in dependancies array and then continue
+
+- put project in github
+1. visit package.json (how to run your file, which is start file, what are the dependancies libraries)
+2. whatever library is needed locally install them always - to allow other know our dpendancies, globally install to reuse in our ssytem again and again
+locally - others
+globally- us
+
+npm uninstall -g nodemon
+
+3. USE NODEMON
+
+Node cant find if there is any changes done to the file when app is running! (Live Server)
+Each time when file has any change, we need to restart server!
+
+To avoid that we can run this file using nodemon!
+
+PS D:\IT Vedant\MERN\Module\ThirdParty\NPMBasic> nodemon index.js
+nodemon : File C:\Users\marut\AppData\Roaming\npm\nodemon.ps1 cannot be loaded because running scripts is disabled on this system. 
+For more information, see about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170.
+At line:1 char:1
++ nodemon index.js
++ ~~~~~~~
+    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+i am getting this error
+You
+12:06 PM
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
+

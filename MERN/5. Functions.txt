@@ -1,0 +1,110 @@
+FUNCTIONS: 
+
+abc.js
+----abcde();
+function abcde(){
+-
+-
+-
+-
+-
+}
+----abcde();
+
+Block of code that will be executed when the block is called - functions
+3 parts
+Function Initialization/declaration
+Function Definition
+Function Calling
+
+3 ways of expressing a function:
+
+Regular Functions
+Anonymous Functions
+Arrow Functions
+
+Regular Functions:
+
+function Welcome(){
+console.log("Hi");
+}
+Welcome();
+
+function Welcome(id,name){
+console.log("Hi", id, name);
+return "Good Day!"
+}
+//3-5 RECIPIENT
+var a = Welcome(4,"Naga");//CALLER
+console.log(a);
+console.log(Welcome(4,"Naga"))
+document.write(Welcome(4,"Naga"))
+
+//If caller wants to give some data to reciepient - thru Arguments
+//If recipient want to give data to caller - thru return
+
+ARGUMENTS: 
+the parameters that we feed when a function is called
+
+ANONYMOUS FUNCTIONS:
+//Anonymous - used as function argument
+
+var Welcome = function (id, name){
+   console.log("Hi");  
+   console.log(id, name);
+   return "Good Day";
+}
+console.log(Welcome(4, "Naga"));
+
+------------------------------
+ANONYMOUS+REGULAR:
+
+
+var Welcome = function (id, name){
+   console.log("Hi");  
+   console.log(id, name);
+   return "Good Day";
+}
+
+function Greeting(r){
+    var a=10, b=20,c
+    c=a+b;
+   console.log(c);
+   console.log(r);
+}
+
+Greeting(Welcome(5,"Shital"));//Greeting("Good Day");
+
+--------------------------------------------
+var Welcome = function (){
+   console.log("Hi");  
+}
+
+function Greeting(){
+    var a=10, b=20,c
+    c=a+b;
+   console.log(c);
+}
+
+Greeting(Welcome());
+------------------------------------------------------
+
+
+function Greeting(Welcome){
+    Welcome();
+    var a=10, b=20,c
+    c=a+b;
+   console.log(c);
+}
+
+Greeting(function (){console.log("Hi")});
+-----------------------------------------------------------
+function Greeting(GoodBye)
+{
+    GoodBye();
+    var a=10, b=20,c
+    c=a+b;
+   console.log(c);
+}
+
+Greeting(function(){console.log("Hi")});

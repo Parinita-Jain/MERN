@@ -1,0 +1,122 @@
+www.movies.com/movieflix/DeleteOneMovie/19?name=Dory&duration=150
+
+-------------------------------------------------------------------------------
+req.url --- /movieFlix/DeleteOneMovie/4?name=pirates
+req.query -- {name:Dory, duration:150}
+req.params -- {mid:19} 
+-------------------------------
+
+www.movies.com/movieflix/AddNewMovie
+
+form: add new movies info- obtain from user via browser
+
+{name:"Nemo",duration:130, ratings:4,description:"Fiction"}----> body of the request object
+
+req.body -- {name:"Nemo",duration:130, ratings:4,description:"Fiction"} -- POSTMAN-REQ REGION/ BROWSER-FORM
+
+1. In postman, we need to add the new data in the req.body
+2. we need an endpoint in express app to serve for this req  server.post('',(req,res)=>{ req.body })
+3. We need to get that new info from postman and put it inside server using req.body
+-WE NEED MIDDLEWARE-- new delhi(10) -middle(4)--(3)-- chennai (17)
+To add some intermediate info to the req obj before the req reaches the response, we use middleware
+here-> in req lh:3000/aNM+{obj info json}
+4. {title to duration} id will not be there - Find a logic to create a new unique id --> we need to get the last id--> +1
+6 is the length ---> movieData.length -->6
+[{}, {}, {},{}, {}, {id:106}]---> 6 items
+ 0  1  2  3  4  5
+moviesArray[5].id---> 106
+var last = movieData.length-1 ===> 6-1 = 5(Position- Last)
+var lastId = moviesData[last].id ----> moviesData[5].id-->106
+var newId = lastId+1; ----> 106+1 === 107
+0     1   2   3   4   5
+11 12 13 14 15 16
+
+5. {id} + {title to duration} - merge the objects to form a proper data from {id to duration}
+var newMovie = Object.assign({id:newId},{title to duration})
+
+6. push this new object into moviesData array {1-7}
+7. remove the old data from the file {1-6} and add the new moviesData array into the file{1-7}
+8. send the moviesData as a response to the Postman
+
+const fs  = require('fs');
+ var moviesData = JSON.parse(fs.readFileSync('./movies.json',{encoding:'utf-8'}));
+console.log(typeof moviesData)
+ //convert string to JSON - JSON.parse()
+ const express = require('express');
+ const appServer = express();
+ //ADD MIDDLEWARE TO UPDATE THE REQ OBJECT TO GET SOME INFO FROM POSTMAN OR BROWSER
+ appServer.use(express.json());
+ //GET ALL MOVIES
+appServer.get('/movieflix/getAllMovies',(req,res)=>{
+    if(moviesData.length==0){
+        res.json({
+            "status":"empty",
+            "message":"Sorry No Movies Available"
+        })
+    }else{
+        res.json({
+            "status":"success",
+            "data":moviesData
+        })
+    }
+   
+})
+
+//ADD NEW MOVIE
+appServer.post('/movieflix/addNewMovie',(req,res)=>{
+    console.log(req.body); //{ title: '3 Idiots', description: 'Comedy', duration: 130, ratings: 5 }
+    //CREATE A NEW ID
+    var movieLength=moviesData.length;
+    var lastId = moviesData[movieLength-1].id;
+    var newId = lastId + 1;
+    console.log(newId); //7
+    //TO MERGE ID WITH REQ.BODY
+    var newMovie = Object.assign({id:newId},req.body);
+    console.log(newMovie); //{id: 7,title: '3 Idiots',description: 'Comedy',duration: 130,ratings: 5}
+    //PUSH NEW MOVIE TO THE MOVIESDATA ARRAY
+    moviesData.push(newMovie);
+    console.log(moviesData); //{id:1 to id:7}
+    //LETS WRITE THIS INFO INTO THE FILE, MEANWHILE WE WILL GIVE THE RESPONSE ALSO TO THE PM- ASYNC
+    fs.writeFile('./movies.json',JSON.stringify(moviesData),(err)=>{
+        if(err){
+            res.json({
+                "status":"Failed",
+                "message":"Something went wrong"
+            })
+        }else{
+            res.json({
+                "status":"success",
+                "data":moviesData
+            })
+        }
+    })
+})
+
+ appServer.listen(3000, ()=>{
+    console.log("Vistt browser");
+ })
+
+---
+
+DELETE ALL MOVIES:
+
+-> moviesData array = [];
+-> write it into file movies.json
+
+//DELETE ALL MOVIES
+appServer.delete('/movieflix/deleteAllMovies',(req, res)=>{
+moviesData = [];
+fs.writeFile('./movies.json',JSON.stringify(moviesData),(err)=>{
+    if(err){
+        res.json({
+            "status":"Failed",
+            "message":"Something went wrong"
+        })
+    }else{
+        res.json({
+            "status":"success",
+            "data":moviesData
+        })
+    }
+})
+})

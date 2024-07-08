@@ -1,0 +1,43 @@
+Iteration2.js
+import React from 'react'
+
+var students=[{id:1,name:"Jay"},{id:2,name:"Parker"},{id:3, name:"Cathy"},{id:4,name:"Kiara"}]
+
+const Iteration2 = () => {
+  return (
+    <div>
+    <table>
+        <thead>
+            <tr>
+            <th>ROLLNUM</th>
+            <th>FIRSTNAME</th>
+            </tr>
+        </thead>
+        <tbody>
+    		<tr>
+			<td>1</td>
+			<td>sad</td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td>dff</td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td>sdfs</td>
+		</tr>
+		<tr>
+			<td>4</td>
+			<td>sdff</td>
+		</tr>
+         </tbody>
+    </table>
+            
+    </div>
+  )
+}
+
+export default Iteration2
+
+
+HOW DO WE TRANSFER THE STUDENT INFO FROM ONE COMPONENT TO ANOTHER- PROPS

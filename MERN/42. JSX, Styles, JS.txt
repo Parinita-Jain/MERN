@@ -1,0 +1,290 @@
+CONDITIONS WHILE WRITING JSX:
+return(
+<>
+<input type="" />
+<button onClick=""></button>
+<img src="" alt=""   />
+<div className=""></div>
+<>
+)
+
+
+1. Closing Tags or self closing / are always expected
+2. Attribute or Event should be written in camelCase
+3. Only one parent tag should be there in returning jsx
+4. Return only one jsx data. Each tag if there is an compulsory attribute - MENTION IT
+5. The possible ways of return are:
+
+return <h1></h1>
+return <div>
+--
+--
+--
+--
+</div>
+return(
+<>
+--
+--
+--
+</>
+)
+
+BOOKLIST APP:
+
+1. create Booklist.js
+do rafc
+have a h1 tag
+call the booklist tag in the App.js
+if yu want add some data in App.js
+then do npm start
+
+App.js
+import React from 'react'
+import BookList from './BookList'
+const App = () => {
+  return (
+    <div>
+      <BookList />
+      <h1> The App Component!</h1>
+    </div>
+  )
+}
+export default App
+
+BookList.js
+import React from 'react'
+const BookList = () => {
+  return (
+    <div>
+      <h1> This is the BookList Component</h1>
+    </div>
+  )
+}
+export default BookList
+
+1. create book component inside Booklist.js
+2. go to amazon books, pick the title, author and image path (copy img addr) and use h1- title, img - image, h4 for author
+3. go to app componnet and remove that h1
+4. go to booklist function and call <Book/> inside , probably for 5 times
+
+App.js
+import React from 'react'
+import BookList from './BookList'
+
+const App = () => {
+  return (
+    <div>
+      <BookList />
+          
+    </div>
+  )
+}
+
+
+export default App
+
+Booklist.js
+import React from 'react'
+
+const BookList = () => {
+  return (
+    <div>
+      <h1> WELCOME TO MY OWN BOOKSTORE!</h1>
+      <Book/>
+      <Book/>
+      <Book/>
+      <Book/>
+      <Book/>
+    </div>
+  )
+}
+
+const Book=()=>{
+    return (
+        <>
+        <h1>Shades of Life</h1>
+        <img src="https://m.media-amazon.com/images/I/51HBcmFYKYL._AC_UY218_.jpg" alt=" Not Found" />
+        <h4>Dr. T. S. Parmar</h4>
+        </>
+    )
+}
+
+export default BookList
+
+ADDING EXTERNAL CSS:
+
+index.css
+*{
+    margin:10px;
+    padding:10px;
+    box-sizing:border-box;
+}
+h1{
+    color:chocolate
+}
+body{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: beige;
+    color: crimson;
+}
+.booklist{
+    width:90vw;
+    max-width: 1170px;
+    margin:5rem auto;
+    display: grid;
+    gap:1rem;
+}
+
+@media screen and (min-width:768px) {
+    .booklist{
+        grid-template-columns: repeat(3,1fr);
+    }
+}
+
+.book{
+    background-color: lightblue;
+    border-radius: 1rem;
+    padding: 1rem 2rem;
+}
+
+.book h1{
+    text-decoration: underline;
+}
+
+---
+INLINE CSS IN JSX
+
+imagine plain html--> inline css
+<h4 style="color:blue;font-size:0.75rem;margin-top:0.25rem;background-color:red;">Shinde!</h4> 
+
+While writing css in jsx
+1. style = {{}} 
+use double curly ---> outer curly--> js {} not css "", inner curly --> object {"key":"string";}
+internal curly--> we are not going to write css - dont use css syntax ":;-"
+we are going to represent style as prop:value in a js object format
+
+css in jsx:'
+<h4 style={{color:"blue",fontSize:"0.75rem",marginTop:"0.25rem",backgroundColor:"red"}}>Shinde!</h4> 
+
+var data = {id:1, name:"Naga"}
+
+CONDITIONS:
+
+1. use {{}} instead of ""
+2. use , instead of ;
+3. use camelCase for key instead of -
+4. use "" for string values and no "" for int values
+
+USE JS IN JSX:
+
+we have to put js content inside  {} pair of curly brackets
+arithmetic operations, inbuilt method call all can be done
+
+Comment in JSX
+
+{/* jsx content  */}
+Expressing Objects directly will give us an error -> coz, {can display or reveal data}
+
+Objects are not valid as a React child (found: object with keys {id, name}).
+Arrays and objects cant be directly revealed
+-------------
+Final Code Files:
+
+index.css
+*{
+    margin:2px;
+    padding:2px;
+    box-sizing:border-box;
+}
+h1{
+    color:chocolate
+}
+body{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: beige;
+    color: crimson;
+}
+.booklist{
+    width:90vw;
+    max-width: 1170px;
+    margin:5rem auto;
+    display: grid;
+    gap:1rem;
+}
+
+@media screen and (min-width:768px) {
+    .booklist{
+        grid-template-columns: repeat(3,1fr);
+    }
+}
+
+.book{
+    background-color: lightblue;
+    border-radius: 1rem;
+    padding: 1rem 2rem;
+}
+
+.book h1{
+    text-decoration: underline;
+}
+
+App.js
+import React from 'react'
+import BookList from './BookList'
+
+const App = () => {
+  return (
+    <div>
+      <BookList />
+          
+    </div>
+  )
+}
+
+
+export default App
+
+Booklist.js
+import React from 'react'
+var title = "Shades of Life";
+var imgPath="https://m.media-amazon.com/images/I/51HBcmFYKYL._AC_UY218_.jpg";
+var author="Dr. T. S. Parmar";
+var sampleObj = {id:1, name:"Naga"}
+var sampleArray = [{id:1, name:"Naga"}, {id:2, name:"Muthu"}, {id:3, name:"Lakshmi"}]
+
+const BookList = () => {
+  return (
+    <section className='booklist'>
+      <Book/>
+      <Book/>
+      <Book/>
+      <Book/>
+      <Book/>
+    </section>
+  )
+}
+
+
+const Book=()=>{
+
+    return (
+        <article className='book'>
+        {/* <h1>{1000+900-23}</h1>
+        <h2>{sampleObj.id}</h2>
+        <h2>{sampleObj.name}</h2>
+        <h2>{sampleObj.xyz}</h2>
+        <h2>{sampleArray[0].id}-----{sampleArray[0].name}</h2>
+        <h2>{sampleArray[1].id}-----{sampleArray[1].name}</h2>
+        <h2>{sampleArray[2].id}-----{sampleArray[2].name}</h2> */}
+        
+        <h1>{title.toUpperCase()}</h1>
+        <img src={imgPath} alt=" Not Found" />
+        <h4 style={{color:'black', backgroundColor:"bisque", width: 'fit-content',fontSize:'0.9rem'}}>{author}</h4>
+        </article>
+    )
+}
+
+export default BookList
+
+

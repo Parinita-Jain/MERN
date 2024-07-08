@@ -1,0 +1,19 @@
+LOCAL MODULE:
+
+2. Using ESModules Standard - React, Angular - Works on basis of modern js - file should have .mjs as an extension - mjs an extension for EcmaScript modules
+pattern1:
+use export default to share a data, use import data from 'file-path' to recieve a data from diff file
+Error: SyntaxError: Cannot use import statement outside a module
+Clear this error by keeping file extension as .mjs, run using node filename.mjs, import using './filename.mjs'
+pattern1.1:
+use export var to share a data, use import {data} from 'file-path' to recieve a data from diff file
+pattern2:
+if there is more than one data to be shared, pack them as objects - with different keys. use parent.key to retrieve the value - and then manipulate the value
+pattern3:
+if there is more data, we share as objects, make key and value name similar, so that yu can write only once - SHORTER SYNTAX PROPERTY OF OBJECT LITERAL. use parent.key to retrieve the value - and then manipulate the value
+pattern4:
+while getting the obj from a file, destructure it to avoid parent name and dot operator
+pattern5:
+if we are individually exporting data or function, while importing directly- {}, use same name as exported
+pattern6:
+if we are individually exporting data or function, while importing them as * (All) - use alias name to grab everything - destructure it and use it

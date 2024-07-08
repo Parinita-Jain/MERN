@@ -1,0 +1,125 @@
+USE STATE COUNTER:
+import React, { useState } from 'react'
+
+const UseStateArray = () => {
+    var names = ["Mary","Hema","Hussain","Kumar","Dev"];
+    var [fnames, setFnames]= useState(names);
+
+    var updateFname=(fname,index)=>{
+        fname=fname+"-Updated";
+        fnames[index]=fname;//fnames array has got some changes
+        setFnames([...fnames]);//new changes are added to the existing array
+    }
+    var removeFname=(fname)=>{
+        var balanceNames = fnames.filter((fn)=>{
+            return fn!==fname;//true only if mary is not matching with other records
+        })
+        setFnames(balanceNames);
+    }
+    var removeAllFnames=()=>{
+        fnames = [];
+        setFnames(fnames);
+    }
+    var addAllFnames=()=>{
+        setFnames(names);
+    }
+  return (
+    <div>
+    {fnames.length!==0?<button onClick={removeAllFnames}>Remove All Names</button>:<button onClick={addAllFnames}>Add All Names</button>}
+      {fnames.map((fname,index)=>{
+            return(
+                <div key={fname}>
+                <h1>{fname}</h1>
+                <button onClick={()=>{updateFname(fname,index)}}>Update</button>
+                <button onClick={()=>{removeFname(fname)}}>Remove</button>
+                </div>
+            )
+      })}
+    </div>
+  )
+}
+
+export default UseStateArray
+----
+USE STATE CRUD WITH ARRAY OF STRINGS:
+
+import React, { useState } from 'react'
+
+const UseStateArray = () => {
+    var names = ["Mary","Hema","Hussain","Kumar","Dev"];
+    var [fnames, setFnames]= useState(names);
+
+    var updateFname=(fname,index)=>{
+        fname=fname+"-Updated";
+        fnames[index]=fname;//fnames array has got some changes
+        setFnames([...fnames]);//new changes are added to the existing array
+    }
+var removeFname=(fname)=>{
+        var balanceNames = fnames.filter((fn)=>{
+            return fn!==fname;//true only if mary is not matching with other records
+        })
+        setFnames(balanceNames);
+    }
+    var removeAllFnames=()=>{
+        fnames = [];
+        setFnames(fnames);
+    }
+    var addAllFnames=()=>{
+        setFnames(names);
+    }
+return (
+    <div>
+    {fnames.length!==0?<button onClick={removeAllFnames}>Remove All Names</button>:<button onClick={addAllFnames}>Add All Names</button>}
+      {fnames.map((fname,index)=>{
+            return(
+                <div key={fname}>
+                <h1>{fname}</h1>
+                <button onClick={()=>{updateFname(fname,index)}}>Update</button>
+                <button onClick={()=>{removeFname(fname)}}>Remove</button>
+                </div>
+            )
+      })}
+    </div>
+  )
+}
+export default UseStateArray
+
+STEPS:
+1. create names array of strings
+2. create usestate fnames
+and pass the names array to it
+3. create map method to iterate all names
+4. create update and remove button
+5. use [...] to update the exisitng array
+6. use filter to remove one data from an array
+7. create button for remove aa names
+8. create button for add all names
+9. remove all data by setting []
+10. add all data by getting help from supplier names
+now toggle the add all, remove all buttons based on length array property
+
+USE STATE OBJECTS:
+import React, { useState } from 'react'
+
+const UseStateObject = () => {
+    var student = {id:1, name:"Satish", age:34, gender:"Male",mobile: 987654321}
+    var [stu, setStu] = useState(student);
+    var swapGender = () =>{  
+        // if(stu.gender === "Male"){
+        //     setStu({...stu, gender:"Female"});
+        // }else{
+        //     setStu({...stu, gender:"Male"});
+        // }
+        setStu({...stu, gender: stu.gender==="Male"?"Female":"Male" });
+        
+    }
+    return (
+    <div>
+      <h1>{stu.id} - {stu.name}</h1>
+      <h4> {stu.age} - {stu.gender} - {stu.mobile}</h4>
+      <button onClick={swapGender}>Change Gender</button>
+    </div>
+  )
+}
+
+export default UseStateObject

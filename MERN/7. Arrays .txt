@@ -1,0 +1,357 @@
+ARRAYS:
+
+var is capable of holding more than one data at a time.
+if variable holds more than one data, then thats known as array/objects - composite datatypes
+
+SYNTAX:
+
+var vowels = ['a','e','i','o','u']; 
+var arr = new Array();
+var arr2 = [];
+
+DATATYPES : Array can store different data together. 
+Arrays are heterogenous in nature.
+
+var data = [89, 45.7, true, null, 'h', "Suji"]; 
+
+can one array hold another array?
+
+var arr3 = [3,4,5,[11,22,33,44],6,7];
+
+TRAVERSAL OF DATA: pick each data individually from an array.
+
+var data = [89, 45.7, true, null, 'h', "Suji",45,99]; 
+console.log(data[0]);
+//if we dont know how many items are there.
+console.log(data.length);//6
+//find last item of an array -> length-1
+console.log(data[data.length-1]);
+//add item at the last of an array
+data.push(222);
+data.push("lazy");
+console.log(data);
+//remove last item from array
+data.pop();
+console.log(data);
+
+var data = [89, 45.7, true, null, 'h', "Suji",45,99]; 
+ 
+ for(let i=0;i<data.length;i++){
+    if(data[i]==null){
+        data[i]="Data not Found";
+    }
+     console.log(data[i])
+ }
+
+SEARCH DATA IN AN ARRAY:
+
+var data = [ 45.7,19, true,19, 19,null, 'h', "Suji",45,99]; 
+var search = 19;
+var count = 0;
+
+//searching data
+for(let i=0;i<data.length;i++){
+    if(data[i]==search){
+        console.log(search," is present");
+        count++;
+        break;//stop the upcoming iteration
+    }
+}
+if(count==0){
+    console.log(search,"is absent")
+}
+
+FIND NUMBER OF OCCURANCES:
+
+var data = [ 45.7,19, true,19, 19,null, 'h', "Suji",45,99]; 
+var search = 19;
+var occ=0
+//finding occurances of data
+for(let i=0;i<data.length;i++){
+    if(data[i]==search){
+        occ++;
+    }
+}
+if(occ==0){
+    console.log(search,"is absent")
+}else{
+    console.log(search,"present for",occ,"times");
+}
+
+
+TYPES OF LOOP TO TRAVERSE THE ARRAY:
+
+var data = [ 45.7,19, true,19, 19,null, 'h', "Suji",45,99]; 
+
+for(let i=0;i<data.length;i++){
+ 	console.log(data);
+}
+
+data.forEach((d)=>{
+    console.log(d);
+});
+
+data.map((d)=>{ 
+    console.log(d);
+})
+
+ARRAY INSIDE AN ARRAY:
+
+var data =[3,8,2,['a','b','c'],6,3,9];
+
+console.log(data.length);//7
+console.log(data[3]);
+
+data.map((d)=>{
+    console.log(d)
+})
+
+data[3].map((d)=>{
+    console.log(d)
+})
+
+OBJECTS:
+
+Composite datatype that can store more than one data in a variable in a key-value pair format.
+Heterogenous in nature.
+
+var obj = {id:1, name:"Suji", age:27.8, isMarried: true};
+console.log(obj);
+console.log(obj.age);
+console.log(obj.gender);//If we try to fetch a key which is not available in an object we get undefined as the answer
+
+var data =[1,2,3];
+console.log(data[20]);//If we try to fetch a idex which is not having data in the array we get undefined as the answer
+---------------------------
+var obj = {id:1,
+            name:{firstname:"Naga",middlename:"Muthu",lastname:"Lakshmi"}, 
+            age:27.8, 
+            isMarried: true
+};
+console.log(obj);
+console.log(obj.age);
+//obj can hold another obj - yes
+console.log(obj.name.firstname);
+------------------------------------
+
+//can array have an object - yes
+//can object have an array - yes
+
+var arr = [11,22,33,{id:1, name:"Swarna"}];
+var obj = {
+    sId:123, 
+    name:"Siddhu", 
+    hobbies:["eat","code","sleep"]
+}
+
+arr.map((a)=>{console.log(a)});
+console.log(arr[3]);
+console.log(arr[3].name);//Swarna
+
+console.log(obj.hobbies);
+console.log(obj.hobbies[1]);//code
+----------------
+
+can arrays and objects contain a function - yes
+
+var arr = [11,22,function abc(){
+                        console.log("hello");
+                        return "Bye"
+                    },33,44]
+arr[2]();
+console.log(arr[2]());
+
+var arr = [11,22,()=>{
+                        console.log("hello");
+                        return "Bye"
+                    },33,44]
+arr[2]();
+console.log(arr[2]());
+---------
+var obj = {
+    id:1,
+    name:"Naga",
+    activities: ()=>{
+        console.log("Hello");
+        return "Bye!";
+    }
+}
+console.log(obj.id);//property
+console.log(obj.activities);
+obj.activities();//Hello
+console.log(obj.activities());//Bye - functions
+
+Arrays - container for similar kind of data
+
+Objects - key value pairs of properties and functions.
+
+Inbuilt Array methods:
+push, pop, remove, isExists, includes, map, filter, find, sort, reduce......
+
+Inbuilt Objects:
+console.log(window);// window object contains nested objects, properties, functions
+
+NESTED OBJECTS OF WINDOW:
+
+location
+document
+console
+screen
+navigator
+history
+
+FUNCTIONS OF WINDOW:
+
+alert(), prompt(), confirm(), setTimeout(), setInterval(), open(), close(), scroll()
+
+PROPERTIES OF WINDOW:
+
+width, height, innerWidth, innerHeight
+
+
+window.document.write(); //print some info on the webpage
+
+window.alert(); //show info as a notification warning
+
+window.console.log(); //print info in the console/terminal
+
+var window={
+innerWidth:______,
+document: {
+			write:()=>{},
+			getElementById:()=>{}
+			},
+console:{
+		log:()=>{},
+		err:()=>{},
+		warn:()=>{}
+		},
+
+alert:()=>{},
+prompt:()=>{},
+setTimeout:()=>{}
+};
+
+-------------
+
+//Array of Objects
+var Students = [
+    {id:1, name:"Akash", age:17, gender:"Male", pass: 87},
+    {id:2, name:"Bella", age:18, gender:"Female", pass: 88},
+    {id:3, name:"Cathy", age:19, gender:"Female", pass: 89},
+    {id:4, name:"Dev", age:20, gender:"Male", pass: 90},
+    {id:5, name:"Evan", age:21, gender:"Male", pass: 91},
+    {id:6, name:"Fiara", age:22, gender:"Female", pass: 92},
+    ]
+
+//Number of students available in this array
+//How many students are Female
+//list the ages who are less than 20
+//Average of pass percent
+//display the names of the students 
+
+1. If we have to pick an array item(in a paticular index) -> for(let i=0) - individual student detail
+2.  If we want to pick ids of all students, names of all array items -> foreach, map
+
+//Array of Objects
+var Students = [
+    {id:1, name:"Akash", age:17, gender:"Male", pass: 87},
+    {id:2, name:"Bella", age:18, gender:"Female", pass: 88},
+    {id:3, name:"Cathy", age:19, gender:"Female", pass: 89},
+    {id:4, name:"Dev", age:20, gender:"Male", pass: 90},
+    {id:5, name:"Evan", age:21, gender:"Male", pass: 91},
+    {id:6, name:"Fiara", age:22, gender:"Female", pass: 92},
+    ]
+//Number of students available in this array
+console.log(Students.length);//6
+//How many students are Female
+var count=0;
+Students.map((s)=>{
+    if(s.gender == "Female"){
+        count++
+    }
+})
+console.log(count);//3
+//list the ages who are less than 20
+var ages=[];
+for(let i=0;i<Students.length;i++){
+    if(Students[i].age<20){
+        ages.push(Students[i].age);
+    }
+}
+console.log(ages);//[17,18,19]
+//Average of pass percent
+var avg,total=0;
+for(let i=0;i<Students.length;i++){
+    total = total+Students[i].pass;
+}
+avg=total/Students.length;
+console.log(avg);//89.5
+
+//display the names of the students 
+var names = Students.map((s)=>{
+    return s.name;
+})
+console.log(names);//["Akash","Bella","Cathy","Dev","Evan","Fiara"]
+------
+
+
+KS:
+
+var numberOfStudents = Students.length;
+console.log("Number of students: " + numberOfStudents);
+
+
+
+
+var femaleStudents = Students.filter(function (student) {
+    return student.gender === "Female";
+});
+var numberOfFemaleStudents = femaleStudents.length;
+console.log("Number of female students: " + numberOfFemaleStudents);
+
+
+
+
+
+
+var studentsUnder20 = Students.filter(function (student) {
+    return student.age < 20;
+});
+});
+var agesUnder20 = studentsUnder20.map(function (student) {
+    return student.age;
+});
+console.log("Ages less than 20: " + agesUnder20);
+
+
+
+
+
+var totalPassPercentage = Students.reduce(function (sum, student) {
+    return sum + student.pass;
+}, 0);
+
+
+
+var averagePassPercentage = totalPassPercentage / Students.length;
+console.log("Average pass percentage: " + averagePassPercentage);
+
+
+
+for (var i = 0; i < Students.length; i++) {
+    console.log("Name: " + Students[i].name);
+}
+
+Number of students: 6
+7th.js:20 Number of female students: 3
+7th.js:33 Ages less than 20: 17,18,19
+7th.js:46 Average pass percentage: 89.5
+7th.js:51 Name: Akash
+7th.js:51 Name: Bella
+7th.js:51 Name: Cathy
+7th.js:51 Name: Dev
+7th.js:51 Name: Evan
+7th.js:51 Name: Fiara
+
+

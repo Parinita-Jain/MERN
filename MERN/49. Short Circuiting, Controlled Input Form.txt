@@ -1,0 +1,102 @@
+Instead of Conditional Rendering we should follow SHORT CIRCUTING!
+
+--> Ternery Operator
+--> && || Operators
+
+We can use || && operators to choose which data to be the deciding factor.
+
+var data1 = '' || "Hello"; 
+//If the first value is valid -> It takes the first value
+//If the first value is invalid -> It takes the second value
+
+Welcome || Hello --> Welcome
+empty || Hello ---> Hello
+false || "Hello" ----> Hello
+true || "Hello" ---->true
+0 || "Hello" ----> Hello
+1 || "Hello" --->1
+
+
+var data2 = '' && "Hi";
+//If the first value is valid -> It takes the second value
+//If the first value is invalid -> It takes the first value
+
+Welcome && Hello --> Hello
+empty && Hello ---> empty
+false && "Hello" ----> false
+true && "Hello" ----> Hello
+0 && "Hello" ----> 0
+1 && "Hello" ----> Hello
+
+FORMS:
+
+Integral part of any webpage. Attempt to make a webpage dynamic.
+
+2 types of Forms in React:
+--> Controlled Input Form - not more than 3 fields , each has one useState
+--> Multiple Input Form - we have more fields but we create only one useState and keep all field data as object 
+
+1. create your form
+2. create input fields
+3. onSubmit --> handleSubmit ---> e.preventDefault();
+4. create useStates
+4. input --> onChange --> getName, getMail
+5. setName, setMail
+6. log the useStates in handle submit
+7. input --> value ={uname} value={mail}
+8. once uname, mail is filled-> we need to create a person object and get field data as an obj format
+9.create a usestate array-> add each user info --> [...p,person]
+10. mapped the data in the component
+
+import React, { useState } from 'react'
+
+const ControlledInputForm = () => {
+    const [uname,setUname] = useState('');
+    const [mail,setMail] = useState('');
+    const [people, setPeople] = useState([]);
+    const handleSubmit=(e)=>{
+        e.preventDefault();//stops browser automated events and react takes control of browser
+        //React has not asked the browser to reload automatically - fields get refrested and becomes empty and browser refreshes automally
+        //it restrists the data from moving forward
+        //we need to stop the auto reload of browser
+        if(uname && mail){
+            const person = {uname,mail};
+            setPeople((p)=>{
+                return [...p,person];
+            });
+            setUname('')
+            setMail('')
+        }
+        console.log(people)
+    }
+    const getName=(e)=>{
+        setUname(e.target.value)
+    }
+    const getMail=(e)=>{
+        setMail(e.target.value)
+    }
+  return (
+    <>
+    <form onSubmit={handleSubmit}>
+        <div>
+            <label>Username</label>
+            <input type="text" id="uname" name="uname" value={uname} onChange={getName} />
+        </div>
+        <div>
+            <label>Email</label>
+            <input type="email" id="mail" name="mail" value ={mail} onChange={getMail} />
+        </div>
+        <button type="submit">ADD</button>
+    </form>
+<ul>
+    {people.map((p)=>{
+        return (<>
+          <li>{p.uname}   {p.mail}</li>  
+        </>)
+    })}
+  </ul>  
+    </>
+  )
+}
+
+export default ControlledInputForm

@@ -1,0 +1,208 @@
+REALTIME SCENARIOS OF PROMISES & ASYNC-AWAIT
+
+fetch('https://api.github.com/users')
+.then((res)=>{
+    return res.json();
+})
+.then((data)=>{
+    console.log(data);
+}).catch((err)=>{
+    console.log("Something went wrong")
+})
+
+--------------------
+
+var fs = require('fs');
+
+fs.promises.readFile('./abc.txt',{encoding:'utf-8'})
+.then((data)=>{
+console.log(data);
+}).catch((err)=>{
+    console.log("Something went wrong")
+})
+---------------------
+
+
+Js is frontend(DOM,JQuery) & Backend(Node.js)
+
+Node.js is a library of javascript that has functions and files put together which performs backend logic(Networking, Connectivity-db/api, File Operations,Server)
+
+Node.js® is an open-source, cross-platform JavaScript runtime environment.
+Open Source ----> Freely available for everyone
+Cross Platform ---> mac,linux,windows
+Js Runtime Environment ---> node filename.js --- runs the js files in the local computer by itself without help of the browser
+Node knows how to run javascript file as a standalone file.
+
+WHY NODEJS:
+
+Build End to End Full Application with js as both front end(Browser) and backend(Node.js)
+Faving node as a backend - LinkedIn, Netflix, PayPal
+Community & Support
+
+PREREQUISITE:
+
+advanced js and modern js features - template strings to await
+
+TOPICS:
+Modules-Builtin modules, custom modules, third party modules
+Run time Environment of node
+REPL
+create and manipulate servers
+Express - Framework of nodejs
+Build Backend Web app
+API endpoints, webservers,db conn.
+POSTMAN AS A CLIENT
+EJS FE + EXPRESS(NODE) BE+ Mongodb DB
+
+---
+BROWSERS		ENGINE - translates js to machine lang - browser understands	
+Google Chrome		V8 ENGINE
+Apple Safari			JS CORE
+Mozilla Firefox		Spider Monkey
+MS Edge			Chakra -> V8 Engine
+-------------------
+
+V8 ENGINE - written in c++ language - capable of compiling js to machine language
+V8 is Google’s open source high-performance JavaScript and WebAssembly engine, written in C++. It is used in Chrome and in Node.js, among others.
+SOURCE CODE: https://github.com/v8/v8
+
+V8 is Google's open source JavaScript engine.
+
+V8 implements ECMAScript as specified in ECMA-262.
+
+V8 is written in C++ and is used in Google Chrome, the open source browser from Google.
+
+V8 can run standalone, or can be embedded into any C++ application.
+
+c++ language - powerful in file handling, DB conn, Network, API
+Rewritten in Js---- NODE.JS(contains c++ code) ----https://github.com/nodejs/node
+
+https://v8.dev/ 
+
+RUN TIME ENVIRONMENT---> TOMORROW
+
+WHAT CAN BE BUILT USING NODEJS
+
+Traditional websites
+Backend Services
+Streaming Data, API service
+CLI tools
+Multiplayer games
+
+--
+NEED NODE TO:
+
+Perform backend js logic
+angular framework
+react
+express
+
+
+CAN WE WRITE JS DIRECTLY IN CMD-- will nde be able to run it
+Browser console-> if we write js--> it will run-because js engines can understand.
+REPL - WITHOUR WRITING JS IN A FILE AND THEN RUNNING IT, we cna directly wirte js in the terminal
+R READ, E EVALUATE, P PRINT, L LOOP
+
+PS C:\Users\nmlak\OneDrive\Desktop\Notes\MERN 12.30-2.30 WD\18.. Intro to node> node      
+Welcome to Node.js v20.10.0.
+Type ".help" for more information.
+> console.log("Welcome to REPL");
+Welcome to REPL
+undefined
+> function a(){console.log("Hello"); return "Done!";}
+undefined
+> a();
+Hello
+'Done!'
+//READ
+> var name="Naga";
+undefined
+//PRINT
+> console.log(name);
+Naga
+undefined
+//EVALUATE
+> 4+5
+9
+> 5*3*5;
+75
+//LOOP
+> for(let i=0;i<10;i++){console.log(i);}
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+undefined
+>
+
+RUN A FILE :
+
+node filename.js / node filename (if the file is of .js format not .mjs format)
+node filename.mjs (strictly extension will be expected - node will defaultly search for .js file only to run)
+
+MODULES:
+
+Any folder& file inside node or inside your project- is called modules.
+Encapsulated and Reusable chunk of code that has its own context.
+
+ProjectMainFolder
+|_ _calculator	--- 	MODULE COLLECTOR
+|	|_ _simpleCalc.js - add(),sub(),multiply(),divide() ---MODULE 1
+|	|_ _scientificCalc.js - log(),exp(),sin(),tan(),deg() ---- MODULE 2
+|
+|_ _mathematics -- module is used to do some arithmentic operations
+
+simpleCalc can be used in some other file maths - maths is dependant on simple calc-> is a module 
+
+In Node.js, Each file is treated as a seperate modules
+
+3 TYPES OF MODULE:
+1. LOCAL MODULE - files that we create in our app
+2. BUILTIN MODULE - nodejs will give us these modules (fs,http,path,event)
+3. THIRD PARTY MODULE - files that are stored outside our computer (in a cloud/registry)-- we can request and download those files into our computer and then use them - NPM,YARN,PNPM
+
+LOCAL MODULES: files that we create in our app
+
+index.js
+const add=(a,b)=>{
+    return a+b
+}
+
+var c = add(55,7);
+console.log(c)
+---------------------------------------------
+What if I wish to keep the functions alone defined and kept safe in one place, where I use another file to call and run them
+index.js-add(){} ----------------LIBRARY--- we will not run-but we import these files and use the functions
+math.js-add(x,y);---> node math ---> answer!
+
+EXPORT A FILE
+index.js
+const add=(a,b)=>{
+    return a+b
+}
+//from index.js - export the function- allowing add() to be used by all
+module.exports=add;
+
+IMPORT A FIE
+math.js
+//import index.js - so that math.js can use the add() here
+var add = require('./index');
+console.log(add)
+
+var c = add(100,300);//function defined at index.js
+console.log(c);
+c= add(45,2.1);
+console.log(c);
+c=add("Hello"," world");
+console.log(c);
+//we haev not written the logic of add - but importing another module helped us to avoid rewriting
+//enhance reusability
+RUN FILE: node math
+
+

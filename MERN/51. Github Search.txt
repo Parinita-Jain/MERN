@@ -1,0 +1,253 @@
+gITHUB sEARCH uSER aPP -> api.github.com/users
+
+Display all users on the screen
+--> add a search form --> user name: _____ - search
+-------> show the user info at bottom
+-------> show, Sorry user doesnot exit
+
+-UseState, useEffect, Forms, conditional Rendering,useRef-
+
+PropDrilling
+useContext
+Routing
+useReducer -counter
+ShoppingCart
+useContext+useReducer- counter
+Redux -counter
+Redux ToolKit -counter
+---
+shopping cart using redux Toolkit --- based on reference
+--------------------------**---------------
+
+Authentication Project using MERN
+PropDrilling- If we have longer nested components, We need to drill down the needed properties from top most component to bottom most component. "PROPS"
+-> books data is used by Books, List, SingleBook 
+-> attach a remove book function inside Books (Top Level component)
+Books component contains remove book function but its needed by SingleBook - so we areforcefully sending that function via List. but List Component doesnt use removeBook fn
+
+DISADVANTAGE - Sending props to components that dont use the props
+A->B->C->D->E A component has a data that is needed by E component --> that data should travel through unnecessary components(those who dont want that data) B->C->D doesnt want data but there is no other go.
+
+import React, { useState } from 'react';
+import {books} from './books';
+
+const PropDrillingBooks = () => {
+    const [data,setData] = useState(books);
+    const removeBook=(id)=>{
+        var remainingBooks = data.filter((d)=>{return d.id !== id})
+        setData(remainingBooks);
+    }
+  return (
+    <>
+    <List data={data} removeBook={removeBook}></List>
+    </>
+  )
+}
+
+const List=(props)=>{
+    var {data,removeBook} = props;
+    return(<>
+    {data.map((d)=>{
+        return <SingleComponent removeBook={removeBook} key={d.id} d={d}></SingleComponent>
+    })}
+    </>)
+}
+
+const SingleComponent=(props)=>{
+    var {d,removeBook} = props;
+    return(<>
+    <h1>{d.title}</h1>
+    <i>{d.author}</i>
+    <img src={d.imgPath} alt="not found" />
+        <button onClick={()=>{removeBook(d.id)}}>Delete</button>
+    </>)
+}
+export default PropDrillingBooks
+---
+import React, {useState} from 'react'
+
+const GiftDrilling = () => {
+    var [gift,setGift] = useState("Ring")
+  return (
+   <B gift={gift}></B>
+  )
+}
+const B=(props)=>{
+    var {gift} = props;
+    return(<>
+    <C gift={gift}></C>
+    </>)
+}
+const C=(props)=>{
+    var {gift} = props;
+    return(<>
+    <D gift={gift}></D>
+    </>)
+}
+const D=(props)=>{
+    var {gift} = props;
+    return(<>
+    <E gift={gift}></E>
+    </>)
+}
+const E=(props)=>{
+    var {gift} = props;
+
+    return(<>
+    <h1> The Gift Is {gift}</h1>
+    </>)
+}
+
+export default GiftDrilling
+
+Exampaper Scenario
+
+useContext - cure disadvantage of prop drilling
+
+useContext - Context API will solve te propDrilling issues where data will be stored in a container, and so which ever component needs to use that data can just pick it directly from the container instead of inserting it as a props to all the components
+
+import React, { createContext, useContext, useState } from 'react';
+import {books} from './books';
+
+var Container = createContext();
+
+const ContextBooks = () => {
+    const [data,setData] = useState(books);
+    const removeBook=(id)=>{
+        var remainingBooks = data.filter((d)=>{return d.id !== id})
+        setData(remainingBooks);
+    }
+  return (
+    <>
+    <Container.Provider value={{removeBook}}>
+    <List data={data} ></List>
+    </Container.Provider>
+    </>
+  )
+}
+
+const List=(props)=>{
+    var {data} = props;
+    return(<>
+    {data.map((d)=>{
+        return <SingleComponent key={d.id} d={d}></SingleComponent>
+    })}
+    </>)
+}
+
+const SingleComponent=(props)=>{
+    var {d} = props;
+    var {removeBook} = useContext(Container);
+    return(<>
+    <h1>{d.title}</h1>
+    <i>{d.author}</i>
+    <img src={d.imgPath} alt="not found" />
+        <button onClick={()=>{removeBook(d.id)}}>Delete</button>
+    </>)
+}
+export default ContextBooks
+
+-----
+
+import React, {createContext, useContext, useState} from 'react'
+
+var Container = createContext();
+const GiftContext = () => {
+    var [gift,setGift] = useState("Ring");
+    var [amount,setAmount] =useState(10000);
+
+  return (
+    <Container.Provider value={{gift,amount}}>
+   <B ></B>
+   </Container.Provider>
+  )
+}
+const B=()=>{
+    
+    return(<>
+    <C ></C>
+    </>)
+}
+const C=()=>{
+    var {amount} = useContext(Container);
+    return(<>
+    <h1>The amount is {amount}</h1>
+    <D ></D>
+    </>)
+}
+const D=()=>{
+   
+    return(<>
+    <E ></E>
+    </>)
+}
+const E=()=>{
+    var {gift} = useContext(Container);
+
+    return(<>
+    <h1> The Gift Is {gift}</h1>
+    </>)
+}
+
+export default GiftContext;
+----
+
+Counter - useState -/+ <same data>
+useState will be powerful even if more than one event tries to change the state of same variable
+-----
+Imagine If a button click is going to manipulate a data which is shared across many components
+
+useReducer Hook:
+
+Many Events are going to trigger only one state
+useReducers are used if there are many events and its manipulate only one or few useStates -its state is shared across many components - To enhance livelyness of the appln..
+
+useState - Main state management tool. great for independant pieces of state data.
+better when we deal with simple state updates
+
+useReducer - great when yu need more powerful state management tool. considered for satte management when dealing with related data or state. better when we have states with different course of action.
+
+const [data, setData]=useState('hello'); //AD data='hello'
+const{keyOfthObjectinValueofContainer}=useContext(Container); //OD
+const Container = createContext();
+const pid = useParams(); //in App.js path="/products/:pid"
+const navigate = useNavigate();
+useEffect(()=>{});
+const [state, dispatcher]=useReducer(reducer, 0); //AD
+const focusReference = useRef(null);
+
+
+const [state, dispatcher]=useReducer(reducer, 10);
+ //state=10
+//dispatcher(); internally calls the reducer function - passes a word/number to reducer()
+//reducer(); maintain logic - if else/ switch condition - retruns obj back to dispatcher
+
+ReducerCounter.js
+
+const ReducerCounter=()=>{
+
+const decrease = ()=>{dispatcher('-')};
+
+const reducer=(state, action)=>{
+switch(action){
+case '+' : return {count: state.count + 1 }
+case '-' : return {count: state.count - 1}
+default : return {count: 0}
+}
+}
+const [state, dispatcher] = useReducer(reducer,{count:0});
+return(<>
+<button onClick={()=>{dispatcher('+')}>Add</button>
+<h1> {state.count} </h1>
+<button onClick={decrease}>Sub</button>
+</>
+)
+}
+-----
+Activity: Todo Add/Remove --- USEREDUCER
+
+Shared Counter: ----- USECONTEXT
+
+
+ThemeSharing App:---usecontext
+

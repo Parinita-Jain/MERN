@@ -1,0 +1,233 @@
+EJS - Embedded Javascript Templating
+
+
+create files .ejs format (html+js together ).. <script> no --> scriptlets
+
+<%=variable name%> ---> data out
+<%- include other ejs files %> --> adds extra ejs files in the current file
+<%-body%> --> body tag of any other template file will be attached in current file
+<% write js code %> -- inside this yu can write js code
+
+Features
+Control flow with <% %>
+Escaped output with <%= %> (escape function configurable)
+Unescaped raw output with <%- %>
+Newline-trim mode ('newline slurping') with -%> ending tag
+Whitespace-trim mode (slurp all whitespace) for control flow with <%_ _%>
+Custom delimiters (e.g. [? ?] instead of <% %>)
+Includes
+Client-side support
+Static caching of intermediate JavaScript
+Static caching of templates
+Complies with the Express view system
+-----------------------
+
+npm init --y
+npm i express nodemon ejs
+create index.js
+create public/views/index.html,about.html,contact.html + public/styles/style.css
+
+index.js
+var express = require('express');
+var appServer = express();
+appServer.use(express.static('./public'))
+
+appServer.get('',(req,res)=>{
+    res.sendFile(__dirname+'/public/views/index.html');
+})
+appServer.get('/about',(req,res)=>{
+    res.sendFile(__dirname+'/public/views/about.html');
+})
+appServer.get('/contact',(req,res)=>{
+    res.sendFile(__dirname+'/public/views/contact.html');
+})
+appServer.get('*',(req,res)=>{
+    res.send('Sorry Path not found');
+})
+
+appServer.listen(3000,()=>{
+    console.log('Started...')
+})
+
+about.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../styles/styles.css"></link>
+</head>
+<body>
+    <h1>Welcome to About Page</h1>
+</body>
+</html>
+
+node index
+
+localhost:3000/about
+localhost:3000/
+localhost:3000/contact
+
+1. create .ejs files in views folder
+2. in index.js, set views -- ./public/views, set view engine - ejs
+3. render the response on the screen
+
+var express = require('express');
+var appServer = express();
+appServer.use(express.static('./public'))
+appServer.set('views','./public/views');//dynamic views are found here
+appServer.set('view engine', 'ejs');
+
+appServer.get('',(req,res)=>{
+    res.render('index')
+})
+appServer.get('/about',(req,res)=>{
+    res.render('about')
+})
+appServer.get('/contact',(req,res)=>{
+    res.render('contact')
+})
+appServer.get('*',(req,res)=>{
+    res.send('Sorry Path not found');
+})
+
+appServer.listen(3000,()=>{
+    console.log('Started...')
+})
+----------------------
+
+<% %> -- To add js code
+<%= %> -- to retrieve info from a variable
+`<%- %>` -- to supply data to a script
+
+index.js
+var express = require('express');
+var appServer = express();
+appServer.use(express.static('./public'))
+appServer.set('views','./public/views');//dynamic views are found here
+appServer.set('view engine', 'ejs');
+
+appServer.get('',(req,res)=>{
+    let data = {id:1, name:"Cathy", hobbies:['eat','code','sleep']}
+    res.render('index',{data:data})
+})
+appServer.get('/about',(req,res)=>{
+    let students =[{sid:1, sname:"Anand",sage:20,sgender:"Male"},
+    {sid:2, sname:"Bella",sage:21,sgender:"Female"},
+    {sid:3, sname:"Cathy",sage:22,sgender:"Female"},
+    {sid:4, sname:"Dev",sage:19,sgender:"Male"},
+    {sid:5, sname:"Diya",sage:21,sgender:"Female"}]
+    res.render('about',{students})
+})
+appServer.get('/contact',(req,res)=>{
+    res.render('contact')
+})
+appServer.get('*',(req,res)=>{
+    res.send('Sorry Path not found');
+})
+
+appServer.listen(3000,()=>{
+    console.log('Started...')
+})
+
+index.ejs
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../styles/styles.css"></link>
+
+</head>
+<body>
+    <h1>Welcome to Index Page</h1>
+    <h1>
+        <%=data.id %>     <%=data.name %>
+    </h1>
+    
+   <% if(data.name == "Naga"){  %>
+       <h1>Hello Admin</h1> 
+  <%  }else{  %>
+        <h1>Hello User</h1>
+  <%  }   %>
+
+  <h1> <%= data.hobbies[0] %></h1>
+  <h1> <%= data.hobbies[1] %></h1>
+  <h1> <%= data.hobbies[2] %></h1>
+
+  <ul>
+ <%   data.hobbies.forEach((h)=>{ %>
+        <li> <%= h %></li>
+  <%  })   %>
+  </ul>
+
+  <script>
+    var name = `<%-data.name %>`
+    console.log(name)
+    var hobbies = `<%-data.hobbies %>`
+    console.log(hobbies)
+  </script>
+
+
+</body>
+</html>
+----
+about.ejs
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../styles/styles.css"></link>
+</head>
+<body>
+    <h1>Welcome to About Page</h1>
+    <table>
+        <thead>
+            <td>Student Id</td>
+            <td>Student Name</td>
+            <td>Student Age</td>
+            <td>Student Gender</td>
+        </thead>
+        <tbody>
+           <% students.forEach((s)=>{  %>
+                <tr>
+                    <td>
+                      <%=  s.sid %>
+                    </td>
+                    <td>
+                        <%=   s.sname %>
+                    </td>
+                    <td>
+                        <%=  s.sage %>
+                    </td>
+                    <td>
+                        <%=  s.sgender %>
+                    </td>
+                </tr>
+          <%  })  %>
+        </tbody>
+    </table>
+</body>
+</html>
+---
+
+LAYOUTS:
+
+npm i express-ejs-layouts
+
+require it , add layouts as middleware to appServer
+
+------
+
+PARTIALS:
+
+Tiny little block of html which may or may not be a part of a page
+avoids rewritting of common code, we can place it as paritials in the layout page
+
+
+

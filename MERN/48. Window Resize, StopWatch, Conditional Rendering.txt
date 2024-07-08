@@ -1,0 +1,200 @@
+CLEAN UP FUNCTION:
+
+for each reload-> a function call is happening, which may affect the smooth working of the app because at the background - useEffect is repeatedly called and memory may be full  disturbing the normal flow of spped/ performance of the app
+
+useEffect(()=>{
+-
+-//creating any object, create any variable, add listeners (1000)
+-
+return ()=>{
+//contains clean up logic -- remove obj, close the listeners
+}
+});
+
+WINDOW RESIZE - WITH CLEANUP:
+import React, { useEffect, useState } from 'react'
+
+const UseEffectWindowResize = () => {
+    var [width, setWidth] = useState(window.innerWidth);
+
+    var checkWidth =()=>{
+        setWidth(window.innerWidth);
+    }
+
+    useEffect(()=>{
+        //event to listen to resize
+        window.addEventListener('resize',checkWidth);
+
+        return ()=>{ window.removeEventListener('resize',checkWidth)}
+        //removes previous event listeners which may bulk up the memory by clean up function
+    })
+  return (
+    <div>
+       <h1>{width}</h1>
+       {/* <button onClick={checkWidth}>Check Width</button> */}
+
+    </div>
+  )
+}
+
+export default UseEffectWindowResize
+
+STOP WATCH USING USEEFFECT:
+
+import React, { useState, useEffect } from 'react';
+
+const Stopwatch = () => {
+  const [time, setTime] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    let interval;
+
+    if (isRunning) {
+      interval = setInterval(() => {
+        setTime(prevTime => prevTime + 1);
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(interval);
+  }, [isRunning]);
+
+  const startStop = () => {
+    setIsRunning(!isRunning);
+  };
+
+  const reset = () => {
+    setTime(0);
+    setIsRunning(false);
+  };
+
+  return (
+    <div>
+      <h1>Stopwatch</h1>
+      <p>{time}s</p>
+      <button onClick={startStop}>{isRunning ? 'Stop' : 'Start'}</button>
+      <button onClick={reset}>Reset</button>
+    </div>
+  );
+};
+
+export default Stopwatch;
+
+STEPS:
+1. create 2 useSatte variables, time - 0, isRunning - false
+const [time, setTime] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+2. display time. have 2 buttons (start/stop + reset)
+return (
+    <div>
+      <h1>Stopwatch</h1>
+      <p>{time}s</p>
+      <button onClick={startStop}>{isRunning ? 'Stop' : 'Start'}</button>
+      <button >Reset</button>
+    </div>
+  );
+3. togllle button to start and stop -content inside the button alone changes - time will not change. cover it in useeffect
+const startStop = () => {
+    setIsRunning(!isRunning);//toggle t->f, f->t + useEffect - called
+  };
+check o/p
+4. write reset function
+<button onClick={reset}>Reset</button>
+const reset = () => {
+    setTime(0); //will not call useEffect - its not in dependancy array
+    setIsRunning(false);//calls useeffect - else part works
+  };
+4. when isRunning is true - make time increase, if it becomes false - we may pause/stop the timer
+useEffect(() => {
+    let interval;
+
+    if (isRunning) {
+      interval = setInterval(() => {
+        setTime(prevTime => prevTime + 1);// time=>0-1-2.. + app reload + calls useEffect
+      }, 1000);
+    } else {
+      clearInterval(interval);//pause working if startstop calls useEffect/stop work if reset calls useEffect
+    }
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(interval);
+  }, [isRunning]);
+we want useEffect to be called only when isRunning is changing - thats why we put isRunning in dependancy array
+5. cleanup function is used because whenever isRunning becomes true - a new interval is created, the previous interval needs to be removed - add cleanup function
+
+CONDITIONAL RENDERING:
+
+DISPLAY COMPONENTS BASED ON CONDITIONS:
+
+Can a component return more than one jsx -- NO
+
+const Abc=()=>{
+return <></>
+return <></>
+}
+
+Can a component return one jsx but based on some condition -- yes
+
+const Abc=()=>{
+var [data,setData]=useState(0);
+if(data==0)
+return <>Hi</>
+else
+return <>Hello</>
+}
+
+----
+import React,{useState} from 'react'
+
+const ConditionalRendering = () => {
+    var [data,setData] = useState(10);
+    if(data===0) {
+        return (
+            <div>ConditionalRendering</div>
+        )
+    }else {
+        return (
+            <div>Some thing else</div>
+          )
+    }
+
+  
+}
+
+export default ConditionalRendering
+----------
+//from api --> fetch data --> loading.... => data reach/error
+
+---> CAN WE PASS CONDITIONS INSIDE THE SINGLE RETURN? NO - BECOZ INSIDE RETURN ITS ALL JSX NOT JS
+---> Its always a good practice to keep a component return only one!
+We can internally change the values in such a way
+
+Instead of Conditional Rendering we should follow SHORT CIRCUTING!
+
+We can use || && operators to choose which data to be the deciding factor.
+
+var data1 = '' || "Hello"; 
+//If the first value is valid -> It takes the first value
+//If the first value is invalid -> It takes the second value
+
+Welcome || Hello --> Welcome
+empty || Hello ---> Hello
+false || "Hello" ----> Hello
+true || "Hello" ---->true
+0 || "Hello" ----> Hello
+1 || "Hello" --->1
+
+
+var data2 = '' && "Hi";
+//If the first value is valid -> It takes the second value
+//If the first value is invalid -> It takes the first value
+
+Welcome && Hello --> Hello
+empty && Hello ---> empty
+false && "Hello" ----> false
+true && "Hello" ----> Hello
+0 && "Hello" ----> 0
+1 && "Hello" ----> Hello

@@ -1,0 +1,126 @@
+FRONT END - Client Side - Whatever a user sees on the webpage via browsers
+------------------> how to design a web page, how to feed the data from backend into FE
+HTML, CSS - Scripting Languages, JS-window object(js->html->browser-compiled js->0101) - Frameworks and Libraries (for Front End) - React, ReactNative, Angular, Vue, Next, play.js, matter.js, jquery
+
+BACK END - Server Side - Whatever data given by a user(form data or media data) will be obtained from front end -  logic needs to be written to handle that data and send it to DB
+------------------> Logic Writing, connecting with DB, how to send data from BE to FE
+Java, Python, JS, PHP - Frameworks - Flask, Django, SpringMVC, SpringBoot, Express with Node, Laravel etc
+
+Databases - Mysql, MongoDB, Firebase, Oracle, PostgreSQL etc
+
+React/Angular+springboot/django/express+mysql/MongoDB/Firebase
+
+WEB APPLICATIONS = FULL STACK DEVELOPER
+-> React+Express+MongoDB  =  MERN
+->Angular + Express + MongoDB = MEAN
+-> ReactAngular+express_mongodb = MEARN
+-> Angular+springboot+Mysql
+-> Angular+Django+Mysql
+-> React+springboot+Mysql
+-> React+Django+Mysql
+
+JS AS A FRONTEND LANGUAGE: (Browsers contains JS compilers to understand Javascript)
+Browsers can understand html, css. We may attach js as inline, internal or externally.
+So Browsers should understand JS also.
+->Google Chrome - VS Engine
+-> Safari - JS core
+-> Mozilla Firefox - Spider Monkey
+-> Microsoft Edge - Chakra/VS Engine
+
+JS AS A BACKEND LANGUAGE: (We will not use Browsers at all)
+Java-> jdk to compile high level->machine level (you can run the code locally and bring output in the terminal)
+Python -> PyCompiler to compile high level->machine level
+Javascript -> Node to compile high level -> machine level
+
+1. Install Node in your computer
+2. write code in vsc and run it there itself without browser help
+3. no need to attach our code with a html file and be dependant on browsers to run the code.
+4. Node does not undertand window object (js as a backend language will not understand document, screen, navigator, window, location, history)
+Node uses console object to print data in the terminal.
+5. To check if you have node installed. run node -v  in terminal
+
+How to run js file using browser: 
+We will attach js file with html (run the html in the browser - using live server)
+
+How to run a js file using node 
+node filename.js in terminal
+
+TEMPLATE STRINGS:
+
+We use pair of ${var_name/expressions/arithmetic_operation} and we specify them inside `` (backtick) not single/double quotation.
+
+replacement of string concatination.
+
+// alert("hi");//notification box in the webpage - node cant run this command
+// document.write("Hello All");//writes some content on webpage - node cant run
+console.log("Welcome to Node Class");//official print statement in js using node
+console.log(`Welcome to Node Class`);
+var sid=123;
+var name="Fiara";
+var age=20;
+var hobby = "Drawing";
+
+//She is Fiara of Student Id - 123, of age 20 loves Drawing!!
+console.log("She is "+name+" of Student Id -"+ sid+", of age "+age+" loves "+hobby+"!!");
+console.log(`She is ${name} of Student Id - ${sid}, of age ${age} loves ${hobby}!!`);
+
+//This is Fiara's sister, Diana
+console.log("This is "+name+"'s sister, Diana");
+console.log(`This is ${name}'s sister, Diana`);
+
+//Fear of closed doors is called "Claustrophobia"
+console.log('Fear of closed doors is called "Claustrophobia"');
+console.log(`'Fear' of closed "doors" is !$#$#@$# called "Claustrophobia"`);
+/* 
+Respected Madam,
+        As my son is not feeling well, He will not be able to attend school.
+Kindly grant him leave for today.
+
+Thanks,
+Jeevesh's Mom.
+*/
+
+console.log("Respected Madam, \n \t\tAs my son is not feeling well, He will not be able to attend school. \nKindly grant him leave for today. \n \nThanks,\nJeevesh's Mom.");
+console.log(`Respected Madam,
+As my son is not feeling well, He will not be able to attend school.
+Kindly grant him leave for today.
+
+Thanks,
+Jeevesh's Mom.`);
+var a=6, b=10;
+console.log("The product of "+a+" and "+b+" are "+a*b);
+console.log(`The product of ${a} and ${b} are ${a*b}`);
+
+var num=[1,2,3]
+var obj = {id:1, name:'naga'}
+console.log(`${3>123}   ${3+9-2}  ${num}  ${num[2]}  ${obj}  ${obj.name} `);
+
+DESTRUCTURING:
+were the updates of ECMAScript - 6th version(ES6)
+
+
+1. Object DESTRUCTURING - In order to avoid the use of object name and dot operator
+var student = {id:1, name:"Satish", age:19, gender:"Male"};
+console.log(student.id, student.name,student.age,student.gender);
+//Object Destructuring - consider key names as variable names and put the object name on the right
+//avoid obj name and . => directly use key names to fetch data
+
+var {id, name, age, gender} = student;
+console.log(id, name,age,gender);
+
+
+2. Array DESTRUCTURING - In order to avoid the use of array name and [] brackets and index numbers - no need to remember position numbers too
+
+var hobbies = ["Eat", "Sleep", "Code", "Play", "Run"];
+console.log(hobbies[0],hobbies[1],hobbies[2],hobbies[3],hobbies[4]);
+//Array Destructuring - no need of array name, no need of [], no need of index
+//give variable name to each value and use them directly to access the data
+
+var [a, b, c, d, e]=hobbies;
+console.log(a, b, c, d, e);
+
+
+
+
+
+

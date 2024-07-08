@@ -1,0 +1,673 @@
+FETCH DOCUMENTS FROM A COLLECTION
+db.collName.find() - find 20 documents from a collection
+db.collName.findOne() - finds first matching doc based on a condition
+
+Company> db.Customer.find();
+[
+  {
+    _id: ObjectId("65af696580794a60b26f52d5"),
+    name: 'Abhay',
+    age: 20,
+    gender: 'Male'
+  },
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d6"),
+    name: 'Bala',
+    age: 21,
+    gender: 'Male'
+  },
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d7"),
+    name: 'Cathy',
+    age: 22,
+    gender: 'Female'
+  },
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d8"),
+    name: 'Dia',
+    age: 23,
+    gender: 'Female'
+  },
+  {
+    _id: ObjectId("65af69e680794a60b26f52d9"),
+    name: 'Elbert',
+    age: 20,
+    gender: 'Male'
+  },
+  {
+    _id: ObjectId("65af6a2d80794a60b26f52da"),
+    name: 'Fiara',
+    age: 21,
+    gender: 'Female'
+  },
+  {
+    _id: ObjectId("65af6a2d80794a60b26f52db"),
+    name: 'Gita',
+    age: 22,
+    gender: 'Female'
+  }
+]
+Company> db.Customer.findOne({});
+{
+  _id: ObjectId("65af696580794a60b26f52d5"),
+  name: 'Abhay',
+  age: 20,
+  gender: 'Male'
+}
+Company> db.Customer.findOne({age:20});
+{
+  _id: ObjectId("65af696580794a60b26f52d5"),
+  name: 'Abhay',
+  age: 20,
+  gender: 'Male'
+}
+Company> db.Customer.findOne({age:22});
+{
+  _id: ObjectId("65af69bc80794a60b26f52d7"),
+  name: 'Cathy',
+  age: 22,
+  gender: 'Female'
+}
+Company> db.Customer.find({age:20});
+[
+  {
+    _id: ObjectId("65af696580794a60b26f52d5"),
+    name: 'Abhay',
+    age: 20,
+    gender: 'Male'
+  },
+  {
+    _id: ObjectId("65af69e680794a60b26f52d9"),
+    name: 'Elbert',
+    age: 20,
+    gender: 'Male'
+  }
+]
+Company> db.Customer.find({age:22});
+[
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d7"),
+    name: 'Cathy',
+    age: 22,
+    gender: 'Female'
+  },
+  {
+    _id: ObjectId("65af6a2d80794a60b26f52db"),
+    name: 'Gita',
+    age: 22,
+    gender: 'Female'
+  }
+]
+Company> db.Customer.findOne({});
+{
+  _id: ObjectId("65af696580794a60b26f52d5"),
+  name: 'Abhay',
+  age: 20,
+  gender: 'Male'
+}
+Company> db.Customer.findOne({},{gender:0})
+{ _id: ObjectId("65af696580794a60b26f52d5"), name: 'Abhay', age: 20 }
+Company> db.Customer.findOne({},{gender:0,age:0})
+{ _id: ObjectId("65af696580794a60b26f52d5"), name: 'Abhay' }
+Company> db.Customer.findOne({},{gender:0,age:0,_id:0})
+{ name: 'Abhay' }
+Company> db.Customer.findOne({},{gender:1})
+{ _id: ObjectId("65af696580794a60b26f52d5"), gender: 'Male' }
+Company> db.Customer.findOne({},{gender:1,_id:1})
+{ _id: ObjectId("65af696580794a60b26f52d5"), gender: 'Male' }
+Company> db.Customer.findOne({name:"Naga"});
+null
+
+db.Customer.find(); - finds 20 docs
+db.Customer.findOne({}); - finds first doc
+db.Customer.findOne({age:20}); - finds first matching doc
+db.Customer.find({age:20}); - finds all docs matching this condition
+db.Customer.findOne({},{gender:0}) - hides gender and display all other fields
+db.Customer.findOne({},{gender:1,_id:1}) - shows gender, _id and hides all other fields
+db.Customer.findOne({},{gender:1}) - shows gender but also shows _id because _id will always be displayed but if if we want to hide, we have to set _id:0
+db.Customer.findOne({name:"Naga"}); - if there is no matching doc - returns null
+
+----
+
+UPDATE DOCUMENTS FROM A COLLECTION:
+
+db.collName.updateOne({known fields to filter},{$set:{fields to change}});
+db.collName.updateMany();
+Company> db.Customer.find();
+[
+  {
+    _id: ObjectId("65af696580794a60b26f52d5"),
+    name: 'Abhay',
+    age: 20,
+    gender: 'Male'
+  },
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d6"),
+    name: 'Bala',
+    age: 21,
+    gender: 'Male'
+  },
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d7"),
+    name: 'Cathy',
+    age: 22,
+    gender: 'Female'
+  },
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d8"),
+    name: 'Dia',
+    age: 23,
+    gender: 'Female'
+  },
+  {
+    _id: ObjectId("65af69e680794a60b26f52d9"),
+    name: 'Elbert',
+    age: 20,
+    gender: 'Male'
+  },
+  {
+    _id: ObjectId("65af6a2d80794a60b26f52da"),
+    name: 'Fiara',
+    age: 21,
+    gender: 'Female'
+  },
+  {
+    _id: ObjectId("65af6a2d80794a60b26f52db"),
+    name: 'Gita',
+    age: 22,
+    gender: 'Female'
+  }
+]
+Company> db.Customer.updateOne({name:'Bala'},{$set:{age:40,gender:"Female"}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Company> db.Customer.find({name:'Bala'});
+[
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d6"),
+    name: 'Bala',
+    age: 40,
+    gender: 'Female'
+  }
+]
+Company> db.Customer.updateOne({name:'Bala',{$set:{qualification:"Engineer"}});
+Uncaught:
+SyntaxError: Unexpected token (1:35)
+
+> 1 | db.Customer.updateOne({name:'Bala',{$set:{qualification:"Engineer"}});
+    |                                    ^
+  2 |
+
+Company> db.Customer.updateOne({name:'Bala'},{$set:{qualification:"Engineer"}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Company> db.Customer.find({name:'Bala'});
+[
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d6"),
+    name: 'Bala',
+    age: 40,
+    gender: 'Female',
+    qualification: 'Engineer'
+  }
+]
+Company> db.Customer.updateMany({},{$set:{isMarried:false}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 7,
+  modifiedCount: 7,
+  upsertedCount: 0
+}
+Company> db.Customer.find();
+[
+  {
+    _id: ObjectId("65af696580794a60b26f52d5"),
+    name: 'Abhay',
+    age: 20,
+    gender: 'Male',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d6"),
+    name: 'Bala',
+    age: 40,
+    gender: 'Female',
+    qualification: 'Engineer',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d7"),
+    name: 'Cathy',
+    age: 22,
+    gender: 'Female',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d8"),
+    name: 'Dia',
+    age: 23,
+    gender: 'Female',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af69e680794a60b26f52d9"),
+    name: 'Elbert',
+    age: 20,
+    gender: 'Male',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af6a2d80794a60b26f52da"),
+    name: 'Fiara',
+    age: 21,
+    gender: 'Female',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af6a2d80794a60b26f52db"),
+    name: 'Gita',
+    age: 22,
+    gender: 'Female',
+    isMarried: false
+  }
+]
+Company> db.Customer.updateOne({name:'Fiara'},{$set:{_id:22}})
+MongoServerError: Performing an update on the path '_id' would modify the immutable field '_id'
+Company> db.Customer.updateOne({},{$set:{hobbies:"Play"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Company> db.Customer.find();
+[
+  {
+    _id: ObjectId("65af696580794a60b26f52d5"),
+    name: 'Abhay',
+    age: 20,
+    gender: 'Male',
+    isMarried: false,
+    hobbies: 'Play'
+  },
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d6"),
+    name: 'Bala',
+    age: 40,
+    gender: 'Female',
+    qualification: 'Engineer',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d7"),
+    name: 'Cathy',
+    age: 22,
+    gender: 'Female',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d8"),
+    name: 'Dia',
+    age: 23,
+    gender: 'Female',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af69e680794a60b26f52d9"),
+    name: 'Elbert',
+    age: 20,
+    gender: 'Male',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af6a2d80794a60b26f52da"),
+    name: 'Fiara',
+    age: 21,
+    gender: 'Female',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af6a2d80794a60b26f52db"),
+    name: 'Gita',
+    age: 22,
+    gender: 'Female',
+    isMarried: false
+  }
+]
+Company>
+
+db.Customer.updateOne({name:'Bala'},{$set:{age:40,gender:"Female"}}); - updates bala's info with 2 fields changed
+db.Customer.updateOne({name:'Bala'},{$set:{qualification:"Engineer"}}); - updates bala's info with new field addition
+db.Customer.updateMany({},{$set:{isMarried:false}}) - updates all docs with a new fiels
+db.Customer.updateOne({name:'Fiara'},{$set:{_id:22}}) - id cant be updated
+db.Customer.updateOne({},{$set:{hobbies:"Play"}}) - updates first doc with a new field
+------------------
+DELETE DOCUMENTS FROM A COLLECTION:
+
+db.collName.deleteOne() - one doc deletion
+db.collName.deleteMany() - one or many or all docs deletion
+db.collName.remove() - one or many or all docs deletion
+
+Company> db.Customer.find();
+[
+  {
+    _id: ObjectId("65af696580794a60b26f52d5"),
+    name: 'Abhay',
+    age: 20,
+    gender: 'Male',
+    isMarried: false,
+    hobbies: 'Play'
+  },
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d6"),
+    name: 'Bala',
+    age: 40,
+    gender: 'Female',
+    qualification: 'Engineer',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d7"),
+    name: 'Cathy',
+    age: 22,
+    gender: 'Female',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d8"),
+    name: 'Dia',
+    age: 23,
+    gender: 'Female',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af69e680794a60b26f52d9"),
+    name: 'Elbert',
+    age: 20,
+    gender: 'Male',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af6a2d80794a60b26f52da"),
+    name: 'Fiara',
+    age: 21,
+    gender: 'Female',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af6a2d80794a60b26f52db"),
+    name: 'Gita',
+    age: 22,
+    gender: 'Female',
+    isMarried: false
+  }
+]
+Company> db.Customer.deleteOne({});
+{ acknowledged: true, deletedCount: 1 }
+Company> db.Customer.find();
+[
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d6"),
+    name: 'Bala',
+    age: 40,
+    gender: 'Female',
+    qualification: 'Engineer',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d7"),
+    name: 'Cathy',
+    age: 22,
+    gender: 'Female',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d8"),
+    name: 'Dia',
+    age: 23,
+    gender: 'Female',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af69e680794a60b26f52d9"),
+    name: 'Elbert',
+    age: 20,
+    gender: 'Male',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af6a2d80794a60b26f52da"),
+    name: 'Fiara',
+    age: 21,
+    gender: 'Female',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af6a2d80794a60b26f52db"),
+    name: 'Gita',
+    age: 22,
+    gender: 'Female',
+    isMarried: false
+  }
+]
+Company> db.Customer.remove({name:"Bala"});
+DeprecationWarning: Collection.remove() is deprecated. Use deleteOne, deleteMany, findOneAndDelete, or bulkWrite.
+{ acknowledged: true, deletedCount: 1 }
+Company> db.Customer.find()
+[
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d7"),
+    name: 'Cathy',
+    age: 22,
+    gender: 'Female',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d8"),
+    name: 'Dia',
+    age: 23,
+    gender: 'Female',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af69e680794a60b26f52d9"),
+    name: 'Elbert',
+    age: 20,
+    gender: 'Male',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af6a2d80794a60b26f52da"),
+    name: 'Fiara',
+    age: 21,
+    gender: 'Female',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af6a2d80794a60b26f52db"),
+    name: 'Gita',
+    age: 22,
+    gender: 'Female',
+    isMarried: false
+  }
+]
+Company> db.Customer.deleteOne({name:'Dia'})
+{ acknowledged: true, deletedCount: 1 }
+Company> db.Customer.find()
+[
+  {
+    _id: ObjectId("65af69bc80794a60b26f52d7"),
+    name: 'Cathy',
+    age: 22,
+    gender: 'Female',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af69e680794a60b26f52d9"),
+    name: 'Elbert',
+    age: 20,
+    gender: 'Male',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af6a2d80794a60b26f52da"),
+    name: 'Fiara',
+    age: 21,
+    gender: 'Female',
+    isMarried: false
+  },
+  {
+    _id: ObjectId("65af6a2d80794a60b26f52db"),
+    name: 'Gita',
+    age: 22,
+    gender: 'Female',
+    isMarried: false
+  }
+]
+Company> db.Customer.deleteMany({age:20});
+{ acknowledged: true, deletedCount: 1 }
+Company> db.Customer.deleteMany({age:22});
+{ acknowledged: true, deletedCount: 2 }
+Company> db.Customer.find()
+[
+  {
+    _id: ObjectId("65af6a2d80794a60b26f52da"),
+    name: 'Fiara',
+    age: 21,
+    gender: 'Female',
+    isMarried: false
+  }
+]
+Company> db.Customer.deleteMany({})
+{ acknowledged: true, deletedCount: 1 }
+Company> db.Customer.find()
+
+Company> db.Customer.remove({})
+{ acknowledged: true, deletedCount: 0 }
+Company> db.Customer.find()
+
+Company> db.Customer.insertMany([{name:"Naga",age:20},{name:"Muthu",age:20},{name:"Lakshmi",age:20}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("65af77b680794a60b26f52dc"),
+    '1': ObjectId("65af77b680794a60b26f52dd"),
+    '2': ObjectId("65af77b680794a60b26f52de")
+  }
+}
+Company> db.Customer.remove({age:20},true);
+{ acknowledged: true, deletedCount: 1 }
+Company> db.Customer.find()
+[
+  { _id: ObjectId("65af77b680794a60b26f52dd"), name: 'Muthu', age: 20 },
+  {
+    _id: ObjectId("65af77b680794a60b26f52de"),
+    name: 'Lakshmi',
+    age: 20
+  }
+]
+Company> db.Customer.remove({age:20},false);
+{ acknowledged: true, deletedCount: 2 }
+Company> db.Customer.find()
+
+Company>
+
+db.Customer.deleteOne({}); - remove first doc
+db.Customer.remove({name:"Bala"}); - removes documents with name bala
+db.Customer.deleteOne({name:'Dia'}) removes one doc in name dia
+db.Customer.deleteMany({age:22}); - removes all docs with age 22
+db.Customer.deleteMany({}) , db.Customer.remove({}) - removes all doc from a collection
+db.Customer.remove({age:20},true); - removes first doc with age 20 since true is set
+db.Customer.remove({age:20},false); - removes all docs with age 20
+defaultly is false only
+--------------------------------------
+
+ACTIVITY:
+
+We have a MongoDB collection named "employees" with documents like the following:
+
+{ "_id": 1, "name": "Alice", "age": 28, "department": "HR" }
+{ "_id": 2, "name": "Bob", "age": 35, "department": "Engineering" }
+{ "_id": 3, "name": "Charlie", "age": 22, "department": "Marketing" }
+
+Now, let's perform CRUD operations on this collection:
+
+1. Insert a new employee document.
+
+db.employees.insert({ "_id": 4, "name": "David", "age": 30, "department": "Finance" });
+
+2. Find all documents in the "employees" collection.
+
+db.employees.find();
+
+3. Find employees in the "Engineering" department.
+
+db.employees.find({ "department": "Engineering" });
+
+4. Update Alice's age to 29.
+
+db.employees.update({ "name": "Alice" }, { $set: { "age": 29 } });
+
+5. Update the age of all employees in the "HR" department to 30.
+
+db.employees.updateMany({ "department": "HR" }, { $set: { "age": 30 } });
+
+6. Remove the document for Charlie from the "employees" collection.
+
+db.employees.remove({ "name": "Charlie" });
+
+7. Remove all documents in the "Marketing" department.
+
+db.employees.remove({ "department": "Marketing" });
+
+8. Find the first two documents in the "employees" collection.
+
+db.employees.find().limit(2);
+
+9. Skip the first two documents and find the rest.
+
+db.employees.find().skip(2);
+
+10. Sort employees by age in ascending order.
+
+db.employees.find().sort({ "age": 1 });
+
+11. Sort employees by age in descending order.
+
+db.employees.find().sort({ "age": -1 });
+
+12. Drop the "employees" collection.
+
+db.employees.drop();
+
+13. Remove the age field for bob in this collection
+
+db.employees.update({ "name": "Bob" }, { $unset: { "age": 1 } });
+
+db.employees.find({ "name": "Bob" });
+
+
+
+
+
+
+
+
+
+
+
+
+
+

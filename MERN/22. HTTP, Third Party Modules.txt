@@ -1,0 +1,267 @@
+ACTIVITY:
+
+Create Event Emitters and read file syncronously and asyncronously after 3 and 4 sec respenctiviely
+
+const EventEmitter = require('node:events');
+const fs = require("node:fs")
+const emitterObj = new EventEmitter();
+emitterObj.on("FileActivity",(msg)=>{
+    if(msg == "Read File Async"){
+        fs.readFile('./fileA.txt',(err,data)=>{
+            if(err){
+                console.log(err);
+            }else{
+                console.log(data.toString()," async");
+            }
+            })
+    }else{
+        const data = fs.readFileSync('./fileB.txt',{encoding:"utf-8"});
+        console.log(data," Sync");
+    }
+});
+setTimeout(()=>{
+    emitterObj.emit("FileActivity","Read File Async"); 
+    setTimeout(()=>{
+        emitterObj.emit("FileActivity","Read File Sync")
+    },4000)
+},3000)
+---
+or alternative
+
+const EventEmitter = require('node:events');
+const fs = require("node:fs")
+const emitterObj = new EventEmitter();
+emitterObj.on("Read File Async",(msg)=>{
+    
+        fs.readFile('./fileA.txt',(err,data)=>{
+            if(err){
+                console.log(err);
+            }else{
+                console.log(data.toString()," async");
+            }
+            })
+    
+});
+emitterObj.on("Read File Sync",()=>{
+    
+    const data = fs.readFileSync('./fileB.txt',{encoding:"utf-8"});
+    console.log(data," Sync");
+
+})
+setTimeout(()=>{
+    emitterObj.emit("Read File Async"); 
+    setTimeout(()=>{
+        emitterObj.emit("Read File Sync")
+    },4000)
+},3000)
+
+
+fs - used to perform file handling
+Write and Append data to the file
+
+//File Write Sync:
+const fs = require('node:fs');
+fs.writeFileSync('./hello.txt',"Bubye All!!"); 
+//If hello.txt is not available in the reqd path, A new file will be created and contents will be written
+//If we write something to the file, contents wil be overwritten.
+
+fs.writeFileSync('./hello.txt','New Infor Added',{flag:'a'});
+
+//Write to File Asynchronously
+fs.writeFile('./welcome.txt',"Asynch Javascript is best!",{flag:'a'},(err)=>{
+    if(err)
+console.log("Something went wrong!")
+});
+---------------------
+
+Transfer Data from One File to another File ---> file 1 content(100kb) will be added to the buffer (10kb)---> started t transfer- once buffer is full - towfile will recieve data
+ twoFile.txt--> started to flow 10+10+10----> data flow+data load+data transfer --> happen at same time simultaneusly
+
+TYPES OF STREAMS:
+1. Readable Stream - obj can read data
+2. Writeable Stream - obj can write data
+3. Duplex Stream - obj can read and write
+4. Transform Stream - obj read->change->write
+
+1.create readstream and read data from file
+2. create write stream - create the file
+3. on listener- to write while reading is happening
+4. on listener--> cb will perform the write
+
+const fs = require('node:fs');
+const readStream = fs.createReadStream('./oneFile.txt',{encoding:'utf-8',highWaterMark:25});
+const writeStream = fs.createWriteStream('./twoFile.txt');
+
+readStream.on("data",(chunk)=>{
+console.log(chunk);//buffer that stores piece of info -defaultly out of 270kb. max size of buffer is 64kb
+//as 64kb of data, data gets transfered. If we want data to be transfered as 25kb of chunk - we need to reduce the size of buffer
+writeStream.write(chunk);
+writeStream.write("***********************************************************");
+})
+
+------------------------------------------------
+Modules-> 
+1. local-(commonjs->express+esmodule->React), 
+2. builtin-(path,events,fs,http),
+3. thridparty -(npm)
+-----
+
+HTTP MODULE: very very important module ---> Express JS
+Node - js act as a backend language
+
+CREATE SERVERS AND MANIPULATE - CREATE REST API, COMMUNICATE WITH BROWSERS, PAVES A WAy TO CREATE BRIDGE BETWEEN FE & BE
+
+CLIENT (REQ) ----- SERVER (RESP)
+
+REQ - has info related to client activity like get,post,update,delete - CRUD - Clients
+RES- client raised req will be served with series of response (success, busy, not found)
+server can respond only as SERVER CODE ---- "status" - 100 to 600
+101, 200,301, 201,404,500
+
+Server status codes are three-digit codes that indicate the outcome of a request from a browser to a server12345. They are grouped into five classes based on the first digit134:
+1xx: Informational responses
+2xx: Successful responses
+3xx: Redirects
+4xx: Client errors
+5xx: Server errorsServer status codes help the browser and the user to understand the status of the request and the server25.
+
+'100': 'Continue',
+    '101': 'Switching Protocols',
+    '102': 'Processing',
+    '103': 'Early Hints',
+    '200': 'OK',
+    '201': 'Created',
+    '202': 'Accepted',
+    '203': 'Non-Authoritative Information',
+    '204': 'No Content',
+    '205': 'Reset Content',
+    '206': 'Partial Content',
+    '207': 'Multi-Status',
+    '208': 'Already Reported',
+    '226': 'IM Used',
+    '300': 'Multiple Choices',
+    '301': 'Moved Permanently',
+    '302': 'Found',
+    '303': 'See Other',
+    '304': 'Not Modified',
+    '305': 'Use Proxy',
+    '307': 'Temporary Redirect',
+    '308': 'Permanent Redirect',
+    '400': 'Bad Request',
+    '401': 'Unauthorized',
+    '402': 'Payment Required',
+    '403': 'Forbidden',
+    '404': 'Not Found',
+    '405': 'Method Not Allowed',
+    '406': 'Not Acceptable',
+    '407': 'Proxy Authentication Required',
+    '408': 'Request Timeout',
+    '409': 'Conflict',
+    '410': 'Gone',
+    '411': 'Length Required',
+    '412': 'Precondition Failed',
+    '413': 'Payload Too Large',
+    '414': 'URI Too Long',
+    '415': 'Unsupported Media Type',
+    '416': 'Range Not Satisfiable',
+    '417': 'Expectation Failed',
+    '418': "I'm a Teapot",
+    '421': 'Misdirected Request',
+    '422': 'Unprocessable Entity',
+    '423': 'Locked',
+    '424': 'Failed Dependency',
+    '425': 'Too Early',
+    '426': 'Upgrade Required',
+    '428': 'Precondition Required',
+    '429': 'Too Many Requests',
+    '431': 'Request Header Fields Too Large',
+    '451': 'Unavailable For Legal Reasons',
+    '500': 'Internal Server Error',
+    '501': 'Not Implemented',
+    '502': 'Bad Gateway',
+    '503': 'Service Unavailable',
+    '504': 'Gateway Timeout',
+    '505': 'HTTP Version Not Supported',
+    '506': 'Variant Also Negotiates',
+    '507': 'Insufficient Storage',
+    '508': 'Loop Detected',
+    '509': 'Bandwidth Limit Exceeded',
+    '510': 'Not Extended',
+    '511': 'Network Authentication Required'
+
+Hypertext Transfer Protocol - Protocol that defines format of client and server to speak to each other
+
+HTTP in Node - create servers using nodejs. nodejs has access to OS sys func like networking
+Node has event loop to run async tasks
+
+nodejs is perfect for creatng web server, can handle wide variety req done from client side simultaneously.
+
+Server is the one who will answerer after the question is asked.
+
+2. broser --> localhost:3000 --- REQ
+3. server ---> will get the req from browser--> url matching --> gives whatever response it has to the browser ("Welcome to the First PAge!!")
+1. nodejs running at the background -- run file using node filename
+
+res--> plain text, html, html file, json
+
+const http = require('node:http');
+const fs = require("node:fs");
+const htmlData = fs.readFileSync('./index.html',{encoding:'utf-8'})
+
+//create server - async task - 1 cb function where req,res obj gets created
+const appServer = http.createServer((req,res)=>{
+//generate response
+// res.writeHead(200,{"content-type":"text/plain"});//extra messsage tag added to response page
+// res.end("Hello, Welcome to The First Page!"); //will create a server response page and deliver it to the browser
+
+// res.writeHead(200,{"content-type":"text/html"})
+// res.end("<h1> Welcome to First Page </h1>")
+
+// res.writeHead(200, {"content-type":"application/json"});
+// var jsonData = {id:1, name:"Naga"};
+// res.end(JSON.stringify(jsonData));
+
+res.writeHead(200,{"content-type":"text/html"});
+res.end(htmlData);
+})
+
+//listen to the browser -- if we hit lh:3000 at browser- immediately the listen function can send req to the server
+//is just used to denote that node is up and running, server started, go to browser and do req
+appServer.listen(3000,()=>{
+    console.log("NODE IS UP & RUNNING, Go to browser and start req")
+})
+
+-----
+
+ROUTING: 
+"req.url" --> needed to track the route in url
+
+const http = require('node:http');
+const fs = require("node:fs");
+const htmlData = fs.readFileSync('./error.html',{encoding:'utf-8'})
+
+const appServer = http.createServer((req, res)=>{
+    
+    if(req.url == '/home' || req.url == '/'){
+        res.writeHead(200,{"content-type":"text/plain", "authentication-token":"12345"});
+        res.end("Hello, Welcome to The First Page!");
+    }else if(req.url == '/about'){
+        res.writeHead(200,{"content-type":"text/html"})
+        res.end("<h1> Welcome to About Page </h1>")
+    }else if(req.url == '/contact'){
+        res.writeHead(200, {"content-type":"application/json"});
+        var jsonData = {id:1, name:"Naga"};
+        res.end(JSON.stringify(jsonData));
+    }else{
+        res.writeHead(404,{"content-type":"text/html"});
+        res.end(htmlData);
+    }
+    
+})
+
+appServer.listen(3000,()=>{
+    console.log("Started App")
+})
+---------------------
+
+

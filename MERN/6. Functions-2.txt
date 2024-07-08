@@ -1,0 +1,166 @@
+//can a function take another function as parameter
+
+function Morning(food){
+    food()
+    console.log("Good Morning!")
+}
+Morning(function breakfast(){console.log("Poori")}); //Regular Function as a parameter
+
+//What is the use of the function name breakfast - use Anonymous fn as parameter
+
+function Morning(food){
+    food()
+    console.log("Good Morning!")
+}
+Morning(function(){console.log("Poori")});
+
+//replace anonymous with arrow
+function Morning(food){
+    food()
+    console.log("Good Morning!")
+}
+Morning(()=>{console.log("Poori")});
+-------------
+
+// 2 inbuilt functions - setInterval, setTimeout - Timer functions
+
+//setInterval - function that calls the function argument infinitely based on the millisec count parameter.
+
+setInterval(function abc(){console.log("1")}, 1000);
+
+--------------
+
+functions.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="./functions.js"></script>
+    <button onclick="start()">start</button>
+    <button onclick="stop()">stop</button>
+    <h1 id="data"></h1>
+
+    <button onclick="delay()">print after 5 sec</button>
+    <h1 id="text"></h1>
+
+</body>
+</html>
+
+functions.js
+// 2 inbuilt functions - setInterval, setTimeout - Timer functions
+
+//setInterval - function that calls the function argument infinitely based on the millisec count parameter.
+//function that gives intermitted time inbetween each call
+var count =1, id;
+
+function start(){
+    id = setInterval(
+        function abc(){
+            document.getElementById("data").innerHTML = count;
+            count++;
+        }, 1000);
+}
+
+function stop(){
+    clearInterval(id);  
+}
+
+//setTimeout - function that contains a function, milli sec as parameters. function is called only once, based on the delay time set by the millisec value
+//function that creates a delay before calling
+
+function delay(){
+    setTimeout(
+        function abc(){
+            document.getElementById("text").innerHTML ="Hello World!";
+        }, 5000);
+}
+---------------------------------------------------
+
+
+StopWatch - Start, Stop, Pause, Restart
+1. Function - Regular
+2. Function - Anonymous 
+3. Function - Arrow 
+
+1. Function - Regular
+
+functions.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="./functions.js"></script>
+    <button id="start"onclick="start()">start</button>
+    <button disabled id="stop"onclick="stop()">stop</button>
+    <button disabled id="pause"onclick="pause()">pause</button>
+    <button disabled id="resume" onclick="resume()">resume</button>
+    <h1 id="data">0</h1>
+
+    <button onclick="delay()">print after 5 sec</button>
+    <h1 id="text"></h1>
+
+</body>
+</html>
+
+functions.js
+// 2 inbuilt functions - setInterval, setTimeout - Timer functions
+
+//setInterval - function that calls the function argument infinitely based on the millisec count parameter.
+//function that gives intermitted time inbetween each call
+var count =1, id, enable=true;
+
+function start(){
+    document.getElementById('start').disabled=true;
+    document.getElementById('stop').disabled=false;
+    document.getElementById('resume').disabled=false;
+    document.getElementById('pause').disabled=false;
+
+    count=1;
+    id = setInterval(
+        function abc(){
+            document.getElementById("data").innerHTML = count;
+            count++;
+        }, 1000);
+}
+
+function stop(){
+    document.getElementById('start').disabled=false;
+    document.getElementById('stop').disabled=true;
+    document.getElementById('resume').disabled=true;
+    document.getElementById('pause').disabled=true;
+    clearInterval(id);
+    count=0;
+    document.getElementById("data").innerHTML = count;  
+}
+
+function pause(){
+    clearInterval(id);
+}
+
+function resume(){
+    id = setInterval(
+        function abc(){
+            document.getElementById("data").innerHTML = count;
+            count++;
+        }, 1000);
+}
+
+//setTimeout - function that contains a function, milli sec as parameters. function is called only once, based on the delay time set by the millisec value
+//function that creates a delay before calling
+
+function delay(){
+    setTimeout(
+        function abc(){
+            document.getElementById("text").innerHTML ="Hello World!";
+        }, 5000);
+}
+
+

@@ -1,0 +1,316 @@
+React helps to create SPA - Single Page Application
+We might feel that many pages are there in my app -. index.html - only one page React Renders on the screen- We have to create a feeling that we are moving here and there across to many pages
+
+We create many addresses or URLs to navigate and show that particular part of info on the screen
+
+index.html --> <div id=root> ----> index.js (ReactDom.render)--->app.js(decide what to show when a particular url is hit)
+
+SPA - set routing on client side instead of getting on to server each and everytime
+
+npm install react-router-dom
+as React doesnt support router module internally,
+For each page when we click on link, browser will itself reload --> Each link reaches server and responds
+But in SPA, Client Side Rendering is supported by router where browser responds with the ready template so that we feel like we get a snappy response.
+
+CSR-BUFFET
+Server will help only in bringing data from the DB. Data will be given in json-> browser needs to work on the template for arranging the data and present to the client - Pages are dynamically served in client side
+Client works on the page
+Eg: angular, React, React Native - Data is served in a json
+
+SSR-2STAR HOTEL SERVING FOOD WITH PLATE on the table
+Server is going to bring data from db, have template files, arrange the data and serve the fully finished page with data like a poster/static html page to the client
+Server works on the page
+Eg: springboot-thymeleaf,django-,express-ejs
+
+Root path--> localhost:3000/
+
+<BrowserRouter>
+	<Routes>
+		<Route path='/Home' element={<Home />}/>
+		<Route path='/About' element={<h1>This is about page</h1>}/>
+	</Routes>
+</BrowserRouter>
+---
+App.js
+import React from 'react'
+import {BrowserRouter,Routes, Route} from 'react-router-dom';
+import Main from './Main';
+import Home from './Home';
+import About from './About';
+import Contact from './Contact';
+import Error from './Error';
+const App = () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Main/>}>
+	
+	</Route>
+        <Route path='/home' element={<Home/>}></Route>
+        <Route path='/about' element={<About/>}></Route>
+        <Route path='/contact' element={<Contact/>}></Route>
+        <Route path='*' element={<Error/>}></Route>
+      </Routes>
+    </BrowserRouter>
+  )
+}
+
+export default App
+----
+Home.js
+import React from 'react'
+
+const Home = () => {
+  return (
+    <div style={{width:"500px", height:"500px",backgroundColor:'pink'}}>
+    <h1>Welcome to Home Page</h1>
+</div>
+  )
+}
+
+export default Home
+-----
+About.js
+import React from 'react'
+
+const About = () => {
+  return (
+<div style={{width:"500px", height:"500px",backgroundColor:'grey'}}>
+        <h1>Welcome to About Page</h1>
+    </div>  )
+}
+
+export default About
+----
+Error.js
+import React from 'react'
+
+const Error = () => {
+  return (
+<div style={{width:"500px", height:"500px",backgroundColor:'brown'}}>
+        <h1>Welcome to Error Page</h1>
+    </div>  )
+}
+
+export default Error
+----
+Contact.js
+import React from 'react'
+
+const Contact = () => {
+  return (
+<div style={{width:"500px", height:"500px",backgroundColor:'cyan'}}>
+        <h1>Welcome to Contact Page</h1>
+    </div>
+    )
+}
+
+export default Contact
+---
+Main.js
+import React from 'react'
+
+const Main = () => {
+  return (
+    <div style={{width:"500px", height:"500px",backgroundColor:'yellowgreen'}}>
+        <h1>Welcome to Main Page</h1>
+    </div>
+  )
+}
+
+export default Main
+---
+
+Route tag can also have sub routes.
+ if / is the parent route
+there is no need to keep / in the children routes
+--> When we nest all the sub routes , Always main route will be available on the screen even if we try to switch to hthe other route.
+--> Parent is not allowing any child component to be exposed out
+-> We need an outlet to allow those route components to be visible on the screen
+
+If we have any parent route we should not write any unnecessary items in because it will always be visible.
+
+header, footer, side , main
+<BrowserRouter>
+<Routes>
+<Route>
+<Link>
+
+So If we want to style using Link tag, there is a <NavLink>
+
+ROUTES WITH URL PARAMETERS
+
+Url Parameters in Routes:
+
+App.js
+<Route path="Product" element={<Product/>}></Route>
+        <Route path='/products/:pid' element={<SingleProduct/>}></Route>
+SingleProduct.js
+import React from 'react'
+import products from './data'
+//usePArams gets params from the url
+import { Link,useParams } from 'react-router-dom'
+
+const SingleProduct = () => {
+    const {pid} = useParams();
+    const product = products.find((p)=>{
+        return p.id === pid;
+    })
+return (
+    <>
+    <h1>{pid}</h1>
+    <h2>{product.name}</h2>
+    <h3>Rs. {product.price}</h3>
+    <img src={product.image} alt="not found"/>
+    <Link to='/Product'>Go Back</Link>
+    </>
+  )
+}
+
+export default SingleProduct
+Product.js
+import React from 'react'
+import products from './data.js';
+import { Link } from 'react-router-dom';
+
+const Product = () => {
+  return (
+    <>
+    {products.map((p)=>{
+        return <article key={p.id}>
+            <h5>{p.name}</h5>
+            <Link to={`/products/${p.id}`}>More Info..</Link>
+        </article>
+    })}
+</>
+  )
+}
+
+export default Product
+data.js
+const products = [
+    {
+      id: 'recZkNf2kwmdBcqd0',
+      name: 'accent chair',
+      price:100,
+      image:
+        'https://m.media-amazon.com/images/I/81rtPgH2oiL._AC_UF894,1000_QL80_.jpg',
+    },
+    {
+      id: 'recEHmzvupvT8ZONH',
+      name: 'albany sectional',
+      price:200,
+      image:
+        'https://www.albanypark.com/cdn/shop/products/IMG_0017_MAIN_VG_672x480.jpg?v=1699491467',
+    },
+{
+      id: 'rec5NBwZ5zCD9nfF0',
+      name: 'albany table',
+  price:300,
+      image:
+        'https://res.cloudinary.com/dt2g7mgtv/image/upload/v1681750874/react-comfy-store-products/product-3_znpiqa.jpg',
+    },
+    {
+id: 'recd1jIVIEChmiwhe',
+      name: 'armchair',
+  price:400,
+      image:
+        'https://res.cloudinary.com/dt2g7mgtv/image/upload/v1681750929/react-comfy-store-products/product-4_ebl6q1.jpg',
+    },
+    {
+      id: 'recoM2MyHJGHLVi5l',
+      name: 'bar stool',
+      price:500,
+image:
+        'https://res.cloudinary.com/dt2g7mgtv/image/upload/v1681751026/react-comfy-store-products/product-5_n184nu.jpg',
+    },
+  ];
+  
+  export default products;
+
+Layout.js
+<Link to='/Product'>Product</Link>&nbsp;&nbsp;&nbsp;&nbsp;
+----
+
+We can set route guard to reach a specific route
+
+/lh:3000/login---> name, email--> submit--->lh:3000/dashboard
+lh:3000/dashboard--> directly it will not work--> ask us to login first and then reach the route
+
+useNavigate- used to take route params
+Navigate - takes us to a particular route
+
+Login.js
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+const Login = ({setUser}) => {
+    const navigate = useNavigate();
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const handleSubmit=(e)=>{
+        e.preventDefault();
+        if(!name || !email){
+            return;
+}else{
+            setUser({name:name, email:email})
+            navigate('/dashboard');
+        }
+    }
+  return (
+   <>
+   <form onSubmit={handleSubmit}>
+<label>Username</label>
+        <input type="text" id="name" value={name} onChange={(e)=>{setName(e.target.value)}}/>
+        <label>Email</label>
+        <input type="email" id="email" value={email} onChange={(e)=>{setEmail(e.target.value)}}/>
+        <button type="submit">Login</button>
+   </form>
+   </>
+  )
+}
+
+export default Login
+
+Dashboard.js
+import React from 'react'
+
+const Dashboard = ({user}) => {
+  return (
+    <>
+    <h1> Welcome!!</h1>
+    <h1>{user.name}</h1>
+    <h1>{user.email}</h1>
+    </>
+  )
+}
+
+export default Dashboard
+
+ProtectedRoute.js
+
+import React from 'react'
+import { Navigate } from 'react-router-dom'
+
+const ProtectedRoute = ({children,user}) => {
+    if(!user){
+        return <Navigate to='/login'></Navigate>
+    }else{
+        return children;
+    }
+}
+
+export default ProtectedRoute
+
+Layout.js
+<Link to='/login'>Login</Link>&nbsp;&nbsp;&nbsp;&nbsp;
+
+App.js
+const [user,setUser] = useState(null);
+<Route path='/login' element={<Login setUser={setUser}/>}></Route>
+        <Route path='/dashboard' element={
+          <ProtectedRoute user={user}>
+            <Dashboard user={user}/>
+          </ProtectedRoute>
+        }></Route>
+      </Route>
+

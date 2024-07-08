@@ -1,0 +1,183 @@
+CONNECT NODE APP TO ATLAS DB
+
+We need drivers to create connection in between node app and db - MONGOOSE
+
+In our movieflix app we need to install mongoose
+
+mongoose -> Schema., Model, enter data into collection,mongodb commands
+
+1. open atlas
+2. click databases
+3. click connect
+4. connect to vsc
+5. copy conn string
+6. open project in vsc
+7. put the conn string in a label using config.env file (MONGO_REMOTE_DB=connstr/dbname?retryWrites=true&w=majority)
+8. install mongoose
+9. go to server.js
+
+var mongoose = require('mongoose');
+
+mongoose.connect(process.env.MONGO_REMOTE_DB,{useNewUrlParser:true})
+.then((conn)=>{
+    console.log("Conn success");
+    if(process.env.NODE_ENV =='development'){
+        appServer.listen(process.env.PORT, ()=>{
+            console.log("Vistt browser");
+         })
+        }else{
+            appServer.listen(4000, ()=>{
+                console.log("Vistt browser");
+             })
+        }
+})
+.catch((err)=>{
+    console.log("Sorry unable to connect");
+    console.log(err);
+})
+
+10. go to atlas and check if ip addresses are whitelisted else yu may get this error when yu run app
+
+PS C:\Users\nmlak\OneDrive\Desktop\Notes\MERN 12.30-2.30 WD\24.. Express Apps\MovieFlix-Version2> node server   
+(node:7292) [MONGODB DRIVER] Warning: useNewUrlParser is a deprecated option: useNewUrlParser has no effect since Node.js Driver version 4.0.0 and will be removed in the next major version
+(Use `node --trace-warnings ...` to show where the warning was created)
+Sorry unable to connect
+MongooseServerSelectionError: Could not connect to any servers in your MongoDB Atlas cluster. One common reason is that you're trying to access the database from an IP that isn't whitelisted. Make sure your current IP address is on your Atlas cluster's IP whitelist: https://www.mongodb.com/docs/atlas/security-whitelist/
+
+
+11. once ip is added, run app using node server
+12. if you get conn success yur db can be manipulated using that node app else yu can log err obj
+
+MONGOOSE - helps us to interact mongodb with JS - Driver that has many features, an obj data modeling library for MongoDB and Javascript
+
+Features: Schema to model our collections - data and relationships, provides easy validation, simple query API, middleware etc
+
+Schema: Our DB- validations can be provided too
+
+Model: Wrapper around schema allows us to interface with db to perform CRUD
+Class in Js used to create blueprint or Document - object from model
+
+config.env - DB name - MovieFlixSN
+MONGO_REMOTE_DB= mongodb+srv://lakshmi123:lakshmi123@cluster0.czlyuat.mongodb.net/MovieFlixSN?retryWrites=true&w=majority
+
+server.js - Schema Structure - field info with validation & Model class- collection & new MovieModel (obj) -instance of model - Document & save() - add the doc in the RDB -returns promise
+
+const movieSchema = new mongoose.Schema({
+    name:{type:String,required:[true, 'Movie Name is Required'], unique:true},
+    description:{type:String},
+    duration:{type:Number},
+    ratings:{type:Number, default:1.0}
+})
+
+const MovieModel = mongoose.model('MovieList',movieSchema);
+const newMovie = new MovieModel({
+    name:'Mission to Mangal',
+    description:'Space Science',
+    duration:200
+    
+})
+
+newMovie.save()
+.then((doc)=>{
+console.log(doc);
+})
+.catch((err)=>{
+console.log(err);
+})
+------
+
+server.js
+const dotenv = require('dotenv');
+dotenv.config({path:'./config.env'});
+
+var appServer = require('./index.js');
+var mongoose = require('mongoose');
+
+mongoose.connect(process.env.MONGO_REMOTE_DB,{useNewUrlParser:true})
+.then((conn)=>{
+    console.log("Conn success");
+    if(process.env.NODE_ENV =='development'){
+        appServer.listen(process.env.PORT, ()=>{
+            console.log("Vistt browser");
+         })
+        }else{
+            appServer.listen(4000, ()=>{
+                console.log("Vistt browser");
+             })
+        }
+})
+.catch((err)=>{
+    console.log("Sorry unable to connect");
+    console.log(err);
+})
+
+Create Models folder, -> MovieModel.js
+
+var mongoose = require('mongoose');
+
+const movieSchema = new mongoose.Schema({
+    name:{type:String,required:[true, 'Movie Name is Required'], unique:true},
+    description:{type:String},
+    duration:{type:Number},
+    ratings:{type:Number, default:1.0}
+})
+
+const MovieModel = mongoose.model('MovieList',movieSchema);
+
+module.exports = MovieModel;
+// const newMovie = new MovieModel({
+//     name:'Mission to Mangal',
+//     description:'Space Science',
+//     duration:200
+    
+// })
+
+// newMovie.save()
+// .then((doc)=>{
+// console.log(doc);
+// })
+// .catch((err)=>{
+// console.log(err);
+// })
+
+
+Controller/MovieController.js
+ const MovieModel = require('../Models/MovieModel');
+
+ exports.getAllMovies = (req,res)=>{
+
+ }
+
+//ADD NEW MOVIE
+exports.addNewMovie = async(req,res)=>{
+//we need to temporarily stop res obj to reach postman until crud is done to atlas
+try{
+    const movie = await MovieModel.create(req.body);
+    res.status(200).json({status:"success", data:{movie}})
+}catch(err){
+    res.status(404).json({status:"fail", message: err.message})
+
+}
+
+
+}
+
+exports.deleteAllMovies = (req, res)=>{
+
+}
+
+exports.getOneMovie = (req,res)=>{
+
+}
+
+exports.deleteOneMovie = (req,res)=>{
+
+}
+
+exports.putOneMovie = (req, res)=>{
+
+}
+
+exports.patchOneMovie = (req, res)=>{
+
+}

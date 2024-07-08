@@ -1,0 +1,217 @@
+ROUTES WITH URL PARAMETERS
+
+Url Parameters in Routes:
+App.css
+.product-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Allows wrapping if items don't fit */
+    gap: 20px; /* Space between items */
+  }
+  
+  .product-item {
+    flex: 1 1 30%; /* Takes up approximately 30% of the container width */
+    box-sizing: border-box;
+  }
+
+App.js
+const App = () => {
+  return (
+    <div>
+      <BrowserRouter>
+        <Routes>
+            <Route path='/' element={<Main/>}>
+              <Route path='home' element={<Home/>}/>
+              <Route path='about' element={<About/>}/>
+              <Route path='products' element={<Products/>}/>
+              <Route path='products/:productId' element={<SingleProduct/>}/>
+              
+              <Route path='*' element={<PageNotFound/>}/>
+            </Route>
+        </Routes>
+      </BrowserRouter>
+   
+    </div>
+  )
+}
+
+Main.js
+<Link to='products'>PRODUCTS</Link>
+
+productsInfo.js
+const productsInfo = [
+    {
+      id: 'recZkNf2kwmdBcqd0',
+      name: 'accent chair',
+      price:100,
+      image:
+        'https://m.media-amazon.com/images/I/81rtPgH2oiL._AC_UF894,1000_QL80_.jpg',
+    },
+    {
+      id: 'recEHmzvupvT8ZONH',
+      name: 'albany sectional',
+      price:200,
+      image:
+        'https://m.media-amazon.com/images/I/518JdFuS5DL.jpg',
+    },
+{
+      id: 'rec5NBwZ5zCD9nfF0',
+      name: 'albany table',
+  price:300,
+      image:
+        'https://m.media-amazon.com/images/I/8136+-BidbL.jpg',
+    },
+    {
+id: 'recd1jIVIEChmiwhe',
+      name: 'armchair',
+  price:400,
+      image:
+        'https://images-na.ssl-images-amazon.com/images/I/814apKAJfvL._AC_SL1500_.jpg',
+    },
+    {
+      id: 'recoM2MyHJGHLVi5l',
+      name: 'bar stool',
+      price:500,
+image:
+        'https://images-na.ssl-images-amazon.com/images/I/71rN3dzwj3L._AC_SL1500_.jpg',
+    },
+  ];
+  
+  export default productsInfo;
+
+Products.js
+import React, { useState } from 'react';
+import productsInfo from '../productsInfo';
+import SingleProduct from './SingleProduct';
+import '../App.css'
+import { Link } from 'react-router-dom';
+
+const Products = () => {
+  var [items, setItems] = useState(productsInfo);
+  return (
+    <div className="product-container" style={{width:"1300px", height:"500px",backgroundColor:'lime'}}>
+      {items.map((item)=>{
+          return (
+            <div>
+              <h1>{item.name}</h1>
+              <Link to={`/products/${item.id}`}>Click here for more info..</Link>
+            </div>
+          )
+      })}
+    </div>
+  )
+}
+
+export default Products
+
+SingleProduct.js
+import React from 'react'
+import { Link, useParams } from 'react-router-dom';
+import productsInfo from '../productsInfo';
+
+
+const SingleProduct = () => {
+
+  var {productId} = useParams();
+  var item = productsInfo.find((product)=>{
+    return product.id == productId;
+  })
+  var {id, name, price, image} = item;
+  return (
+    <div className="product-item" style={{width:"400px", height:"auto",backgroundColor:'yellow'}}>
+      <h1>ID: {id}</h1>
+      <h2>Name of the Product: {name}</h2>
+      <h3><i>Price: Rs.{price}</i></h3>
+      <img width="50px" height="50px" src={image} alt="not found" />
+      <Link to='/products'>GO TO PRODUCTS PAGE</Link>
+    </div>
+  )
+}
+
+export default SingleProduct
+
+
+
+----
+
+We can set route guard to reach a specific route
+
+/lh:3000/login---> name, email--> submit--->lh:3000/dashboard
+lh:3000/dashboard--> directly it will not work--> ask us to login first and then reach the route
+
+useNavigate- used to take route params
+Navigate - takes us to a particular route
+
+Login.js
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+const Login = ({setUser}) => {
+    const navigate = useNavigate();
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const handleSubmit=(e)=>{
+        e.preventDefault();
+        if(!name || !email){
+            return;
+}else{
+            setUser({name:name, email:email})
+            navigate('/dashboard');
+        }
+    }
+  return (
+   <>
+   <form onSubmit={handleSubmit}>
+<label>Username</label>
+        <input type="text" id="name" value={name} onChange={(e)=>{setName(e.target.value)}}/>
+        <label>Email</label>
+        <input type="email" id="email" value={email} onChange={(e)=>{setEmail(e.target.value)}}/>
+        <button type="submit">Login</button>
+   </form>
+   </>
+  )
+}
+
+export default Login
+
+Dashboard.js
+import React from 'react'
+
+const Dashboard = ({user}) => {
+  return (
+    <>
+    <h1> Welcome!!</h1>
+    <h1>{user.name}</h1>
+    <h1>{user.email}</h1>
+    </>
+  )
+}
+
+export default Dashboard
+
+ProtectedRoute.js
+
+import React from 'react'
+import { Navigate } from 'react-router-dom'
+
+const ProtectedRoute = ({children,user}) => {
+    if(!user){
+        return <Navigate to='/login'></Navigate>
+    }else{
+        return children;
+    }
+}
+
+export default ProtectedRoute
+
+Layout.js
+<Link to='/login'>Login</Link>&nbsp;&nbsp;&nbsp;&nbsp;
+
+App.js
+const [user,setUser] = useState(null);
+<Route path='/login' element={<Login setUser={setUser}/>}></Route>
+        <Route path='/dashboard' element={
+          <ProtectedRoute user={user}>
+            <Dashboard user={user}/>
+          </ProtectedRoute>
+        }></Route>
+      </Route>

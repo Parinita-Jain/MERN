@@ -1,0 +1,210 @@
+UNDERSTANDING REST ARCHITECTURE: REST - Representational State Transfer
+This is a architectural style for providing standards between computer systems on web making it easier for systems to communicate with each other.
+
+STEPS TO FOLLOW:
+1. Seperate APIs into logical resources
+2. Expose structured, resource based URL
+3. use HTTP Methods - get,put,patch,delete,post
+4. Send JSON data in response
+5. API must be stateless
+
+1. Seperate APIs into logical resources
+resource - object or representation of something which has data associated to it
+movie ----> [{id:1, name:'A', duration:145, ratings:4, description:"Thriller"},{id, name, duration, ratings, description},{id, name, duration, ratings, description}]
+
+2. Expose structured, resource based URL - verb naming family
+https://www.xyz.com/addMovie
+https://www.xyz.com/getAllMovies
+https://www.xyz.com/getOneMovie/123
+https://www.xyz.com/getOneMovie?mid=123
+https://www.xyz.com/deleteAllMovies
+https://www.xyz.com/deleteOneMovie/123
+https://www.xyz.com/updateOneMovie?mid=123
+
+3. use HTTP Methods - get,put,patch,delete,post
+https://www.xyz.com/addMovie ---------->POST 
+https://www.xyz.com/getAllMovies------->GET
+https://www.xyz.com/getOneMovie----->GET ----> /getOneMovie/id
+https://www.xyz.com/deleteAllMovies-->DELETE
+https://www.xyz.com/deleteOneMovie->DELETE--> /deleteOneMovie/id
+https://www.xyz.com/updateOneMovie->PATCH/PUT --> /updateOneMovie/id
+
+4. Send JSON data in response
+When a particular URL request is served, We will get the answer- response. 
+How to share the response from server to the browser - There are many ways to represent the response
+using light weight data interchange formats
+
+res.send(""), res.sendFile('path'), res.json({....})
+
+JSON:API, ODATA JSON Protocol, jSend Protocol
+
+jSend --> {status,data,message}
+res.json({status:'Success', data: [{},{}]});
+res.render('ejs pages');
+
+5. API must be stateless
+All states are handled on client side. This means each req must contain all necessary info to process certain requests, servers should not have to remember previous requests.
+
+Login URL---> servers dont remember the previous activities, urls must be designed in such a way that servers are given enough info to process the current request
+Pre/Next/Curr -->     <<Prev 1|2|3|4|5 Next>> 
+If am at 3rd page -> clicking on Next must take me to page 4 - is it mandatory or will servers be able to know in watever page that was rendered before----> /info?curPage=3 (Next ++, Prev --)
+
+/info/3 ----------------->url params
+/info?curPage=3--->url query params
+----
+
+REST - Way to build WebAPI in a logical way making it easy to consume data. If we want data to be consumed by all, we can build it using RestFul Api.
+
+Create API using Restful API:
+
+index.js
+const fs  = require('fs');
+ var moviesData = JSON.parse(fs.readFileSync('./movies.json',{encoding:'utf-8'}));
+console.log(typeof moviesData)
+ //convert string to JSON - JSON.parse()
+ const express = require('express');
+ const appServer = express();
+appServer.get('/movieflix/getAllMovies',(req,res)=>{
+    res.json({
+        "status":"success",
+        "data":moviesData
+    })
+})
+ appServer.listen(3000, ()=>{
+    console.log("Vistt browser");
+ })
+
+movies.json
+[
+    {"id":1, "title":"Jeans", "description":"Family Entertainer","ratings":4.5,"duration":140},
+    {"id":2, "title":"Cars", "description":"Animation","ratings":3.5,"duration":110},
+    {"id":3, "title":"Dugby", "description":"Fiction","ratings":4,"duration":120},
+    {"id":4, "title":"Nemo", "description":"Fantasy","ratings":5,"duration":130},
+    {"id":5, "title":"Dory", "description":"Fantasy","ratings":4.2,"duration":150},
+    {"id":6, "title":"Soul", "description":"Adventure","ratings":3,"duration":170}
+]
+
+Browser -- url area - we can defaultly  put GET requests only.
+All the other requests should be handled by the UI
+localhost:3000/movieflix/getAllMovies
+localhost:3000/movieflix/getOneMovie/5
+
+localhost:3000/movieFlix/addNewMovie---> new data is present in form. have we created any form for our project----> Dont have UI still developed to get all request except get --> we use Postman
+
+Postman - Alternative to client side/browser side - if an app doesnt have any UI or front end developed -> we can use postman as a client till development phase.
+
+postman can handle- req, res, network timing, status codes, url area, http method choosing
+
+POST --> Form, Submit, method = "POST"
+Express--> server.post()
+
+-------------------------------------------------------------------------------
+req.url --- /movieFlix/updateOneMovie/4?name=pirates
+req.body -- {name:"Dory"}
+req.query -- {name:pirates}
+req.params -- {mid:4} 
+-------------------------------
+
+1. In postman, we need to add the new data in the req.body
+2. we need an endpoint in express app to serve for this req
+3. We need to get that new info from postman and put it inside app using req.body
+-WE NEED MIDDLEWARE-- new delhi(10) -middle(4)--(3)-- chennai (17)
+To add some intermediate info to the req obj before the req reaches the response, we use middleware
+here-> in req lh:3000/aNM+{obj info json}
+4. {title to duration} id will not be there - Find a logic to create a new unique id --> we need to get the last id--> +1
+6 is the length ---> movieData.length -->6
+var last = movieData.length-1 ===> 6-1 = 5(Position- Last)
+var lastId = moviesData[last] ----> moviesData[5]-->16
+var newId = lastId+1; ----> 16+1 === 17
+0     1   2   3   4   5
+11 12 13 14 15 16
+
+5. {id} + {title to duration} - merge the objects to form a proper data from {id to duration}
+var newMovie = Object.assign({id:newId},{title to duration})
+
+6. push this new object into moviesData array {1-7}
+7. remove the old data from the file {1-6} and add the new moviesData array into the file{1-7}
+8. send the moviesData as a response to the Postman
+
+const fs  = require('fs');
+ var moviesData = JSON.parse(fs.readFileSync('./movies.json',{encoding:'utf-8'}));
+console.log(typeof moviesData)
+ //convert string to JSON - JSON.parse()
+ const express = require('express');
+ const appServer = express();
+ //ADD MIDDLEWARE TO UPDATE THE REQ OBJECT TO GET SOME INFO FROM POSTMAN OR BROWSER
+ appServer.use(express.json());
+ //GET ALL MOVIES
+appServer.get('/movieflix/getAllMovies',(req,res)=>{
+    if(moviesData.length==0){
+        res.json({
+            "status":"empty",
+            "message":"Sorry No Movies Available"
+        })
+    }else{
+        res.json({
+            "status":"success",
+            "data":moviesData
+        })
+    }
+   
+})
+
+//ADD NEW MOVIE
+appServer.post('/movieflix/addNewMovie',(req,res)=>{
+    console.log(req.body); //{ title: '3 Idiots', description: 'Comedy', duration: 130, ratings: 5 }
+    //CREATE A NEW ID
+    var movieLength=moviesData.length;
+    var lastId = moviesData[movieLength-1].id;
+    var newId = lastId + 1;
+    console.log(newId); //7
+    //TO MERGE ID WITH REQ.BODY
+    var newMovie = Object.assign({id:newId},req.body);
+    console.log(newMovie); //{id: 7,title: '3 Idiots',description: 'Comedy',duration: 130,ratings: 5}
+    //PUSH NEW MOVIE TO THE MOVIESDATA ARRAY
+    moviesData.push(newMovie);
+    console.log(moviesData); //{id:1 to id:7}
+    //LETS WRITE THIS INFO INTO THE FILE, MEANWHILE WE WILL GIVE THE RESPONSE ALSO TO THE PM- ASYNC
+    fs.writeFile('./movies.json',JSON.stringify(moviesData),(err)=>{
+        if(err){
+            res.json({
+                "status":"Failed",
+                "message":"Something went wrong"
+            })
+        }else{
+            res.json({
+                "status":"success",
+                "data":moviesData
+            })
+        }
+    })
+})
+
+ appServer.listen(3000, ()=>{
+    console.log("Vistt browser");
+ })
+
+---
+
+DELETE ALL MOVIES:
+
+-> moviesData array = [];
+-> write it into file movies.json
+
+//DELETE ALL MOVIES
+appServer.delete('/movieflix/deleteAllMovies',(req, res)=>{
+moviesData = [];
+fs.writeFile('./movies.json',JSON.stringify(moviesData),(err)=>{
+    if(err){
+        res.json({
+            "status":"Failed",
+            "message":"Something went wrong"
+        })
+    }else{
+        res.json({
+            "status":"success",
+            "data":moviesData
+        })
+    }
+})
+})

@@ -1,0 +1,341 @@
+
+$unwind - takes an array field of doc and splits each item in to a seperate document.
+
+var pipe9 = [{$unwind:"$languages"}]
+db.Employees.aggregate(pipe9);
+
+->Try to show the documents for each person(GROUP), who has the language starts with c.
+
+step1: filtering only documnets that has language starting with c:
+var pipe10 = [{$unwind:"$languages"},{$match:{languages: /^c/}}]
+db.Employees.aggregate(pipe10);
+
+step2 got only doc which has languages that start with c-> we need to group them
+var pipe10 = [{$unwind:"$languages"},{$match:{languages: /^c/}},{$group:{_id:"$firstname",cstartLang:{$push:"$languages"}}}]
+db.Employees.aggregate(pipe10);
+
+Store> db.Students.insertMany([{name:'Akshaya'},{name:'Bhargav'},{name:'cathy'},{name:'Cinderella'},{name:'Deepa'}]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("6564b29e84af5af2962d0e34"),
+    '1': ObjectId("6564b29e84af5af2962d0e35"),
+    '2': ObjectId("6564b29e84af5af2962d0e36"),
+    '3': ObjectId("6564b29e84af5af2962d0e37"),
+    '4': ObjectId("6564b29e84af5af2962d0e38")
+  }
+}
+Store> db.Students.find();
+[
+  { _id: ObjectId("6564b29e84af5af2962d0e34"), name: 'Akshaya' },
+  { _id: ObjectId("6564b29e84af5af2962d0e35"), name: 'Bhargav' },
+  { _id: ObjectId("6564b29e84af5af2962d0e36"), name: 'cathy' },
+  { _id: ObjectId("6564b29e84af5af2962d0e37"), name: 'Cinderella' },
+  { _id: ObjectId("6564b29e84af5af2962d0e38"), name: 'Deepa' }
+]
+Store> var p1 = [{$match:{name: /^c/}}]
+
+Store> db.Students.aggregate(p1);
+[ { _id: ObjectId("6564b29e84af5af2962d0e36"), name: 'cathy' } ]
+Store> var p1 = [{$match:{name: /^c/i}}];
+
+Store> db.Students.aggregate(p1);
+[
+  { _id: ObjectId("6564b29e84af5af2962d0e36"), name: 'cathy' },
+  { _id: ObjectId("6564b29e84af5af2962d0e37"), name: 'Cinderella' }
+]
+Store> var p1 = [{$match:{name: /a$/i}}];
+
+Store> db.Students.aggregate(p1);
+[
+  { _id: ObjectId("6564b29e84af5af2962d0e34"), name: 'Akshaya' },
+  { _id: ObjectId("6564b29e84af5af2962d0e37"), name: 'Cinderella' },
+  { _id: ObjectId("6564b29e84af5af2962d0e38"), name: 'Deepa' }
+]
+Store> var p1 = [{$match:{name: /e/i}}];
+
+Store> db.Students.aggregate(p1);
+[
+  { _id: ObjectId("6564b29e84af5af2962d0e37"), name: 'Cinderella' },
+  { _id: ObjectId("6564b29e84af5af2962d0e38"), name: 'Deepa' }
+]
+Store>
+--------------------------
+
+$sort 1/-1
+
+Store> var pipe12=[{$sort:{firstname:-1}}];
+
+Store> db.Employees.aggregate(pipe12);
+
+---
+$project: hide or show fields
+
+var pipe 13=[{$project:{firstname:1,languages:1}}] --> shows id also
+
+if yu wanna hide _id to-> explicitly give 0 for it, other fiels we cant set 0
+
+var pipe13=[{$project:{firstname:1,languages:1,_id:0}}]
+
+-----
+
+second char -> a
+
+Store> var p5 = [{$match:{name:/^.{1}a/}}]
+
+Store> db.Students.aggregate(p5)
+[ { _id: ObjectId("6564b29e84af5af2962d0e36"), name: 'cathy' } ]
+Store>
+
+Question: Show only the first names and ages of individuals in the collection.
+
+Aggregation Framework Command:
+
+db.collection.aggregate([
+  {
+    $project: {
+      _id: 0, // Exclude the default "_id" field
+      firstname: 1,
+      age: 1
+    }
+  }
+])
+
+Question: What are the unique programming languages used by individuals in the collection?
+
+Aggregation Framework Command:
+db.collection.aggregate([
+  {
+    $unwind: "$languages"
+  },
+  {
+    $group: {
+      _id: null,
+      uniqueLanguages: { $addToSet: "$languages" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      uniqueLanguages: 1
+    }
+  }
+])
+
+Question: How many individuals are there in each age group?
+
+Aggregation Framework Command:
+
+db.collection.aggregate([
+  {
+    $group: {
+      _id: "$age",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      age: "$_id",
+      count: 1
+    }
+  }
+])
+Question: What is the average age of individuals who know the "c++" programming language?
+
+Aggregation Framework Command:
+
+db.collection.aggregate([
+  {
+    $match: {
+      languages: "c++"
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      averageAge: { $avg: "$age" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      averageAge: 1
+    }
+  }
+])
+
+
+Question: List individuals who know both "c++" and "html" programming languages.
+
+Aggregation Framework Command:
+
+db.collection.aggregate([
+  {
+    $match: {
+      languages: { $all: ["c++", "html"] }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      firstname: 1,
+      lastname: 1,
+      languages: 1
+    }
+  }
+])
+
+
+COMPASS:
+
+GUI of mongo db to show and operate local, remote databases.
+
+if we want to connect to local DB - lh:27017 is localhost location where mongodb data is served
+
+https://www.mongodb.com/try/download/compass
+choose msi and then download
+
+ATLAS:
+
+Atlas is a mongodb cloud which stores db inside
+if we create db in atlas -> Remote Database
+
+https://www.mongodb.com/atlas/database
+create Account
+verify mail
+learn mongodb
+I am just exploring
+preferred DB - JS
+free service - Cluster 0
+default setting like - username+password
+network settings - add current IP address , Allow access from anywhere
+
+connect mongosh with local db
+press enter and connect to localhost
+
+connect compass with local db
+press connect and connect to local db and do crud operations
+
+connect node app with local db
+connect mongosh with atlas(remote db)
+connect compass with atlas(remote db)
+connect node app  with atlas(remote db)
+--------------------------------
+
+Create Database in atlas
+-> login
+->click database under sidebar
+-> browse collections under cluster
+-> click on create database
+-> type the name of db, colln
+-> Insert, update,delete,find docs
+
+CONNECT MONGOSH WITH ATLAS
+->go to databases under sidebar
+->click connect
+-> click connect to shell
+-> i have mongosh
+-> copy conn string
+-> open cmd
+-> paste the string
+-> edit username
+-> type password 
+-> connect to atlas
+-> show dbs;
+->use dbname;
+-> find(), insert(),find()
+-> go to atlas and check if the changes done in cmd is updated in atlas by clicking refresh
+
+Microsoft Windows [Version 10.0.22000.2538]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\nmlak>mongosh "mongodb+srv://cluster0.czlyuat.mongodb.net/" --apiVersion 1 --username lakshmi123
+Enter password: **********
+Current Mongosh Log ID: 65b754a2c465e2743fc18317
+Connecting to:          mongodb+srv://<credentials>@cluster0.czlyuat.mongodb.net/?appName=mongosh+2.0.2
+Using MongoDB:          6.0.13 (API Version 1)
+Using Mongosh:          2.0.2
+mongosh 2.1.1 is available for download: https://www.mongodb.com/try/download/shell
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+Atlas atlas-115xmh-shard-0 [primary] test> show dbs
+College        72.00 KiB
+Movieflixdb    80.00 KiB
+WorkoutBuddy  180.00 KiB
+blogdb          8.00 KiB
+movieflixWE    88.00 KiB
+admin         340.00 KiB
+local           7.03 GiB
+Atlas atlas-115xmh-shard-0 [primary] test> use College
+switched to db College
+Atlas atlas-115xmh-shard-0 [primary] College> db.students.find();
+[
+  {
+    _id: ObjectId("65b752da4068eeb121cc901d"),
+    name: 'Ayesha',
+    age: 19,
+    gender: 'Female',
+    course: 'Electronics'
+  },
+  {
+    _id: ObjectId("65b7535f4068eeb121cc901f"),
+    name: 'Balu',
+    age: 21,
+    gender: 'Male',
+    course: 'Computers'
+  }
+]
+Atlas atlas-115xmh-shard-0 [primary] College> db.students.insertOne({name:"Navin",age:18,gender:"Male",course:"Science"})
+{
+  acknowledged: true,
+  insertedId: ObjectId("65b75540c465e2743fc18318")
+}
+Atlas atlas-115xmh-shard-0 [primary] College> db.students.find();
+[
+  {
+    _id: ObjectId("65b752da4068eeb121cc901d"),
+    name: 'Ayesha',
+    age: 19,
+    gender: 'Female',
+    course: 'Electronics'
+  },
+  {
+    _id: ObjectId("65b7535f4068eeb121cc901f"),
+    name: 'Balu',
+    age: 21,
+    gender: 'Male',
+    course: 'Computers'
+  },
+  {
+    _id: ObjectId("65b75540c465e2743fc18318"),
+    name: 'Navin',
+    age: 18,
+    gender: 'Male',
+    course: 'Science'
+  }
+]
+Atlas atlas-115xmh-shard-0 [primary] College>
+
+----------------------------------------------
+
+CONNECT COMPASS WITH ATLAS DB
+
+-> go to atlas
+->go to databases under sidebar
+->click connect
+-> click connect to compass
+-> i have compass
+-> copy conn string
+-> open compass
+->paste conn string
+-> change username and password in conn string
+-> click connect
+-> add data, find, update data
+-> refresh atlas and chend if changes are updated
+----------
+
+CONNECT NODE APP WITH MONGODB ATLAS
+
+

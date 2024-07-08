@@ -1,0 +1,181 @@
+COMPONENT:
+Basic Building Block - used to carry the logic,styleand view to perform one task
+
+Builtincomponent -> in React--> App Component
+
+Inside App Component we can nest the other components
+Eg: in index.js--> we have nested the App component
+
+JSX expressions must have one parent element.ts(2657)
+Error is shown because, a component can display one element only
+
+use div, section,footer,header, article etc..
+
+function App() {
+  return (
+    <div>
+      <h1>Welcome to your React App</h1>
+      <h2> Good Morning, Session Started!</h2>
+      <section>
+        <p>Happy appy</p>
+      </section>
+    </div>
+  );
+}
+
+export default App;
+-----------
+function App() {
+  return (
+    <>
+      <h1>Welcome to your React App</h1>
+      <h2> Good Morning, Session Started!</h2>
+      <section>
+        <p>Happy appy</p>
+      </section>
+    </>
+  );
+}
+
+export default App;
+-----------------
+function App() {
+  return <>
+      <h1>Welcome to your React App</h1>
+      <h2> Good Morning, Session Started!</h2>
+      <section>
+        <p>Happy appy</p>
+      </section>
+    </>
+  
+}
+
+export default App;
+-------------------
+
+App.js is a component file.
+If a file is a component file, file name should be same as that of component name
+Also, File name should have first letter in CAPITALS
+
+App.js not app.js
+
+Components are created using a class or using a function
+Function based Components are used in React.
+
+-> Regular Function Components
+-> Anonmous Function Components
+-> Arrow Function Components
+
+Function based Components return JSX Elements 
+
+JSX -> JavaScript XML - React Extension that will allow us to write JS Code that looks like HTML (Writing HTML inside JS File)
+
+Usually We write JS in HTML file (<script>console.log("Hi")</script>)
+If we want to write html in JS (use DOM Eg: document.write('<h1>Welcome</h1>'))
+
+Once we write some jsx content in a component, Only if that component is called, It will work!
+
+
+HOW TO CALL A COMPONENT
+
+1. Import the Component which we would want to use
+
+import App from './App.js';
+
+2. Call the Component as a Element----> React renders JSX on the screen --> thats why call the components using tags
+
+<App> </App>
+or
+<App/>
+
+HOW DO WE SEND A COMPONENT FROM ONE FILE TO ANOTHER FILE
+index.js needs App.js
+
+Usually there are 2 ways to send a data from one file to another file:
+
+1. Common JS Standards
+module.exports , require => Express Framework
+
+2. ES Module Standards
+import, export  =>React, Angular
+
+EXPORT THE COMPONENT WHICH YU WANT TO IMPORT OR USE IN ANOTHER FILE
+2 ways to export the components 
+
+export default <component_name>
+---
+App.js
+function App(){
+  return <h1>Welcome to React</h1>
+}
+
+export default App;
+
+App.js
+var App = function(){
+  return <h1>Welcome to React</h1>
+}
+
+export default App;
+
+App.js
+var App=()=>{
+  return <h1>Welcome to React</h1>
+}
+
+export default App;
+
+index.js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App></App>
+  </React.StrictMode>
+);
+-----------------------
+
+export var component_name = put your component code here
+
+->WHILE IMPORTING SURROUND THE COMPONENT NAME IN CURLY BRACKETS
+
+App.js
+export var App=()=>{
+  return(
+    <>
+    <h1>Heading!</h1>
+    <p>Paragraph</p>
+    <ul>
+      <li>List1</li>
+      <li>List2</li>
+    </ul>
+    </>
+  )
+}
+
+index.js
+import {App} from './App';
+
+-------------
+
+After installing VSC React, JSX Extensions,
+It helps us to create components quickly and easily
+---
+
+CAN WE WRITE MORE THAN ONE COMPONENT IN A JS FILE
+
+YES WE CAN, BUT NEST ALL THE COMPONENTS INSIDE ONE MAIN COMPONENT
+
+Call the Component whichever yu want to see on the screen
+
+-----------------
+This is App Component
+This is Component 1
+This is Component 2
+This is Component 3 (nested inside Component 2)
+
+

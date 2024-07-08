@@ -1,0 +1,672 @@
+CURSORS- Pointers that helps in retrieving all documents from a collection
+
+db.colln.find() --> 20-25 docs only 
+We need to retrieve the rest of the batch of documents seperately
+
+toArray()
+pretty()
+forEach()
+
+Disadvantange of using find()
+Company> db.Customer.insertMany([{id:7, name:'a'},{id:8,name:'b'},{id:9,name:'c'},{id:10,name:'d'},{id:11,name:'f'},{name:'g'}]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("65b0bed47ab43d881f64f78e"),
+    '1': ObjectId("65b0bed47ab43d881f64f78f"),
+    '2': ObjectId("65b0bed47ab43d881f64f790"),
+    '3': ObjectId("65b0bed47ab43d881f64f791"),
+    '4': ObjectId("65b0bed47ab43d881f64f792"),
+    '5': ObjectId("65b0bed47ab43d881f64f793")
+  }
+}
+Company> db.Customer.find()
+[
+  { _id: 1, name: 'a' },
+  { _id: 2, name: 'a' },
+  { _id: 3, name: 'a' },
+  { _id: 4, name: 'a' },
+  { _id: 5, name: 'a' },
+  { _id: 6, name: 'a' },
+  { _id: 7, name: 'a' },
+  { _id: 8, name: 'b' },
+  { _id: 9, name: 'c' },
+  { _id: 10, name: 'd' },
+  { _id: 11, name: 'f' },
+  { _id: 12, name: 'g' },
+  { _id: ObjectId("65b0beb27ab43d881f64f776"), id: 7, name: 'a' },
+  { _id: ObjectId("65b0beb27ab43d881f64f777"), id: 8, name: 'b' },
+  { _id: ObjectId("65b0beb27ab43d881f64f778"), id: 9, name: 'c' },
+  { _id: ObjectId("65b0beb27ab43d881f64f779"), id: 10, name: 'd' },
+  { _id: ObjectId("65b0beb27ab43d881f64f77a"), id: 11, name: 'f' },
+  { _id: ObjectId("65b0beb27ab43d881f64f77b"), name: 'g' },
+  { _id: ObjectId("65b0beb67ab43d881f64f77c"), id: 7, name: 'a' },
+  { _id: ObjectId("65b0beb67ab43d881f64f77d"), id: 8, name: 'b' }
+]
+Type "it" for more
+Company> it
+[
+  { _id: ObjectId("65b0beb67ab43d881f64f77e"), id: 9, name: 'c' },
+  { _id: ObjectId("65b0beb67ab43d881f64f77f"), id: 10, name: 'd' },
+  { _id: ObjectId("65b0beb67ab43d881f64f780"), id: 11, name: 'f' },
+  { _id: ObjectId("65b0beb67ab43d881f64f781"), name: 'g' },
+  { _id: ObjectId("65b0bed17ab43d881f64f782"), id: 7, name: 'a' },
+  { _id: ObjectId("65b0bed17ab43d881f64f783"), id: 8, name: 'b' },
+  { _id: ObjectId("65b0bed17ab43d881f64f784"), id: 9, name: 'c' },
+  { _id: ObjectId("65b0bed17ab43d881f64f785"), id: 10, name: 'd' },
+  { _id: ObjectId("65b0bed17ab43d881f64f786"), id: 11, name: 'f' },
+  { _id: ObjectId("65b0bed17ab43d881f64f787"), name: 'g' },
+  { _id: ObjectId("65b0bed37ab43d881f64f788"), id: 7, name: 'a' },
+  { _id: ObjectId("65b0bed37ab43d881f64f789"), id: 8, name: 'b' },
+  { _id: ObjectId("65b0bed37ab43d881f64f78a"), id: 9, name: 'c' },
+  { _id: ObjectId("65b0bed37ab43d881f64f78b"), id: 10, name: 'd' },
+  { _id: ObjectId("65b0bed37ab43d881f64f78c"), id: 11, name: 'f' },
+  { _id: ObjectId("65b0bed37ab43d881f64f78d"), name: 'g' },
+  { _id: ObjectId("65b0bed47ab43d881f64f78e"), id: 7, name: 'a' },
+  { _id: ObjectId("65b0bed47ab43d881f64f78f"), id: 8, name: 'b' },
+  { _id: ObjectId("65b0bed47ab43d881f64f790"), id: 9, name: 'c' },
+  { _id: ObjectId("65b0bed47ab43d881f64f791"), id: 10, name: 'd' }
+]
+Type "it" for more
+Company> it
+[
+  { _id: ObjectId("65b0bed47ab43d881f64f792"), id: 11, name: 'f' },
+  { _id: ObjectId("65b0bed47ab43d881f64f793"), name: 'g' }
+]
+Company>
+------------------------------
+
+user is search info - 100 docs ->find() express-> 20 will be shown -> it? express-> no
+
+Company> db.Customer.find().toArray();
+[
+  { _id: 1, name: 'a' },
+  { _id: 2, name: 'a' },
+  { _id: 3, name: 'a' },
+  { _id: 4, name: 'a' },
+  { _id: 5, name: 'a' },
+  { _id: 6, name: 'a' },
+  { _id: 7, name: 'a' },
+  { _id: 8, name: 'b' },
+  { _id: 9, name: 'c' },
+  { _id: 10, name: 'd' },
+  { _id: 11, name: 'f' },
+  { _id: 12, name: 'g' },
+  { _id: ObjectId("65b0beb27ab43d881f64f776"), id: 7, name: 'a' },
+  { _id: ObjectId("65b0beb27ab43d881f64f777"), id: 8, name: 'b' },
+  { _id: ObjectId("65b0beb27ab43d881f64f778"), id: 9, name: 'c' },
+  { _id: ObjectId("65b0beb27ab43d881f64f779"), id: 10, name: 'd' },
+  { _id: ObjectId("65b0beb27ab43d881f64f77a"), id: 11, name: 'f' },
+  { _id: ObjectId("65b0beb27ab43d881f64f77b"), name: 'g' },
+  { _id: ObjectId("65b0beb67ab43d881f64f77c"), id: 7, name: 'a' },
+  { _id: ObjectId("65b0beb67ab43d881f64f77d"), id: 8, name: 'b' },
+  { _id: ObjectId("65b0beb67ab43d881f64f77e"), id: 9, name: 'c' },
+  { _id: ObjectId("65b0beb67ab43d881f64f77f"), id: 10, name: 'd' },
+  { _id: ObjectId("65b0beb67ab43d881f64f780"), id: 11, name: 'f' },
+  { _id: ObjectId("65b0beb67ab43d881f64f781"), name: 'g' },
+  { _id: ObjectId("65b0bed17ab43d881f64f782"), id: 7, name: 'a' },
+  { _id: ObjectId("65b0bed17ab43d881f64f783"), id: 8, name: 'b' },
+  { _id: ObjectId("65b0bed17ab43d881f64f784"), id: 9, name: 'c' },
+  { _id: ObjectId("65b0bed17ab43d881f64f785"), id: 10, name: 'd' },
+  { _id: ObjectId("65b0bed17ab43d881f64f786"), id: 11, name: 'f' },
+  { _id: ObjectId("65b0bed17ab43d881f64f787"), name: 'g' },
+  { _id: ObjectId("65b0bed37ab43d881f64f788"), id: 7, name: 'a' },
+  { _id: ObjectId("65b0bed37ab43d881f64f789"), id: 8, name: 'b' },
+  { _id: ObjectId("65b0bed37ab43d881f64f78a"), id: 9, name: 'c' },
+  { _id: ObjectId("65b0bed37ab43d881f64f78b"), id: 10, name: 'd' },
+  { _id: ObjectId("65b0bed37ab43d881f64f78c"), id: 11, name: 'f' },
+  { _id: ObjectId("65b0bed37ab43d881f64f78d"), name: 'g' },
+  { _id: ObjectId("65b0bed47ab43d881f64f78e"), id: 7, name: 'a' },
+  { _id: ObjectId("65b0bed47ab43d881f64f78f"), id: 8, name: 'b' },
+  { _id: ObjectId("65b0bed47ab43d881f64f790"), id: 9, name: 'c' },
+  { _id: ObjectId("65b0bed47ab43d881f64f791"), id: 10, name: 'd' },
+  { _id: ObjectId("65b0bed47ab43d881f64f792"), id: 11, name: 'f' },
+  { _id: ObjectId("65b0bed47ab43d881f64f793"), name: 'g' }
+]
+Company> db.Customer.find().forEach((d)=>{print("Names of Customers:"+d.name)});
+Names of Customers:a
+Names of Customers:a
+Names of Customers:a
+Names of Customers:a
+Names of Customers:a
+Names of Customers:a
+Names of Customers:a
+Names of Customers:b
+Names of Customers:c
+Names of Customers:d
+Names of Customers:f
+Names of Customers:g
+Names of Customers:a
+Names of Customers:b
+Names of Customers:c
+Names of Customers:d
+Names of Customers:f
+Names of Customers:g
+Names of Customers:a
+Names of Customers:b
+Names of Customers:c
+Names of Customers:d
+Names of Customers:f
+Names of Customers:g
+Names of Customers:a
+Names of Customers:b
+Names of Customers:c
+Names of Customers:d
+Names of Customers:f
+Names of Customers:g
+Names of Customers:a
+Names of Customers:b
+Names of Customers:c
+Names of Customers:d
+Names of Customers:f
+Names of Customers:g
+Names of Customers:a
+Names of Customers:b
+Names of Customers:c
+Names of Customers:d
+Names of Customers:f
+Names of Customers:g
+
+Company>
+
+arr = [{id:1,name:'a'},{id:2,name:'b'},{id:3,name:'c'}]
+arr.forEach((a)=>{
+print(a.name);
+})
+---------
+EMBEDDED DOCS:
+
+{
+name:"Naga", 
+age:29, 
+isMarried:true,
+subscription:{
+	type:'yearly',
+	renewalDate:{
+		day:28,
+		month:"March",	
+		year:2022
+	}
+}
+}
+
+db.Customer.insertOne({name:"Naga", age:29, isMarried:true,subscription:{type:'yearly',renewalDate:{day:28,month:"March",year:2022}}});
+--
+Company> db.Customer.deleteMany({})
+{ acknowledged: true, deletedCount: 42 }
+Company> db.Customer.find()
+
+Company> db.Customer.insertOne({name:"Naga", age:29, isMarried:true,subscription:{type:'yearly',renewalDate:{day:28,month:"March",year:2022}}});
+{
+  acknowledged: true,
+  insertedId: ObjectId("65b0c6e27ab43d881f64f794")
+}
+Company> db.Customer.find()
+[
+  {
+    _id: ObjectId("65b0c6e27ab43d881f64f794"),
+    name: 'Naga',
+    age: 29,
+    isMarried: true,
+    subscription: {
+      type: 'yearly',
+      renewalDate: { day: 28, month: 'March', year: 2022 }
+    }
+  }
+]
+Company> db.Customer.insertOne({name:"Muthu", age:29, isMarried:false,subscription:{type:'yearly',renewalDate:{day:28,month:"May",year:2021}}});
+{
+  acknowledged: true,
+  insertedId: ObjectId("65b0c7537ab43d881f64f795")
+}
+Company> db.Customer.insertOne({name:"Lakshmi", age:29, isMarried:false,subscription:{type:'monthly',renewalDate:{day:21,month:"May",year:2023}}});
+{
+  acknowledged: true,
+  insertedId: ObjectId("65b0c76c7ab43d881f64f796")
+}
+Company> db.Customer.find({"subscription.type":'yearly'});
+[
+  {
+    _id: ObjectId("65b0c6e27ab43d881f64f794"),
+    name: 'Naga',
+    age: 29,
+    isMarried: true,
+    subscription: {
+      type: 'yearly',
+      renewalDate: { day: 28, month: 'March', year: 2022 }
+    }
+  },
+  {
+    _id: ObjectId("65b0c7537ab43d881f64f795"),
+    name: 'Muthu',
+    age: 29,
+    isMarried: false,
+    subscription: {
+      type: 'yearly',
+      renewalDate: { day: 28, month: 'May', year: 2021 }
+    }
+  }
+]
+Company> db.Customer.find({"subscription.renewalDate.month":"March"})
+[
+  {
+    _id: ObjectId("65b0c6e27ab43d881f64f794"),
+    name: 'Naga',
+    age: 29,
+    isMarried: true,
+    subscription: {
+      type: 'yearly',
+      renewalDate: { day: 28, month: 'March', year: 2022 }
+    }
+  }
+]
+Company> db.Customer.updateOne({name:"Naga"},{$set:{"subscription.renewalDate.year":2023}}}
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:81)
+
+> 1 | db.Customer.updateOne({name:"Naga"},{$set:{"subscription.renewalDate.year":2023}}}
+    |                                                                                  ^
+  2 |
+
+Company> db.Customer.updateOne({name:"Naga"},{$set:{"subscription.renewalDate.year":2023}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Company> db.Customer.find({name:"Naga"})
+[
+  {
+    _id: ObjectId("65b0c6e27ab43d881f64f794"),
+    name: 'Naga',
+    age: 29,
+    isMarried: true,
+    subscription: {
+      type: 'yearly',
+      renewalDate: { day: 28, month: 'March', year: 2023 }
+    }
+  }
+]
+Company> db.Customer.updateOne({name:"Naga"},{$unset:"subscription.renewalDate.month"})
+MongoServerError: Modifiers operate on fields but we found type string instead. For example: {$mod: {<field>: ...}} not {$unset: "subscription.renewalDate.month"}
+Company> db.Customer.updateOne({name:"Naga"},{$unset:{"subscription.renewalDate.month":"March"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Company> db.Customer.find({name:"Naga"})
+[
+  {
+    _id: ObjectId("65b0c6e27ab43d881f64f794"),
+    name: 'Naga',
+    age: 29,
+    isMarried: true,
+    subscription: { type: 'yearly', renewalDate: { day: 28, year: 2023 } }
+  }
+]
+Company>
+
+Arrays in a collection:
+
+{
+name:'Naga',
+age:20,
+hobbies:["eat","sleep","code"]
+}
+---
+Company> db.Customer.insert([{name:"Naga",age:27,hobbies:["eat","sleep","code"]},{name:"Muthu",age:28,hobbies:["eat","sleep"]},{name:"Lakshmi",age:29,hobbies:["code","play"]},{name:"Suji",age:22,hobbies:["sleep","play","run"]}]);
+DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("65b20ab7153fd219936f1a18"),
+    '1': ObjectId("65b20ab7153fd219936f1a19"),
+    '2': ObjectId("65b20ab7153fd219936f1a1a"),
+    '3': ObjectId("65b20ab7153fd219936f1a1b")
+  }
+}
+Company> db.Customer.find();
+[
+  {
+    _id: ObjectId("65b20ab7153fd219936f1a18"),
+    name: 'Naga',
+    age: 27,
+    hobbies: [ 'eat', 'sleep', 'code' ]
+  },
+  {
+    _id: ObjectId("65b20ab7153fd219936f1a19"),
+    name: 'Muthu',
+    age: 28,
+    hobbies: [ 'eat', 'sleep' ]
+  },
+  {
+    _id: ObjectId("65b20ab7153fd219936f1a1a"),
+    name: 'Lakshmi',
+    age: 29,
+    hobbies: [ 'code', 'play' ]
+  },
+  {
+    _id: ObjectId("65b20ab7153fd219936f1a1b"),
+    name: 'Suji',
+    age: 22,
+    hobbies: [ 'sleep', 'play', 'run' ]
+  }
+]
+Company> db.Customer.find({hobbies:"sleep"});
+[
+  {
+    _id: ObjectId("65b20ab7153fd219936f1a18"),
+    name: 'Naga',
+    age: 27,
+    hobbies: [ 'eat', 'sleep', 'code' ]
+  },
+  {
+    _id: ObjectId("65b20ab7153fd219936f1a19"),
+    name: 'Muthu',
+    age: 28,
+    hobbies: [ 'eat', 'sleep' ]
+  },
+  {
+    _id: ObjectId("65b20ab7153fd219936f1a1b"),
+    name: 'Suji',
+    age: 22,
+    hobbies: [ 'sleep', 'play', 'run' ]
+  }
+]
+Company> db.Customer.find({hobbies:"run"});
+[
+  {
+    _id: ObjectId("65b20ab7153fd219936f1a1b"),
+    name: 'Suji',
+    age: 22,
+    hobbies: [ 'sleep', 'play', 'run' ]
+  }
+]
+Company> db.Customer.find({"hobbies.0":"sleep"})
+[
+  {
+    _id: ObjectId("65b20ab7153fd219936f1a1b"),
+    name: 'Suji',
+    age: 22,
+    hobbies: [ 'sleep', 'play', 'run' ]
+  }
+]
+Company> db.Customer.updateOne({name:'Muthu'},{$set:{"hobbies.2":"jog"}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Company> db.Customer.find({name:"Muthu"})
+[
+  {
+    _id: ObjectId("65b20ab7153fd219936f1a19"),
+    name: 'Muthu',
+    age: 28,
+    hobbies: [ 'eat', 'sleep', 'jog' ]
+  }
+]
+Company> db.Customer.updateOne({name:'Muthu'},{$set:{"hobbies.0":"drink"}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Company> db.Customer.find({name:"Muthu"})
+[
+  {
+    _id: ObjectId("65b20ab7153fd219936f1a19"),
+    name: 'Muthu',
+    age: 28,
+    hobbies: [ 'drink', 'sleep', 'jog' ]
+  }
+]
+Company> db.Customer.updateOne({name:'Muthu'},{$push:{"hobbies":"draw"}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Company> db.Customer.find({name:"Muthu"})
+[
+  {
+    _id: ObjectId("65b20ab7153fd219936f1a19"),
+    name: 'Muthu',
+    age: 28,
+    hobbies: [ 'drink', 'sleep', 'jog', 'draw' ]
+  }
+]
+Company> db.Customer.updateOne({name:'Muthu'},{$push:{"hobbies.1":"carve"}});
+MongoServerError: The field 'hobbies.1' must be an array but is of type string in document {_id: ObjectId('65b20ab7153fd219936f1a19')}
+Company> db.Customer.updateOne({name:'Muthu'},{$pop:{"hobbies":"draw"}});
+MongoServerError: Expected a number in: hobbies: "draw"
+Company> db.Customer.updateOne({name:'Muthu'},{$pop:{"hobbies":1}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Company> db.Customer.find({name:"Muthu"})
+[
+  {
+    _id: ObjectId("65b20ab7153fd219936f1a19"),
+    name: 'Muthu',
+    age: 28,
+    hobbies: [ 'drink', 'sleep', 'jog' ]
+  }
+]
+Company> db.Customer.updateOne({name:'Muthu'},{$pop:{"hobbies":2}});
+MongoServerError: $pop expects 1 or -1, found: 2
+Company> db.Customer.updateOne({name:'Muthu'},{$pop:{"hobbies":-1}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Company> db.Customer.find({name:"Muthu"})
+[
+  {
+    _id: ObjectId("65b20ab7153fd219936f1a19"),
+    name: 'Muthu',
+    age: 28,
+    hobbies: [ 'sleep', 'jog' ]
+  }
+]
+Company> db.Customer.updateOne({name:'Muthu'},{$pull:{"hobbies":"sleep"}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Company> db.Customer.find({name:"Muthu"})
+[
+  {
+    _id: ObjectId("65b20ab7153fd219936f1a19"),
+    name: 'Muthu',
+    age: 28,
+    hobbies: [ 'jog' ]
+  }
+]
+Company> db.Customer.updateOne({name:'Muthu'},{$push:{"hobbies":"carve"}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Company> db.Customer.updateOne({name:'Muthu'},{$push:{"hobbies":"tell"}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Company> db.Customer.updateOne({name:'Muthu'},{$push:{"hobbies":"type"}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Company> db.Customer.find({name:"Muthu"})
+[
+  {
+    _id: ObjectId("65b20ab7153fd219936f1a19"),
+    name: 'Muthu',
+    age: 28,
+    hobbies: [ 'jog', 'carve', 'tell', 'type' ]
+  }
+]
+Company> db.Customer.updateOne({name:'Muthu'},{$pull:{"hobbies":"carve"}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Company> db.Customer.find({name:"Muthu"})
+[
+  {
+    _id: ObjectId("65b20ab7153fd219936f1a19"),
+    name: 'Muthu',
+    age: 28,
+    hobbies: [ 'jog', 'tell', 'type' ]
+  }
+]
+Company>
+------------
+
+db.Customer.insert([{name:"Naga",age:27,hobbies:["eat","sleep","code"]},{name:"Muthu",age:28,hobbies:["eat","sleep"]},{name:"Lakshmi",age:29,hobbies:["code","play"]},{name:"Suji",age:22,hobbies:["sleep","play","run"]}]);
+db.Customer.updateOne({name:'Muthu'},{$set:{"hobbies.2":"jog"}});
+change the data at 2nd index of the array
+db.Customer.updateOne({name:'Muthu'},{$set:{"hobbies.0":"drink"}});
+change the data at 0th position
+db.Customer.updateOne({name:'Muthu'},{$push:{"hobbies":"draw"}});
+push - will add the data at the end of the array
+push cant add data to a specific position
+db.Customer.updateOne({name:'Muthu'},{$pop:{"hobbies":1}});
+pop-remove data at the start (-1)or at the end(1)
+db.Customer.updateOne({name:'Muthu'},{$pull:{"hobbies":"sleep"}});
+pull - remove many matches found in the array irrespective of the position
+db.Customer.update( {name:'Muthu'}, { $push: { hobbies: { $each: ['sleep'], $position: 3 } } } )
+adds the string jog at 1st position of hobbies array of muthu, if we try to add at 8th position where array contains 4 elements data will be added at 5th position and will not append null 
+----------------
+
+How would you create a new collection named books and insert a document with the title "The Great Gatsby" and author "F. Scott Fitzgerald"?
+
+Write a query to find all documents in the books collection where the author is "F. Scott Fitzgerald".
+
+How can you update the title of a book from "The Great Gatsby" to "The Great Gatsby: A Classic" in the books collection?
+
+What is the command to delete a document from the books collection where the title is "The Great Gatsby: A Classic"?
+
+If each document in the users collection has a field hobbies, which is an array, how would you add "reading" to this array for a user with the name "Alex"?
+
+Write a MongoDB command to remove the last element from the hobbies array for a user named "Alex".
+
+How can you remove a specific hobby, e.g., "hiking", from the hobbies array for all users?
+
+Suppose each book document contains an reviews array with embedded documents consisting of user and comment. How would you find books with a review comment containing the word "excellent"?
+
+How do you update the comment of a specific review by a user named "John Doe" for a book titled "The Great Gatsby"?
+
+Describe how to perform a bulk write operation that includes inserting a new book, updating an existing book's author, and deleting a book with no reviews.
+
+After finding documents in the users collection, how would you use cursor methods to skip the first 5 results and limit the output to the next 10 documents?
+
+What command would you use to create an index on the author field in the books collection to improve query performance?
+
+How can you count the number of books by each author in the books collection?
+
+Write a query to list the top 3 most common hobbies among users, based on documents in the users collection.
+
+How would you add a new field genre with the value "Fiction" to all books by "F. Scott Fitzgerald"? How would you remove the publishedYear field from those books?
+------------------------------
+Basic CRUD Operations
+Create a Collection and Insert Documents
+
+Answer: db.books.insertOne({title: "The Great Gatsby", author: "F. Scott Fitzgerald"});
+Find Documents
+
+Answer: db.books.find({author: "F. Scott Fitzgerald"});
+Update a Document
+
+Answer: db.books.updateOne({title: "The Great Gatsby"}, {$set: {title: "The Great Gatsby: A Classic"}});
+Delete a Document
+
+Answer: db.books.deleteOne({title: "The Great Gatsby: A Classic"});
+Working with Arrays
+Push an Element to an Array
+
+Answer: db.users.updateOne({name: "Alex"}, {$push: {hobbies: "reading"}});
+Pop an Element from an Array
+
+Answer: db.users.updateOne({name: "Alex"}, {$pop: {hobbies: 1}}); // Removes the last element
+Pull an Element from an Array
+
+Answer: db.users.updateMany({}, {$pull: {hobbies: "hiking"}}); // Removes "hiking" from all users' hobbies arrays
+Embedded Documents and Arrays
+Query Embedded Documents
+
+Answer: db.books.find({"reviews.comment": {$regex: "excellent", $options: 'i'}});
+Update an Embedded Document
+
+Answer: db.books.updateOne({"title": "The Great Gatsby", "reviews.user": "John Doe"}, {$set: {"reviews.$.comment": "An updated comment"}});
+Advanced Operations and Cursors
+Bulk Write Operations
+
+Answer:
+javascript
+Copy code
+db.books.bulkWrite([
+    { insertOne: { "document": {title: "New Book", author: "New Author"} } },
+    { updateOne: { "filter": {author: "Existing Author"}, "update": {$set: {author: "Updated Author"}} } },
+    { deleteOne: { "filter": {reviews: {$size: 0}} } }
+]);
+Use of Cursor Methods
+
+Answer: db.users.find().skip(5).limit(10);
+Indexing for Performance
+
+Answer: db.books.createIndex({author: 1});
+Aggregation and Miscellaneous
+Simple Aggregation
+
+Answer: db.books.aggregate([{$group: {_id: "$author", count: {$sum: 1}}}]);
+Complex Aggregation
+
+Answer:
+javascript
+Copy code
+db.users.aggregate([
+    {$unwind: "$hobbies"},
+    {$group: {_id: "$hobbies", count: {$sum: 1}}},
+    {$sort: {count: -1}},
+    {$limit: 3}
+]);
+
+Use of $set and $unset in Updates
+Answer:
+Add genre: db.books.updateMany({author: "F. Scott Fitzgerald"}, {$set: {genre: "Fiction"}});
+Remove publishedYear: db.books.updateMany({author: "F. Scott Fitzgerald"}, {$unset: {publishedYear: ""}});

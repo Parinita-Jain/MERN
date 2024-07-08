@@ -1,0 +1,17 @@
+DISADVANTAGE OF DOING ASYNC OPERATIONS WITH
+1. CALLBACKS - Tightly coupled, Error handling is not possible, Nested internally
+callA(()=>{
+()=>{
+()=>{}
+}
+})
+2. PROMISES - Complex syntax (then(()=>{}.catch(()=>{}))
+
+SOLUTION:
+ASYNC-AWAIT KEYWORDS - We can write each line as if they are not connected with each other. Dependancy is there, but not shown via syntax. Code looks like sync js. Exception handling is very much supported here.
+
+RULES:
+
+1. await keyword is used inside function definition only.
+2. if we are using await keyword in the function definition, we have to inform js that the function is going to do asynchronous task. for that we use "async" keyword.
+3. Use await keyword only if a function returns a promise!!!

@@ -1,0 +1,313 @@
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+To set the current user to access andy file via terminal - we set permision and give rights to the user
+
+Thirdparty Middleware
+
+Logger - Timestamp--> find req time
+
+Morgan---> present inside npm and gives us info like time date req size res size time taken for response type 
+
+::1 - - [Wed, 10 Jan 2024 07:24:16 GMT] "PATCH /movieflix/patchOneMovie?uid=41 HTTP/1.1" 200 82 "-" "PostmanRuntime/7.36.0"
+
+-----------------------
+
+We will not write the code directly in app.js
+
+app.js
+
+requiring modules
+file reading
+middeware
+listen to req
+endpoin-url -> logic
+-----
+
+MVC --- Model+View+Controller
+MVVC
+MVCC
+
+View - Presentation Logic
+Controller - Business Logic+DB
+Model - Obj Maintainance
+----
+Express Application:
+
+Routes 
+	- routes.js - used to maintain a route endpoints and then redirect it to controller by a matching logic
+Controller 
+	- business logic
+Public 
+	- template files html, ejs - static,dynamic weppages 
+app.js 
+	- server creation and middleware fns
+server.js 
+	- listen to app
+node_modules
+package.json
+config.env 
+	- contains environment variables - portnumber,username, passowors, mongodb conn str
+--
+----
+
+appServer ---> listening, get, put,patch, delete,post, starts server, use middleware 
+currently all routes are working in same router - "server" 
+If we want a seperate router to do http methods alone to deload the appServer, we can create it using express.Router()
+
+const movieRouter = express.Router()
+get, put,patch, delete,post
+
+update appServer that the movieRouter is taking care of http method using middleware
+appServer.use('/movieflix',movieRouter);
+
+we have broken the url (/movieflix + each endpoint)
+
+node server.js --> the file that contains listen function whould be running
+
+put/patch--> req.body --put we will send the entire obj info | patch - only that needs to be updated
+
+index.js
+
+
+const morgan = require('morgan');
+
+ const express = require('express');
+
+ const movieRouter = require('./Routes/movieRoutes');
+
+ 
+ const appServer = express();
+ //ADD MIDDLEWARE TO UPDATE THE REQ OBJECT TO GET SOME INFO FROM POSTMAN OR BROWSER
+ appServer.use(express.json());
+ //ADD MIDDLEWARE -THIRDPARTY
+appServer.use(morgan('dev'));
+//ADD MIDDLEARE- TO INFORM APPSERVER THAT ROUTER HANDLES OF HTTPMETHODS
+appServer.use('/movieflix',movieRouter);
+
+ //CUSTOM MIDDLEWARE:
+ const logger=(req,res,next)=>{
+    console.log("The Request is started and the middleqware logger is called ", new Date().toISOString());
+    next();
+ }
+
+ appServer.use(logger);
+
+
+module.exports = appServer;
+
+server.js
+var appServer = require('./index.js');
+
+appServer.listen(3000, ()=>{
+    console.log("Vistt browser");
+ })
+
+Routes/movieRoutes.js
+
+
+const express = require('express');
+//create router to handle http methods
+const movieRouter= express.Router();
+const movieController = require('../Controller/movieController');
+var {getAllMovies,deleteAllMovies,addNewMovie,putOneMovie,patchOneMovie,getOneMovie,deleteOneMovie} = movieController;
+movieRouter.route('/').get(getAllMovies).delete(deleteAllMovies).put(putOneMovie).patch(patchOneMovie).post(addNewMovie)
+movieRouter.route('/:uid').get(getOneMovie).delete(deleteOneMovie)
+//lh:3000/movieflix/6
+module.exports = movieRouter;
+
+movies.json
+[{"id":1,"title":"Jeans","description":"horror","ratings":2,"duration":140,"releaseYear":2010},{"id":3,"title":"Dugby","description":"Fiction","ratings":4,"duration":120},{"id":4,"title":"Nemo","description":"Horror","ratings":4.5,"duration":130,"releaseYear":2000},{"id":6,"title":"Soul","description":"Adventure","ratings":3,"duration":170},{"id":7,"title":"3 Idiots","description":"Comedy","duration":130,"ratings":5},{"id":8,"title":"Fast & Furious","description":"Thrill","duration":100,"ratings":5},{"id":9,"title":"Donald","description":"Cartoon","duration":100,"ratings":3},{"id":10,"title":"George","description":"Cartoon","duration":100,"ratings":3}]
+
+Controller/movieController.js
+const fs  = require('fs');
+var moviesData = JSON.parse(fs.readFileSync('./movies.json',{encoding:'utf-8'}));
+
+ //GET ALL MOVIES
+ exports.getAllMovies = (req,res)=>{
+    if(moviesData.length==0){
+        res.json({
+            "status":"empty",
+            "message":"Sorry No Movies Available"
+        })
+    }else{
+        res.json({
+            "status":"success",
+            "data":moviesData
+        })
+    }
+   
+}
+
+//ADD NEW MOVIE
+exports.addNewMovie = (req,res)=>{
+    console.log(req.body); //{ title: '3 Idiots', description: 'Comedy', duration: 130, ratings: 5 }
+    //CREATE A NEW ID
+    var movieLength=moviesData.length;
+    var lastId = moviesData[movieLength-1].id;
+    var newId = lastId + 1;
+    console.log(newId); //7
+    //TO MERGE ID WITH REQ.BODY
+    var newMovie = Object.assign({id:newId},req.body);
+    console.log(newMovie); //{id: 7,title: '3 Idiots',description: 'Comedy',duration: 130,ratings: 5}
+    //PUSH NEW MOVIE TO THE MOVIESDATA ARRAY
+    moviesData.push(newMovie);
+    console.log(moviesData); //{id:1 to id:7}
+    //LETS WRITE THIS INFO INTO THE FILE, MEANWHILE WE WILL GIVE THE RESPONSE ALSO TO THE PM- ASYNC
+    fs.writeFile('./movies.json',JSON.stringify(moviesData),(err)=>{
+        if(err){
+            res.json({
+                "status":"Failed",
+                "message":"Something went wrong"
+            })
+        }else{
+            res.json({
+                "status":"success",
+                "data":moviesData
+            })
+        }
+    })
+}
+
+//DELETE ALL MOVIES
+exports.deleteAllMovies = (req, res)=>{
+    moviesData = [];
+    fs.writeFile('./movies.json',JSON.stringify(moviesData),(err)=>{
+        if(err){
+            res.json({
+                "status":"Failed",
+                "message":"Something went wrong"
+            })
+        }else{
+            res.json({
+                "status":"success",
+                "data":moviesData
+            })
+        }
+    })
+    }
+
+//GET ONE MOVIE USING ID
+exports.getOneMovie = (req,res)=>{
+    //get routeParam and multipying it with one is to convert string to number
+    console.log(req.params.uid * 1);
+    const mid = req.params.uid * 1;
+    const searchMovie = moviesData.find((s)=>{
+        return s.id === mid;
+    })
+    console.log(searchMovie);
+    if(searchMovie){
+    res.json({
+        "status":"Success",
+        "data":searchMovie
+    })
+    }else{   
+    res.json({
+        "status":"Failed",
+        "message":"Sorry no movie found in this id, try again with another id"
+    })
+    }
+}
+
+exports.deleteOneMovie = (req,res)=>{
+    const did = req.params.uid * 1;
+    const deleteMovie = moviesData.find((d)=>{
+        return d.id === did
+    })
+    if(deleteMovie){
+        const index = moviesData.indexOf(deleteMovie);
+        moviesData.splice(index, 1); 
+       fs.writeFile('./movies.json',JSON.stringify(moviesData), (err)=>{
+        if(err){
+            res.json({
+                "status":"Failed",
+                "message":"Something went wrong while writing to the file"
+            })
+        }else{
+            res.json({
+                "status":"Success",
+                "data":moviesData
+            })
+        }
+       })
+    }else{ 
+        res.json({
+            "status":"Failed",
+            "message":"Sorry no movie found in this id, try again with another id"
+        })
+        }
+}
+
+exports.putOneMovie = (req, res)=>{
+    console.log(req.query.uid * 1);
+    const uid = req.query.uid * 1;
+    const updateMovie = moviesData.find((u)=>{
+        return u.id === uid;
+    })
+    if(updateMovie){
+        var changedMovie = Object.assign(updateMovie, req.body);
+        let index = moviesData.indexOf(updateMovie);
+        moviesData[index] = changedMovie;
+        fs.writeFile('./movies.json',JSON.stringify(moviesData),(err)=>{
+            if(err){
+                res.json({
+                    "status":"failed",
+                    "message":"Something went wrong"
+                })
+            }else{
+                res.json({
+                    "status":"success",
+                    "data":moviesData
+                })
+            }
+        })
+       
+    }else{
+        res.json({
+            "status":"failed",
+            "message":"sorry the id is not available, try with another id"
+        })
+    }
+
+    
+}
+
+exports.patchOneMovie = (req, res)=>{
+    console.log(req.query.uid * 1);
+    const uid = req.query.uid * 1;
+    const updateMovie = moviesData.find((u)=>{
+        return u.id === uid;
+    })
+    if(updateMovie){
+        var changedMovie = Object.assign(updateMovie, req.body);
+        let index = moviesData.indexOf(updateMovie);
+        moviesData[index] = changedMovie;
+        fs.writeFile('./movies.json',JSON.stringify(moviesData),(err)=>{
+            if(err){
+                res.json({
+                    "status":"failed",
+                    "message":"Something went wrong"
+                })
+            }else{
+                res.json({
+                    "status":"success",
+                    "data":moviesData
+                })
+            }
+        })
+       
+    }else{
+        res.json({
+            "status":"failed",
+            "message":"sorry the id is not available, try with another id"
+        })
+    }
+
+    
+}
+
+------
+
+URLs
+
+getallmovie,delete all movie,put all movie,patch all movie,add new movie- localhost:3000/movieflix
+get one movie, delete one movie - localhost:3000/movieflix/6

@@ -1,0 +1,832 @@
+---> Example, One who logs in only should play, one who logs in only should log out. one who logsout cant play without logging in - STRICT SEQUENCE OF ACTIVITY IS MISSING
+
+login----->play---->play--->play---->logout---->login
+
+RELAY RACE!
+
+1. 1st person runs -all others wait
+2. next person should start running only when the torch is handed over to the person by the previous one
+
+METHOD CHAINING!
+
+login----->play---->play--->play---->logout
+1. Sequence/order is important
+
+only if play gets what it wants, then only it should work
+2. returning proper expected data is important
+
+Example:
+class User{
+    username;
+    useremail;
+    score;
+    constructor(name,email){
+        this.username=name;
+        this.useremail=email;
+        this.score = 0;
+    }
+   login=function(){
+       console.log(this.username," has logged in");
+       return this;
+   };
+   logout=function(){
+       console.log("Final Score", this.score)
+    console.log(this.username," has logged out");
+   };
+   play=function(){
+       this.score++;
+       console.log("Playing Game!!!");
+       return this;
+   }
+}
+
+
+var user1 = new User("Naga","naga@gmail.com");
+var user2 = new User("Muthu","muthu@gmail.com");
+var user3 = new User("Lakshmi","lakshmi@gmail.com");
+
+//User Login first, play as many times as he wanted, then finally logout - SEQUENCE 
+
+user1.login().play().play().logout();
+
+user2.login().play().play().play().play().logout();
+
+user3.login().play().play().play().play().play().play().logout();
+
+console.log("User1 Score:" +user1.score);
+console.log("User2 Score:" +user2.score);
+console.log("User3 Score:" +user3.score);
+
+------------
+
+ARRAY METHODS:
+
+ACTIVITY:
+
+Take an array with combination of positive and negative numbers.
+pick only odd numbers, multiply the odd numbers alone with 5 and print them in ascending order.
+
+var num = [-9,4,-3,7,2,99,43,-21,-86];
+
+num = num.filter((n)=>{
+    return n%2!=0;
+}).map((a)=>{
+    return a*5;
+}).sort((a,b)=>{
+    return a-b;
+});
+console.log(num);
+
+--------------------------------------------------------------
+
+ways to write javascript:
+
+Synchronous JS - based on the speed of the OS and memory - all the tasks happen simultaneously (complete task soon+do many task at a time - each line should be independent of each other)
+-> not worry about order of execution, starts simultaneously. SHARE TIMELINE
+running race -- 200 m ---- max time: 40 sec --- all the 10 persons will try to reach within 40 sec
+---> 10 jobs done within 40 sec <------ FRONT END JAVASCRIPT
+
+Asynchronous JS - order of execution + when one job is happening, other jobs WAIT _ MULTI THREADING+MULTI TASKING IS NOT ENCOURAGED+high dependancy +high coupling is there
+
+Relay race --- 50+50+50+50 m - 4 jobs -> 10 sec run (30 sec waiting) + 10 sec run(20 sec waiting) + 10 sec run (10 sec waiting) + 10 sec run (0 sec waiting) 
+
+What if none is waiting all starts to run --> will the race be over? NO
+-> DONT HURRY! COMPLETING TASK SUCCESSFULLY IS IMPORTANT - ITS OK TO CONSUME TIME!
+We use Async Js in Backend JS
+
+-> Trying to connect to DB
+	- js file-> conn_str->mongodb-> evaluate->success-> connect-> not connect-> revert back to js- JS FILE SHOULD WAIT
+-> NEXT ONLY crud OPERATION - 
+-> trying to connect to a network
+-> reading a file
+-> Writing  a stream of info
+
+functions had another function as an argument
+
+setTimeout(()=>{},1000)
+map(()=>{})
+filter(()=>{})
+
+
+CALLBACK METHODS, PROMISES, ASYNC/AWAIT KEYWORDS ---- helps js to achieve async js
+
+Perform Tasks one after the other so that order of the task is maintained and one task at a time is encouraged. No multi tasking--- if there is any dependancy
+
+create a file(write to that file());
+
+
+SYNCHROUS JS:
+
+// print 1 2 3 4 5 6 7 8 9 10 - what if we want 4,5,6 alone to be printed after 3 seconds//
+
+console.log(1);
+console.log(2);
+console.log(3);
+setTimeout(()=>{
+    console.log(4);
+    console.log(5);
+    console.log(6);
+},3000);
+console.log(7);
+console.log(8);
+console.log(9);
+console.log(10);
+//Expected Output: 123 --wait 3s-- 456 --78910
+
+//OUTPUT:
+--oRDER of the output is disturbed because --- no body told 78910 also should wait until 456 completes its work.
+123---utilised the wait time to print 78910--3sec over---456
+
+78910 is not dependant on 456--- so no errors
+
+SYNC JS WILL BE PROBLEMATIC IF THERE IS AND DEPENDANCY - ERRORS, MISSING DATA, WARNINGS
+
+// print 1 2 3 4 5 6 7 8 9 10 - what if we want 4,5,6 alone to be printed after 3 seconds//
+var a;
+console.log(1);
+console.log(2);
+console.log(3);
+setTimeout(()=>{
+    console.log(4);
+    console.log(5);
+    console.log(6);
+    a=888;
+    console.log(a);//888
+},3000);
+console.log(7);
+console.log(8);
+console.log(a);//undefined
+console.log(9);
+console.log(10);
+//Expected Output: 123 --wait 3s-- 456 --78910
+
+-----
+ASYNC SOLUTION:
+
+// print 1 2 3 4 5 6 7 8 9 10 - what if we want 4,5,6 alone to be printed after 3 seconds//
+var a;
+console.log(1);
+console.log(2);
+console.log(3);
+setTimeout(()=>{
+    console.log(4);
+    console.log(5);
+    console.log(6);
+    a=888;
+    console.log("AFTER 456--->",a);//888
+    console.log(7);
+    console.log(8);
+    console.log("DURING 7890---",a);//undefined
+    console.log(9);
+    console.log(10);
+},3000);
+
+//Expected Output: 123 --wait 3s-- 456 --78910
+------
+
+function Greeting(GoodBye)
+{
+    var [a,b] = GoodBye();// [3,5]
+    var c;
+    c=a+b;//c is dependant a,b - data supplied by some other function
+   console.log(c);
+}
+
+Greeting(()=>{
+    var a=3, b=5;
+    return [a,b];
+});
+
+--
+function first(x){
+    console.log("First Function");
+    x();
+}
+
+first(()=>{
+    console.log("Second Function")
+});//outer function call takes inner fn as a parameter only
+---
+SYNCRONOUS:
+
+//at the same 2 sec - it prints one and two at the same time
+setTimeout(()=>{
+    console.log("One")
+},2000);
+setTimeout(()=>{
+    console.log("Two")
+},2000);
+
+ASYNCRONOUS:
+//After first 2 sec-> One , After next 2 sec-> Two
+
+//Nest the function with one another
+
+setTimeout(()=>{
+    console.log("One")
+    setTimeout(()=>{
+        console.log("Two");
+    },2000)
+},2000);
+-------------------------
+
+GET READY!
+
+When time is 7 am
+wakes up ---- 2
+brush---- 3
+bath ----4
+gets ready----2
+has breakfast-----2
+drive---3
+reach--2
+----------------------> total: 18sec
+
+SYNC JS:
+
+var time=7;
+if(time==7){
+   setTimeout(()=>{
+       console.log("Woke up")
+   },2000);
+   setTimeout(()=>{
+       console.log("Brushed")
+   },3000)
+   setTimeout(()=>{
+       console.log("Bathed")
+   },2000);
+   setTimeout(()=>{
+       console.log("Got ready")
+   },3000)
+   setTimeout(()=>{
+       console.log("Had Breakfast")
+   },2000);
+   setTimeout(()=>{
+       console.log("Drove to office")
+   },3000)
+   setTimeout(()=>{
+       console.log("Reached!!")
+   },2000);
+   
+}
+
+oUTPUT:
+
+Woke up
+Bathed
+Had Breakfast
+Reached!!
+Brushed
+Got ready
+Drove to office
+
+--AFTER 2 SEC 
+Woke up
+Bathed
+Had Breakfast
+Reached!!
+--AFTER 1 SEC
+Brushed
+Got ready
+Drove to office
+
+OS: consumed 3 sec all together- aligned all the tasks based on its order
+-- order of execution was not obeyed + waiting time was not at all utilised
+-------
+
+ACTIVITY:
+
+REARRANGE THE CODE SNIPPET - ACCORDING TO ASYNC JS - SO THAT OUTPUT TAKES 18 SEC TO DO ALL THE JOBS ONE AFTER THE OTHER
+
+CALLBACKS!
+
+
+--------------------
+
+CALLBACK:
+ 
+Call a function inside another function to form connection between those functions - we use callback
+
+PROBLEM:
+//we expect line by line exec - 4 sec to be consumed
+//both happens in the same time - 2sec - both o/p
+setTimeout(()=>{
+    console.log("Method 1 done!")
+},2000);
+setTimeout(()=>{
+    console.log("Method 2 done!")
+},2000);
+
+SOLUTION:
+
+setTimeout(()=>{
+    console.log("Method 1 done!");
+    setTimeout(()=>{
+        console.log("Method 2 done!")
+    },2000);
+},2000);
+
+-------
+
+We can decide when a function should be called, by passing them as a parameter in another function call. This is callback.
+
+function one(){
+    two();
+    console.log("One Method");
+}
+function two(){
+    console.log("Two Method");
+}
+one(two);
+
+Output:
+
+Two Method
+One Method
+
+---------
+
+PROBLEM - All functions are called within 3 sec. we cant control the order of different function call
+-> we are going to pass the other fns as parameter to the first fn call.
+
+var time=7;
+if(time==7){
+   setTimeout(()=>{
+       console.log("Woke up")
+   },2000);
+   setTimeout(()=>{
+       console.log("Brushed")
+   },3000)
+   setTimeout(()=>{
+       console.log("Bathed")
+   },2000);
+   setTimeout(()=>{
+       console.log("Got ready")
+   },3000)
+   setTimeout(()=>{
+       console.log("Had Breakfast")
+   },2000);
+   setTimeout(()=>{
+       console.log("Drove to office")
+   },3000)
+   setTimeout(()=>{
+       console.log("Reached!!")
+   },2000);
+   
+}
+
+---
+SOLUTION : NESTED CALLBACK:
+
+var time=7;
+if(time==7){
+   setTimeout(()=>{
+       console.log("Woke up");
+       setTimeout(()=>{
+            console.log("Brushed");
+            setTimeout(()=>{
+                console.log("Bathed");
+                setTimeout(()=>{
+                    console.log("Got ready");
+                     setTimeout(()=>{
+                        console.log("Had Breakfast");
+                        setTimeout(()=>{
+                            console.log("Drove to office");
+			    setTimeout(()=>{
+                            	console.log("Reached!!")
+                          },2000);
+                        },3000);
+                    },2000);
+                },3000)
+            },2000);
+        },3000)
+   },2000);
+}
+
+iF WE NEST MANY FUNCTION CALLS TOGETHER TO ASYNCHRONOUSLY DO MANY TASKS, THEN IT FORMS A PYRAMID-  CALLBACK HELL
+
+-> Callback hell will form a tight chaining- so if any one function has an issue, it makes problem to all the other functions.
+-> we cant use Exception handling/healing code to save the other functions.
+
+Instead of callback we can use Promises!
+
+------
+CALLBACK- EXAMPLE:
+
+function fetchUserData(userId, displayUserData) {
+  setTimeout(function() {
+    const userData = {
+      userId: userId,
+      username: "john_doe",
+      email: "john@example.com"
+    };
+    displayUserData(userData);
+  }, 2000);
+}
+function displayUserData(user) {
+  console.log("User ID: " + user.userId);
+  console.log("Username: " + user.username);
+  console.log("Email: " + user.email);
+}
+fetchUserData(123, displayUserData);//1
+
+IF DATA IS GOING TO BE SURELY REACHED BEDORE DISPLAYING DATA FUNCTION CALL: WE CAN USE SYNC JS
+
+var userData={};
+function fetchUserData(userId) {
+  //setTimeout(function() {
+    userData = {
+      userId: userId,
+      username: "john_doe",
+      email: "john@example.com"
+    };
+  //}, 2000);
+}
+function displayUserData(user) {
+  console.log("User ID: " + user.userId);
+  console.log("Username: " + user.username);
+  console.log("Email: " + user.email);
+}
+fetchUserData(123);//it will take time to get the 123 user info if data is from an api/db/cloud-so displayuserdata has to wait until data reaches var userData 
+displayUserData(userData);
+
+IN SYNC JS IF THERE IS GOING TO BE ANY DELAY - IT AFFECTS THE NEXT FN CALL:
+var userData={};
+function fetchUserData(userId) {
+  setTimeout(function() {
+    userData = {
+      userId: userId,
+      username: "john_doe",
+      email: "john@example.com"
+    };
+  }, 2000);
+}
+function displayUserData(user) {
+  console.log("User ID: " + user.userId);
+  console.log("Username: " + user.username);
+  console.log("Email: " + user.email);
+}
+fetchUserData(123);//it will take time to get the 123 user info if data is from an api/db/cloud-so displayuserdata has to wait until data reaches var userData 
+displayUserData(userData);
+
+OUTPUT:
+User ID: undefined
+Username: undefined
+Email: undefined
+-----
+
+WHENEVER WE ARE DEPENDING ON EXTERNAL RESOURCES LIKE API/DB TO FETCH ANY DATA --- WE SHOULD THIINK ABOUT THE CONSEQUENCE CODE -- AFTER TAKING THE DATA- WHAT SHOULD BE DONR/ WHAT ARE THE FUNCTIONS THAT ARE DEPENDANT ON THIS DATA... should wait until fetching is over - we do callback!
+
+var userData={};
+function fetchUserData(userId) {
+  setTimeout(function() {
+    userData = {
+      userId: userId,
+      username: "john_doe",
+      email: "john@example.com"
+    };
+    displayUserData(userData);//keep this function call ON HOLD before fetch
+    searchuser(userData);
+
+  }, 2000);
+}
+function displayUserData(user) {
+  console.log("User ID: " + user.userId);
+  console.log("Username: " + user.username);
+  console.log("Email: " + user.email);
+}
+function searchuser(user){
+    if(user.username=="john_doe"){
+        console.log("Hello DOE!")
+    }else{
+        console.log("Hello Beny!")
+    }
+}
+fetchUserData(123);//it will take time to get the 123 user info if data is from an api/db/cloud-so displayuserdata has to wait until data reaches var userData 
+
+DISADVANTAGE:
+
+Exception handling cant be used here because of tight coupling. so that if there is any problm midway, It cat be handled so that the upcoming tasks be on hold.
+
+PROMISES:
+
+The Promise object represents the eventual completion (or failure) of an asynchronous operation and its resulting value.
+
+A Promise is in one of these states:
+
+pending: initial state, neither fulfilled nor rejected.
+fulfilled: meaning that the operation was completed successfully.
+rejected: meaning that the operation failed.
+
+var isAdmin=false;
+const myPromise = ()=>{
+    return new Promise((resolve,reject)=>{
+        if(isAdmin)
+            resolve(one()); //Asking to call one()
+        else
+            reject(console.log("Sorry you are not an admin"));
+    })
+}
+function one(){
+    console.log("Welcome Admin!")
+}
+ myPromise()
+.then(()=>{
+    console.log("Success")
+}).then(()=>{
+    console.log("Success1")
+}).then(()=>{
+    console.log("Success2")
+}).then(()=>{
+    console.log("Success3")
+}).then(()=>{
+    console.log("Success4")
+})
+.catch(()=>{
+    console.log("Log out!")
+});
+
+If he is an admin--> say welcome-> do the chained tasks
+If he is not an admin --> reject promise, log out
+
+If the time is 7---> function wake up()
+If the time is not 7 ---> reject the promise
+
+-------
+
+var time = 7;
+
+var startTasks=(task,ms)=>{
+    return new Promise((res,rej)=>{
+        if(time==7){
+            setTimeout(()=>{
+                res(task());
+            },ms)
+            
+        }else{
+            rej();
+        }
+    }); 
+}
+
+var wakeUp=()=>{
+   
+       console.log("Woken UP!") 
+  
+}
+var brush=()=>{
+    
+       console.log("Brushed!") 
+   
+}
+var bath=()=>{
+    
+       console.log("Bathed!") 
+ 
+}
+startTasks(wakeUp,2000)
+.then(()=>{
+   return startTasks(brush,3000);
+})
+.then(()=>{
+     return startTasks(bath,2000);
+})
+.catch(()=>{
+    console.log("Time is not 7")
+});
+
+var time = 7;
+
+var startTasks=(task,ms)=>{
+    return new Promise((res,rej)=>{
+        if(time==7){
+            setTimeout(()=>{
+                res(task());
+            },ms)
+            
+        }else{
+            rej();
+        }
+    }); 
+}
+
+var wakeUp=()=>{
+   
+       console.log("Woken UP!") 
+  
+}
+var brush=()=>{
+    
+       console.log("Brushed!") 
+   
+}
+var bath=()=>{
+    
+       console.log("Bathed!") 
+ 
+}
+var GotReady=()=>{
+   
+       console.log("Got Ready!") 
+  
+}
+var Breakfast=()=>{
+    
+       console.log("Had Breakfast!") 
+   
+}
+var Drive=()=>{
+    
+       console.log("Drove!") 
+ 
+}
+var Reach=()=>{
+    
+       console.log("Reached!") 
+ 
+}
+startTasks(wakeUp,2000)
+.then(()=>{
+   return startTasks(brush,3000);
+}).then(()=>{
+     return startTasks(bath,2000);
+})
+.then(()=>{
+     return startTasks(GotReady,2000);
+}).then(()=>{
+   return startTasks(Breakfast,3000);
+})
+.then(()=>{
+     return startTasks(Drive,2000);
+})
+.then(()=>{
+     return startTasks(Reach,2000);
+})
+.catch(()=>{
+    console.log("Time is not 7")
+})
+.finally(()=>{
+    console.log("The End!")
+});
+------------------------------
+
+1. fetch() --> inbuilt method used to extract data from an API
+2. fs.promises.readFile() --> reads a file
+
+fetch('https://api.github.com/users')
+.then((res)=>{
+    return res.json();
+})
+.then((data)=>{
+    console.log(data);
+}).catch((err)=>{
+    console.log("Something went wrong")
+})
+
+--------------------
+
+var fs = require('fs');
+
+fs.promises.readFile('./abc.txt',{encoding:'utf-8'})
+.then((data)=>{
+console.log(data);
+}).catch((err)=>{
+    console.log("Something went wrong")
+})
+
+----------------------
+
+ASYNC/AWAIT:
+
+can also be used to a function call --> that function should return a promise.
+
+The function in which we are trying to put await should be surrounded with  normal fn-> pass----> async keyword - To mention that this function is going to do some async task - delayed function 
+
+The place where  fnctins returning a promise are going to be called ---> use await keyword - to mention next lines to wait until the current call is done.
+
+Why these keywords: To reduce the complexity of .then, .catch methods & to keep these lines of code similar to SYNCH SYNTAX!
+
+async function DataFetchFromAPI(){
+    try{
+    var response = await fetch('https://api.github.com/users');
+    var data =await response.json();
+    console.log(data);
+    }catch(err){
+        console.log("problem")
+    }
+}
+
+DataFetchFromAPI();
+
+---------------
+
+var fs = require('fs');
+
+async function readingFile(){
+
+    try{
+        var data = await fs.promises.readFile('./ac.txt',{encoding:'utf-8'})
+        console.log(data);
+    }catch(err){
+        console.log("Problem here!")
+    }
+
+}
+
+readingFile();
+
+--------
+
+var time = 7;
+
+var startTasks=(ms)=>{
+    return new Promise((res,rej)=>{
+        if(time==7){
+            setTimeout(()=>{
+                res();
+            },ms)
+            
+        }else{
+            rej();
+        }
+    }); 
+}
+
+var wakeUp=()=>{
+   
+       console.log("Woken UP!") 
+  
+}
+var brush=()=>{
+    
+       console.log("Brushed!") 
+   
+}
+var bath=()=>{
+    
+       console.log("Bathed!") 
+ 
+}
+var GotReady=()=>{
+   
+       console.log("Got Ready!") 
+  
+}
+var Breakfast=()=>{
+    
+       console.log("Had Breakfast!") 
+   
+}
+var Drive=()=>{
+    
+       console.log("Drove!") 
+ 
+}
+var Reach=()=>{
+    
+       console.log("Reached!") 
+
+}
+
+async function DoStart(){
+    try{
+await startTasks(2000)//timer causes delay
+wakeUp();
+await startTasks(3000)
+brush();
+await startTasks(2000)
+bath();
+await startTasks(3000)
+GotReady();
+await startTasks(2000)
+Breakfast();
+await startTasks(3000)
+Drive();
+await startTasks(2000)
+Reach();
+await startTasks(3000)
+}catch(err){
+    console.log("Something went wrong")
+}
+}
+
+DoStart();
+
+
+
+
+
+async------> async function abc(){
+				await function_call();
+			}
+await -----> await function_call();----> This function return a promise
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,133 @@
+OBJECTS:
+
+Composite datatype that can store more than one data in a variable in a key-value pair format.
+Heterogenous in nature.
+
+var obj = {id:1, name:"Suji", age:27.8, isMarried: true};
+console.log(obj);
+console.log(obj.age);
+console.log(obj.gender);//If we try to fetch a key which is not available in an object we get undefined as the answer
+
+var data =[1,2,3];
+console.log(data[20]);//If we try to fetch a idex which is not having data in the array we get undefined as the answer
+---------------------------
+var obj = {id:1,
+            name:{firstname:"Naga",middlename:"Muthu",lastname:"Lakshmi"}, 
+            age:27.8, 
+            isMarried: true
+};
+console.log(obj);
+console.log(obj.age);
+//obj can hold another obj - yes
+console.log(obj.name.firstname);
+------------------------------------
+
+//can array have an object - yes
+//can object have an array - yes
+
+var arr = [11,22,33,{id:1, name:"Swarna"}];
+var obj = {
+    sId:123, 
+    name:"Siddhu", 
+    hobbies:["eat","code","sleep"]
+}
+
+arr.map((a)=>{console.log(a)});
+console.log(arr[3]);
+console.log(arr[3].name);//Swarna
+
+console.log(obj.hobbies);
+console.log(obj.hobbies[1]);//code
+----------------
+
+can arrays and objects contain a function - yes
+
+var arr = [11,22,function abc(){
+                        console.log("hello");
+                        return "Bye"
+                    },33,44]
+arr[2]();
+console.log(arr[2]());
+
+var arr = [11,22,()=>{
+                        console.log("hello");
+                        return "Bye"
+                    },33,44]
+arr[2]();
+console.log(arr[2]());
+---------
+var obj = {
+    id:1,
+    name:"Naga",
+    activities: ()=>{
+        console.log("Hello");
+        return "Bye!";
+    }
+}
+console.log(obj.id);//property
+console.log(obj.activities);
+obj.activities();//Hello
+console.log(obj.activities());//Bye - functions
+
+Arrays - container for similar kind of data
+
+Objects - key value pairs of properties and functions.
+
+Inbuilt Array methods:
+push, pop, remove, isExists, includes, map, filter, find, sort, reduce......
+
+Inbuilt Objects:
+console.log(window);// window object contains nested objects, properties, functions
+
+NESTED OBJECTS OF WINDOW:
+
+location
+document
+console
+screen
+navigator
+history
+
+FUNCTIONS OF WINDOW:
+
+alert(), prompt(), confirm(), setTimeout(), setInterval(), open(), close(), scroll()
+
+PROPERTIES OF WINDOW:
+
+width, height, innerWidth, innerHeight
+
+
+window.document.write(); //print some info on the webpage
+
+window.alert(); //show info as a notification warning
+
+window.console.log(); //print info in the console/terminal
+
+var window={
+innerWidth:______,
+document: {
+			write:()=>{},
+			getElementById:()=>{}
+			},
+console:{
+		log:()=>{},
+		err:()=>{},
+		warn:()=>{}
+		},
+
+alert:()=>{},
+prompt:()=>{},
+setTimeout:()=>{}
+};
+
+
+let words = ["Hello", "world", "welcome"];
+
+// Change 'o' to 'x' in all words
+words = words.map(word => word.replace(/o/g, 'x'));
+
+// Change 'e' to 'z' in 'welcome' alone
+words[2] = words[2].replace(/e/g, 'z');
+
+console.log(words); // Output: ["Hellx", "wxrld", "wlcomz"]
+

@@ -1,0 +1,389 @@
+Iteration2.js
+import React from 'react'
+
+var students=[{id:1,name:"Jay"},{id:2,name:"Parker"},{id:3, name:"Cathy"},{id:4,name:"Kiara"}]
+
+const Iteration2 = () => {
+  return (
+    <div>
+    <table>
+        <thead>
+            <tr>
+            <th>ROLLNUM</th>
+            <th>FIRSTNAME</th>
+            </tr>
+        </thead>
+        <tbody>
+    		<tr>
+			<td>1</td>
+			<td>sad</td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td>dff</td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td>sdfs</td>
+		</tr>
+		<tr>
+			<td>4</td>
+			<td>sdff</td>
+		</tr>
+         </tbody>
+    </table>
+            
+    </div>
+  )
+}
+
+export default Iteration2
+
+
+HOW DO WE TRANSFER THE STUDENT INFO FROM ONE COMPONENT TO ANOTHER- PROPS
+
+import React from 'react'
+
+var booksInfo = [{id:1,title : "Shades of Life" ,imgPath:"https://m.media-amazon.com/images/I/51HBcmFYKYL._AC_UY218_.jpg" ,author:"Dr. T. S. Parmar"},
+{id:2,title:"A Book of Secrets", genre:"Humour" ,author:"Derren Brown" ,imgPath:"https://m.media-amazon.com/images/I/71Bzl1DX1UL._AC_UY218_.jpg" },
+{id:3,title:"Don't Believe Everything You Think", imgPath:"https://m.media-amazon.com/images/I/715qi-cIbML._AC_UY218_.jpg" ,author:"Joseph Nguyen " },
+{id:4,title:"Chanakya Neeti" ,imgPath:"https://m.media-amazon.com/images/I/61cTGsnqI7L._AC_UY218_.jpg", author:"Radhakrishnan Pillai "},
+{id:5,title:"The Little Red Book" ,genre:"Horror" ,imgPath:"https://m.media-amazon.com/images/I/519VZX3m0mL._AC_UY218_.jpg", author:"Bill P. "},
+{id:6,title:"Atomic Habits" ,genre:"Chemistry" ,imgPath:"https://m.media-amazon.com/images/I/81IL8Dy4vmL._AC_UY218_.jpg" ,author:"James Clear"},
+{id:7,title:"Don't Polish Your Ignorance", imgPath:"https://m.media-amazon.com/images/I/714yDjC6UVL._AC_UY218_.jpg" ,author:"Sathguru"},
+{id:8,title:"Rumi's Little Book of Life" ,imgPath:"https://m.media-amazon.com/images/I/91eize2JOzL._AC_UY218_.jpg" ,author:"Rumi, Marayam H Mafi, et al."}]
+
+
+const BookList2 = () => {
+  return (
+    <section className='booklist'>
+        {booksInfo.map((bookInfo)=>{
+          var {id} = bookInfo;
+          return(
+            <Book2 key={id} {...bookInfo}></Book2>
+          )
+        })}
+    </section>
+  )
+}
+
+
+const Book2=(props)=>{
+ var {id,title,imgPath,author,genre} = props
+    return (
+        <article className='book'>
+          <h1>{title} </h1> 
+          <i>{genre}</i><br/>
+        <img src={imgPath} alt=" Not Found" />
+        <h4 style={{color:'black', backgroundColor:"bisque", width: 'fit-content',fontSize:'0.9rem'}}>{author}</h4>
+        
+        </article> 
+    )
+}
+
+
+export default BookList2
+
+
+events:
+
+import React from 'react'
+
+var booksInfo = [{id:1,title : "Shades of Life" ,imgPath:"https://m.media-amazon.com/images/I/51HBcmFYKYL._AC_UY218_.jpg" ,author:"Dr. T. S. Parmar"},
+{id:2,title:"A Book of Secrets", genre:"Humour" ,author:"Derren Brown" ,imgPath:"https://m.media-amazon.com/images/I/71Bzl1DX1UL._AC_UY218_.jpg" },
+{id:3,title:"Don't Believe Everything You Think", imgPath:"https://m.media-amazon.com/images/I/715qi-cIbML._AC_UY218_.jpg" ,author:"Joseph Nguyen " },
+{id:4,title:"Chanakya Neeti" ,imgPath:"https://m.media-amazon.com/images/I/61cTGsnqI7L._AC_UY218_.jpg", author:"Radhakrishnan Pillai "},
+{id:5,title:"The Little Red Book" ,genre:"Horror" ,imgPath:"https://m.media-amazon.com/images/I/519VZX3m0mL._AC_UY218_.jpg", author:"Bill P. "},
+{id:6,title:"Atomic Habits" ,genre:"Chemistry" ,imgPath:"https://m.media-amazon.com/images/I/81IL8Dy4vmL._AC_UY218_.jpg" ,author:"James Clear"},
+{id:7,title:"Don't Polish Your Ignorance", imgPath:"https://m.media-amazon.com/images/I/714yDjC6UVL._AC_UY218_.jpg" ,author:"Sathguru"},
+{id:8,title:"Rumi's Little Book of Life" ,imgPath:"https://m.media-amazon.com/images/I/91eize2JOzL._AC_UY218_.jpg" ,author:"Rumi, Marayam H Mafi, et al."}]
+
+
+const BookList2 = () => {
+  return (
+    <section className='booklist'>
+        {booksInfo.map((bookInfo)=>{
+          var {id} = bookInfo;
+          return(
+            <Book2 key={id} {...bookInfo}></Book2>
+          )
+        })}
+    </section>
+  )
+}
+
+
+const Book2=(props)=>{
+ var {id,title,imgPath,author,genre} = props
+var alertClick=()=>{
+  alert("Hello World-External Function Call without Parameter!");
+}
+var displayNum=(n)=>{
+alert(n+" Number Displayed from External Function call")
+}
+
+    return (
+        <article className='book'>
+          <h1>{title} </h1> 
+          <i>{genre}</i><br/>
+        <img src={imgPath} alt=" Not Found" />
+        <h4 style={{color:'black', backgroundColor:"bisque", width: 'fit-content',fontSize:'0.9rem'}}>{author}</h4>
+        <button onClick={alertClick}> Click Me to get an Alert!</button>
+        <button onClick={()=>{alert("Alert Inline Function")}}> Click Me to get an Alert!</button>
+        <button onClick={()=>{displayNum(5)}}> Supply Num 5</button>
+
+        </article> 
+    )
+}
+
+
+export default BookList2
+
+
+1. If the method is expressed outside - Externally   -> function call should be like:
+        <button onClick={alertClick}> Click Me to get an Alert!</button>
+
+2. If the method is expressed inline   -> function call is done inside the JSX itself:
+        <button onClick={()=>{alert("Alert Inline Function")}}> Click Me to get an Alert!</button>
+
+3. If the method is with parameter -> wrap that function call inside an arrow method
+        <button onClick={()=>{displayNum(5)}}> Supply Num 5</button>
+
+
+import - export
+
+IMPORT:
+-> To get a component's access to the current component
+
+import {Book2} from './Book2.js';
+import Book2 from './Book2.js';
+
+
+EXPORT:
+-> To make a component available for all the components( Enhance visibility)
+
+export var Book2=(props)=>{   ----------------> import this using {}
+.
+.
+.
+}
+
+var Book2=(props)=>{
+}
+export default Book2; ---------------------------> import without {}
+
+-----
+Booklist2.js
+import React from 'react';
+import  Book2  from './Book2';
+
+var booksInfo = [{id:1,title : "Shades of Life" ,imgPath:"https://m.media-amazon.com/images/I/51HBcmFYKYL._AC_UY218_.jpg" ,author:"Dr. T. S. Parmar"},
+{id:2,title:"A Book of Secrets", genre:"Humour" ,author:"Derren Brown" ,imgPath:"https://m.media-amazon.com/images/I/71Bzl1DX1UL._AC_UY218_.jpg" },
+{id:3,title:"Don't Believe Everything You Think", imgPath:"https://m.media-amazon.com/images/I/715qi-cIbML._AC_UY218_.jpg" ,author:"Joseph Nguyen " },
+{id:4,title:"Chanakya Neeti" ,imgPath:"https://m.media-amazon.com/images/I/61cTGsnqI7L._AC_UY218_.jpg", author:"Radhakrishnan Pillai "},
+{id:5,title:"The Little Red Book" ,genre:"Horror" ,imgPath:"https://m.media-amazon.com/images/I/519VZX3m0mL._AC_UY218_.jpg", author:"Bill P. "},
+{id:6,title:"Atomic Habits" ,genre:"Chemistry" ,imgPath:"https://m.media-amazon.com/images/I/81IL8Dy4vmL._AC_UY218_.jpg" ,author:"James Clear"},
+{id:7,title:"Don't Polish Your Ignorance", imgPath:"https://m.media-amazon.com/images/I/714yDjC6UVL._AC_UY218_.jpg" ,author:"Sathguru"},
+{id:8,title:"Rumi's Little Book of Life" ,imgPath:"https://m.media-amazon.com/images/I/91eize2JOzL._AC_UY218_.jpg" ,author:"Rumi, Marayam H Mafi, et al."}]
+
+
+const BookList2 = () => {
+  return (
+    <section className='booklist'>
+        {booksInfo.map((bookInfo)=>{
+          var {id} = bookInfo;
+          return(
+            <Book2 key={id} {...bookInfo}></Book2>
+          )
+        })}
+    </section>
+  )
+}
+
+
+
+
+
+export default BookList2
+
+Book2.js
+const Book2=(props)=>{
+    var {id,title,imgPath,author,genre} = props
+   var alertClick=()=>{
+     alert("Hello World-External Function Call without Parameter!");
+   }
+   var displayNum=(n)=>{
+   alert(n+" Number Displayed from External Function call")
+   }
+   
+       return (
+           <article className='book'>
+             <h1>{title} </h1> 
+             <i>{genre}</i><br/>
+           <img src={imgPath} alt=" Not Found" />
+           <h4 style={{color:'black', backgroundColor:"bisque", width: 'fit-content',fontSize:'0.9rem'}}>{author}</h4>
+           <button onClick={alertClick}> Click Me to get an Alert!</button>
+           <button onClick={()=>{alert("Alert Inline Function")}}> Click Me to get an Alert!</button>
+           <button onClick={()=>{displayNum(5)}}> Supply Num 5</button>
+           <button onClick={()=>{
+             var displayNumber=(n)=>{
+               alert(n);
+             }
+             displayNumber(19);
+         }}> Supply Num 19</button>
+   
+           </article> 
+       )
+   }
+
+   export default Book2;
+
+----
+CAN WE EXPORT AND IMPORT JSON DATA LIKE COMPONENTS
+YEs we can  -> json/js data also
+
+booksInfo.js
+
+export var booksInfo = [
+  {
+    id: 1,
+    title: "Shades of Life",
+    imgPath: "https://m.media-amazon.com/images/I/51HBcmFYKYL._AC_UY218_.jpg",
+    author: "Dr. T. S. Parmar",
+  },
+  {
+    id: 2,
+    title: "A Book of Secrets",
+    genre: "Humour",
+    author: "Derren Brown",
+    imgPath: "https://m.media-amazon.com/images/I/71Bzl1DX1UL._AC_UY218_.jpg",
+  },
+  {
+    id: 3,
+    title: "Don't Believe Everything You Think",
+    imgPath: "https://m.media-amazon.com/images/I/715qi-cIbML._AC_UY218_.jpg",
+    author: "Joseph Nguyen ",
+  },
+  {
+    id: 4,
+    title: "Chanakya Neeti",
+    imgPath: "https://m.media-amazon.com/images/I/61cTGsnqI7L._AC_UY218_.jpg",
+    author: "Radhakrishnan Pillai ",
+  },
+  {
+    id: 5,
+    title: "The Little Red Book",
+    genre: "Horror",
+    imgPath: "https://m.media-amazon.com/images/I/519VZX3m0mL._AC_UY218_.jpg",
+    author: "Bill P. ",
+  },
+  {
+    id: 6,
+    title: "Atomic Habits",
+    genre: "Chemistry",
+    imgPath: "https://m.media-amazon.com/images/I/81IL8Dy4vmL._AC_UY218_.jpg",
+    author: "James Clear",
+  },
+  {
+    id: 7,
+    title: "Don't Polish Your Ignorance",
+    imgPath: "https://m.media-amazon.com/images/I/714yDjC6UVL._AC_UY218_.jpg",
+    author: "Sathguru",
+  },
+  {
+    id: 8,
+    title: "Rumi's Little Book of Life",
+    imgPath: "https://m.media-amazon.com/images/I/91eize2JOzL._AC_UY218_.jpg",
+    author: "Rumi, Marayam H Mafi, et al.",
+  },
+  {
+    id: 9,
+    title: "The Asura Way",
+    imgPath: "https://m.media-amazon.com/images/I/71VQNGbfuXL._SY342_.jpg",
+    author: "Anand Neelakantan",
+  },
+  {
+    id: 10,
+    title: "The Book of Life",
+    imgPath: "https://m.media-amazon.com/images/I/61WVRpAeALL._SY342_.jpg",
+    author: "J krishnamurti",
+  },
+];
+
+
+Booklist.js
+import React from 'react';
+import  Book2  from './Book2';
+import { booksInfo } from './booksInfo';
+
+
+
+const BookList2 = () => {
+  return (
+    <section className='booklist'>
+        {booksInfo.map((bookInfo)=>{
+          var {id} = bookInfo;
+          return(
+            <Book2 key={id} {...bookInfo}></Book2>
+          )
+        })}
+    </section>
+  )
+}
+
+export default BookList2
+
+-----
+Development - If the app code is maintained locally and developer is working on it
+Build - once a version of the app is over and its ready -  we will pack them in to a build
+Deploy - sending the build files to a repository and hosting it in the web (CMS, Github  -final version of the code and its each updates and versions are maintained here, Vercel, Netlify, GithubPages, bluehost, hostinger - hosting app in web)
+Production - the app is up and running in any of the hosting platforms
+-----
+TO CREATE  A BUILD
+
+Run the command
+npm run build
+
+It wil create a build folder
+
+Login to Netlify.com
+and drag and drop the build folder alone to host your project
+
+--------------
+
+Advanced React
+UseState Hook
+UseEffect Hook
+Conditional Rendering
+Short Circuiting
+Controlled Input Form
+Multiple Input Form
+Use Ref Hook
+UseReducer Hook
+USe Context Hook
+PropDrilling
+Router
+--------
+USESTATE:
+
+Hook used to create and maintain the state of the variable
+
+If we try to change the state of the variable from Dharshan--> Lekha. Normally in React It will not happen -- why because the changes internally happening to the variable will not reflect on react ui. 
+If that needs to happen, we will have to reload the entire application (the state change needs to be informed to the browser)
+
+WHO WILL RELOAD THE APP AND INFORM THE STATE CHANGE TO THE BROWSER - USESTATE
+
+UseState is a function with the variable parameter that returns an array.
+Inside that array 2 items are present.
+1st item--> the variable (that needs to be changing)
+2nd item--> the dispatcher function (that will trigger the reload of the react app)
+
+
+
+
+
+
+
+
+
+

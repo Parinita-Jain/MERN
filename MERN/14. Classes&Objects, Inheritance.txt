@@ -1,0 +1,249 @@
+
+
+Classes and Objects
+
+Constructor
+
+Inheritance
+
+Method Chaining
+----------------
+Classess- are also the generator of objects
+
+Object contains Properties and Function
+Classes are the real - generators of Properties and Functions.
+Objects are the blue print of a class
+
+Constructor - Predefined function of a class thats capable of gathering the prop and functions of a class
+
+-----
+User.js
+
+class User{
+    //member prop
+    username;
+    useremail;
+    //predefined function - constructor
+    constructor(name,email){
+        //assign outer data to member prop - to use them inside the class
+        //this operator - to refer current obj,props belonging to the current class
+        this.username=name;
+        this.useremail=email;
+        
+    }
+   login=function(){
+       console.log(this.username," has logged in");
+   };
+   logout=function(){
+    console.log(this.username," has logged out");
+   };
+}
+
+var user1 = new User("Naga","naga@gmail.com");
+var user2 = new User("Muthu","muthu@gmail.com");
+console.log(user1.username,user2.useremail);
+//an object of user class is needed to call its member function
+user1.login();
+user2.login();
+user1.logout();
+user2.logout();
+// excluding constructors- other member functions should be called by object
+//constructor function is automatically called - When an object is created!!
+
+Admin.js
+class Admin{
+    username;
+    useremail;
+    constructor(name,email){
+        this.username=name;
+        this.useremail=email;
+    }
+   login=function(){
+       console.log(this.username," has logged in");
+   };
+   logout=function(){
+    console.log(this.username," has logged out");
+   };
+   deleteUser=function(){
+    console.log(this.username," deleted");
+   };
+}
+var admin1 = new Admin("Naga","naga@gmail.com");
+var admin2 = new Admin("Muthu","muthu@gmail.com");
+
+console.log(admin1);
+
+------------------------------
+1. use one object of a class to remove another object of another class ---> INHERITANCE
+
+INHERITANCE:
+Creates a relationship between various classes
+To relate class 1 to class 2 ---> use extends keyword.
+
+Admin extends User
+Who extends Whom?
+one who lends hands ---- User --- Parent/Super/Base
+one who gains the extension --- Admin --- Child/Sub/Derived
+
+--> use of inheritance: to access another class via another class'es object, avoid rewriting , enhances reusability
+
+-------------
+Follow DRY 
+
+User,Admin class - constructor, login, logout - AVOIDED REWRITING
+User - play()
+Admin - deleteUser()
+
+Admin extends User ---> Admin is now allowed to use all the user class'es props and functions
+
+inherit.js
+
+class User{
+    username;
+    useremail;
+    constructor(name,email){
+        this.username=name;
+        this.useremail=email;
+    }
+   login=function(){
+       console.log(this.username," has logged in");
+   };
+   logout=function(){
+    console.log(this.username," has logged out");
+   };
+   play=function(){
+       console.log(this.username," has started to play");
+   }
+}
+
+class Admin extends User{
+   deleteUser=function(){
+    console.log(this.username," deleted");
+   };
+}
+
+var user1 = new User("Naga","naga@gmail.com");
+var user2 = new User("Muthu","muthu@gmail.com");
+
+var admin1 = new Admin("Naga","naga@gmail.com");
+var admin2 = new Admin("Muthu","muthu@gmail.com");
+console.log(admin1);//coz user is extended by admin
+/*
+admin1.username
+admin1.useremail
+admin1.login()
+admin1.play()
+admin1.deleteUser();
+*/
+-------------------------------
+
+REMOVE USERS:
+
+class User{
+    username;
+    useremail;
+    constructor(name,email){
+        this.username=name;
+        this.useremail=email;
+    }
+   login=function(){
+       console.log(this.username," has logged in");
+   };
+   logout=function(){
+    console.log(this.username," has logged out");
+   };
+   play=function(){
+       console.log(this.username," has started to play");
+   }
+}
+
+class Admin extends User{
+   deleteUser=function(u){
+    Users = Users.filter((e)=>{
+        return u!=e;
+    });
+   };
+}
+
+var user1 = new User("Naga","naga@gmail.com");
+var user2 = new User("Muthu","muthu@gmail.com");
+
+var admin1 = new Admin("Naga","naga@gmail.com");
+var admin2 = new Admin("Muthu","muthu@gmail.com");
+
+var Users = [user1,user2,admin1,admin2];
+
+admin1.deleteUser(user2);
+admin1.deleteUser(user1);
+console.log(Users);
+----------------------------------------------------
+
+METHOD CHAINING:
+
+chain.js
+
+class User{
+    username;
+    useremail;
+    score;
+    constructor(name,email){
+        this.username=name;
+        this.useremail=email;
+        this.score = 0;
+    }
+   login=function(){
+       console.log(this.username," has logged in");
+   };
+   logout=function(){
+       console.log("Final Score", this.score)
+    console.log(this.username," has logged out");
+   };
+   play=function(){
+       this.score++;
+       console.log("Playing Game!!!");
+   }
+}
+
+
+var user1 = new User("Naga","naga@gmail.com");
+var user2 = new User("Muthu","muthu@gmail.com");
+var user3 = new User("Lakshmi","lakshmi@gmail.com");
+
+//User Login first, play as many times as he wanted, then finally logout - SEQUENCE 
+user1.login();
+user1.play();
+user1.play();
+user1.logout();
+
+user2.login();
+user2.play();
+user2.play();
+user2.play();
+user2.play();
+user2.logout();
+
+user3.login();
+user3.play();
+user3.play();
+user3.play();
+user3.play();
+user3.play();
+user3.play();
+user3.logout();
+
+console.log("User1 Score:" +user1.score);
+console.log("User2 Score:" +user2.score);
+console.log("User3 Score:" +user3.score);
+
+
+//Objects  helps the application to create perceptions or blueprints based on the each user!
+//Class - Schema or Model - That gives prototype of how a system should work.
+
+---> Example, One who logs in only should play, one who logs in only should log out. one who logsout cant play without logging in - STRICT SEQUENCE OF ACTIVITY IS MISSING
+
+login----->play---->play--->play---->logout---->login
+
+RELAY RACE!
+
+
+

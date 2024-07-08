@@ -1,0 +1,348 @@
+New Project
+
+npm init -y
+It will create default package.json file with some metadata
+
+We are going to locally install some npm modules, so that package.json will keep track of those modules with its version number
+
+npm i nodemon
+npm i cowsay 
+
+package.json
+{
+  "name": "npmdemo2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cowsay": "^1.5.0",
+    "nodemon": "^3.0.2"
+  }
+}
+
+
+index.js
+var cowsay = require('cowsay');
+// console.log(cowsay);
+console.log(cowsay.say({
+    text : "I am a cow",
+    e : "qQ",
+    T : "XY "
+}));
+
+----
+NPM SCRIPTS:
+you can use npm scripts to do build,lint, test, run commands
+ In package.json, we have scripts key
+There we can add our commands and keep a key for it
+instead
+nodemon index.js
+
+npm run start ----------------- Globally
+-> terminal, will check this word start is available in package.json
+
+{
+  "name": "npmdemo2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cowsay": "^1.5.0",
+    "nodemon": "^3.0.2"
+  }
+}
+
+-----
+
+SEMVER - Semantic versioning is followed in NPM
+Each project will have version numbers.
+Use: Each version will carry the update done to the project
+V1 - initial Project
+V2 - some enhancements
+V3 - corrected some problems
+V4 - Add new features
+
+npm install nodemon
+npm i <PN> - the latest version of the module wil be installed
+If I wanT a particular version of a module, That also we can install
+
+npm i <PN>@1.2.3
+
+npm i upper-case-----------------> latest uppercase package
+npm i upper-case@2.0.1---------> uppercase package at 2.0.1th version will be installed
+{
+  "name": "npmdemo2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cowsay": "^1.5.0",
+    "nodemon": "^3.0.2",
+    "upper-case": "^2.0.1"
+  }
+}
+----
+SemVer is the widely adopted system
+Rules followed whenever we change any number 
+^/~x.y.z
+~1.2.3
+^3.10.0
+
+x-> Major Version Number - Increment whenevr there is entire change in the code structure
+AngularJS used JS --> Angular 2 uses TS /Angular 16 Folder structure --> A17 Diff Folder Structure
+Immediately make y,z 0 - Reset the minor and patch
+3.4.10 ----> 4.0.0
+y-> Minor Version Number - Extra functionality addition where there is no change to the existing system, enhancements like -> print button, download as pdf
+Reset Patch, No change to Major
+4.7.5--->4.8.0
+z-> Patch Number - Fixing Bug, Doing QA. Dont change manjor and minor.
+No change to major and minor number
+5.9.9 --> 5.9.10
+
+DIFFERENCE BETWEEN ^ AND ~
+
+^ - Carat (^2.0.1)- (3.0.0 / 2.1.0) major or minor change
+~ - Tilde (~2.0.1) - (2.0.2)patch change
+
+4.0.1 ------> 4.0.2 - PATCH
+11.2.9 ----> 11.3.0  - MINOR
+2.9.1 ----> 3.0.0 - MAJOR
+^6.9.3 -> 7.0.0 / 6.10.0 -  UNDERGOING MAJOR/MINOR
+~4.3.9 -> 4.3.10 - UNDERGOING PATCH
+--
+
+HOW TO INSTALL AN ALREADY EXISTING PACKAGE AND USE IT:
+var cowsay = require('cowsay');
+// console.log(cowsay);
+console.log(cowsay.say({
+    text : "I am a cow",
+    e : "qQ",
+    T : "XY "
+}));
+var u = require('upper-case');
+console.log(u);
+
+console.log(u.upperCase("Naga"));
+-----
+WE WILL TRY TO PUBLISH A NEW PACKAGE INTO NPM
+-> yu need an account in npm
+
+naga-calci
+
+index.js
+var add = (a, b) => {
+  return a + b;
+};
+var sub = (a, b) => {
+  return a - b;
+};
+var multiply = (a, b) => {
+  return a * b;
+};
+var divide = (a, b) => {
+  return a / b;
+};
+var square = (a)=>{
+    return a*a;
+}
+var cube =(a)=>{
+    return a*a*a;
+}
+
+module.exports={add,sub,multiply,divide,square,cube}
+----
+
+1. register user in npm, sign up in npm
+2. in vsc terminal, add that user in the cureent project
+npm adduser naga1234
+3. password, email,otp
+4. npm publish --access=public
+5. npmjs.com-> packages-> naga-calci
+
+index.js
+var n = require('naga-calci');
+//we can use n.add(),n.square(), n.sub()
+//We can concentrate on only scientic-calc logic alone sin,cos, log, degree
+-----
+
+EXPRESS
+
+Node - Library of Javascript that helps in Backend Programing and Server manipulation
+
+Modules in Node - Builtin(fs,http,events,path), Custom(Common, ESModule), Third Party Modules(npm, pnpm, yarn)
+--------
+http - create Server, req,res objects , routing, listen
+Web Application - FE + BE +DB - with http module - no of lines of code is more.
+So To create and Manipulate servers using Node -This tiny little framework is created. Express
+With Express, 
+1. Server creation is easy
+2. Connecting  FE--BE + BE---DB is easy
+3. FE - use EJS, PUG, DB - use MySQL, MongoDB, BE - JS(Node+Express)
+Framework - Not like Angular, Springboot, React, Django, Flask
+
+Express Framework is a framework of node.js
+Angular, Vue,Next.js - Frameworks of Javascript
+JQuery, Node, React - Libraries of JavaScript
+
+SERVER CREATION AND ROUTING WITH NODE.JS
+
+const http = require('node:http');
+const fs = require("node:fs");
+const htmlData = fs.readFileSync('./error.html',{encoding:'utf-8'})
+
+const appServer = http.createServer((req, res)=>{
+    
+    if(req.url == '/home' || req.url == '/'){
+        res.writeHead(200,{"content-type":"text/plain", "authentication-token":"12345"});
+        res.end("Hello, Welcome to The First Page!");
+    }else if(req.url == '/about'){
+        res.writeHead(200,{"content-type":"text/html"})
+        res.end("<h1> Welcome to About Page </h1>")
+    }else if(req.url == '/contact'){
+        res.writeHead(200, {"content-type":"application/json"});
+        var jsonData = {id:1, name:"Naga"};
+        res.end(JSON.stringify(jsonData));
+    }else{
+        res.writeHead(404,{"content-type":"text/html"});
+        res.end(htmlData);
+    }
+    
+})
+
+appServer.listen(3000,()=>{
+    console.log("Started App")
+})
+
+LETS USE EXPRESS FOR SERVER CREATION AND ROUTING:
+
+1. create package.json
+2. Install Express from npm
+3. Require express alone, no need of http
+
+There are http methods that serves some purpose in the browser:
+
+get - browser is trying to get some data from the server(google search, signin)
+post - browser is trying to give some data to the server (new data - sign up)
+patch/put- browser is requesting server to change data in it (some new data - Edit Experience/update profile)
+delete - browser is requesting to remove a particular data from the server (delete/give data and remove)
+
+req - this object contains all info related to the browser like form data, url information, body details, url parameter info or query parameter info
+
+res - this object contains all info from the server --> if we want to give info to browser - use res object
+-Plain text, json,html page as a response 
+res.end we will not use
+
+res.send()
+res.sendFile() - always use absolute path for giving the html page location
+res.json()
+
+--
+index.js
+var express = require('express');
+var appServer = express();
+
+appServer.get('/',(req,res)=>{
+res.status(200).send("Welcome to HomePage!");
+})
+appServer.get('/about',(req,res)=>{
+    res.json({id:1, name:"Naga"})
+})
+appServer.get('/contact',(req,res)=>{
+res.sendFile('C:\\Users\\nmlak\\OneDrive\\Desktop\\Notes\\MERN 12.30-2.30 WD\\24.. Express Apps\\welcome.html');
+})
+appServer.listen(3000,()=>{
+    console.log("Visit Browser!");
+})
+
+welcome.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 style="color:red">Welcome</h1>
+</body>
+</html>
+
+package.json
+{
+  "name": "24..-express-apps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
+-----------
+
+STATIC WEBPAGE
+DYNAMIC WEBPAGE - SERVER SIDE RENDERED WEBPAGE
+WEB API POWERED WEBPAGE - CLIENT SIDE RENDERED WEBPAGE
+
+STATIC WEBPAGE:
+No backend, No Server
+
+DYNAMIC WEBPAGE: -  SERVER SIDE RENDERED WEBPAGE
+Deciding the templates, which data to be filled on which page all that is decided by Server
+Has DB, Has BE App (Nodejs, php,python,java)
+Based on the database , content will be built based on the data coming from DB.
+Web App - Login, Log out, profile rendering, DataFetching - Google search results, Flipkart Item search result
+Server may take time to respond based on the data or based on the query 
+SpringBoot, Django creating response pages  - may take time
+If there is traffic, delay --  response time gets high
+
+WEBAPI POWERED WEBPAGE - CLIENT SIDE RENDERED WEBPAGE
+API - Application Programming Interface
+client --API-- server
+customer --- waiter --- chef
+
+Server is used just to get data from DB and convert it to json format
+That data is given to browser.
+browser is already ready with templae-> quickly fil data and showing it to client
+Client who gets the data
+springboot, django, java,python, express, nodejs - backend ----> give the data as json to front end (Angular, react native frameworks )- that quickly render the page on the screen
+
+HTML+CSS+JS ----> Portfolio --> Static app
+
+mysql+Java+html/css
+mysql+Python+html/css
+
+mysql+springboot ----> DYNAMIC APP
+mysql+Django
+
+mongodb+nodejs/expressjs+html/ejs ---> WEB API POWERED APP
+mongoDB+express+Angular/React/Reactnative/Vue
+mongoDB+springboot+Angular/React/Reactnative/Vue
+mongoDB+Django+Angular/React/Reactnative/Vue
+
+

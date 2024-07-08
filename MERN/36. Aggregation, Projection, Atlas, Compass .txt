@@ -1,0 +1,129 @@
+PROJECTIONS:
+
+find(),sort(),limit(),0/1,skip
+
+//hide only _id, allowed to give 0 to _id property alone
+db.Employees.find({},{_id:0,firstname:1,lastname:1,age:1,languages:1});
+
+MongoServerError: Cannot do exclusion on field languages in inclusion projection--> Exclusively we cant set 0 for the fields except _id.
+If you dont want to view that field, better not to mention it
+If you dont want to retrieve _id-> mention 0, if we have not included _id in the command or if we keep _id:1 -> it will be always retrieved.
+
+Sort -> asc, dec
+db.Employees.find().sort({firstname:1}); //ascending order of names
+db.Employees.find().sort({lastname:-1}); //decending order of names
+db.Employees.find().sort({age:-1}); 
+
+limit -> retrieve first range of fields, based on insersion order - retrieve first 3 records/5 record
+1,2,3,4,5,6,7,8,9
+db.Employees.find().limit(5);
+1,2,3,4,5
+
+Skip-> retrieve the balance records leaving first range of records, based on insersion order - leave first 3 records and retrieve the balance
+1,2,3,4,5,6,7,8,9
+db.Employees.find().skip(3);
+4,5,6,7,8,9
+
+retrieve the 3rd to 7th document based on insersion order 
+1,2,3,4,5,6,7,8,9
+db.Employees.find().skip(2).limit(5);
+
+AGGREGATION - FRAMEWORK OF MONGODB 
+EXPRESS- FW OF NODE
+
+MongoDB always returns an object -> easy for obtaining mongodb information into node/python
+db.Employees.find();
+result:[{},{},{},{}]
+
+var [{},{},{}] = result;
+
+forEach/map-> if(result.[i].age>=20){
+
+}
+AGGREGATION:
+
+Lot of features- if/else, gt,less, matching, wind, unwind, project, sort, limit,skip
+db-> goes thru aggregation ----> logic writing can be done as mongo DB command itself
+
+int, string, array----> server-> no need write logic-> direct result will only reach server if we use aggregates
+
+$group, $lt, $gt, $multiply, $sum, $avg, $min, $max, $wind, $unwind, $project, $limit, $skip, $sort,$match
+
+Retrieve the persons whose age is 18
+
+var pipeline = [{$match:{age:18}}];
+
+db.Employees.aggregate(pipeline);
+
+$group - retrieve group of documents based on group of conditions
+
+-> sum of ages:
+
+var pipe1 = [{$group:{_id:"P123",totalAges:{$sum:"$age"}}}];
+db.Employees.aggregate(pipe1);
+
+-> min, max,avg age for all the employees:
+
+var pipe2 = [{$group:{_id:"P123",totalAges:{$sum:"$age"}, maxAge:{$max:"$age"}, minAge:{$min:"$age"}, avgAge:{$avg:"$age"},}}];
+db.Employees.aggregate(pipe2);
+
+-> Find the group of people who has the same age----> {$sum:1}
+
+var pipe3 = [{$group:{_id:"$age",countAge: {$sum:1}}}];
+db.Employees.aggregate(pipe3);
+
+$match -> finds the document with required detail
+
+-> Find the students who knows c language:
+
+var pipe4 = [{$match:{"languages":"c"}}];
+db.Employees.aggregate(pipe4);
+
+lastname ends with c- case insensitive
+var pipe 11 = [{$match:{"lastname":/c$/i}}];
+db.Employees.aggregate(pipe11);
+
+lastname starts with c- case insensitive
+var pipe 11 = [{$match:{"lastname":/^c/i}}];
+db.Employees.aggregate(pipe11);
+
+lastname ends with c- case sensitive
+var pipe 11 = [{$match:{"lastname":/c$/}}];
+db.Employees.aggregate(pipe12);
+
+lastname contain e - case sensitive
+var pipe 11 = [{$match:{"lastname":/e/i}}];
+db.Employees.aggregate(pipe12);
+
+$limit -> how many number of documents you want based on the search (shows result starting from first)
+ First member of 18 years age:
+var pipe5 = [{$match:{"age":18}},{$limit:1}];
+db.Employees.aggregate(pipe5);
+
+
+$gt, $lt -> greater than, lesser than
+
+db.Employees.find({age:{$lte:19}});
+db.Employees.find({age:{$gte:20}});
+
+$skip ->how many number of documents you want to leave based on the search (shows result starting from first)
+
+find the people with 18 years excluding first 2 members
+var pipe6 = [{$match:{"age":18}},{$skip:2}];
+db.Employees.aggregate(pipe6); 
+//A,D will be skippped, a1,d1 will be printed
+
+find the third member who has 18 years of age:
+var pipe6 = [{$match:{"age":18}},{$skip:2},{$limit:1}];
+db.Employees.aggregate(pipe6);
+
+//a1 alone printed
+------
+
+$lte - Lesser than and Equal to
+ var pipe7 =[{$match:{age:{$lte:19}}}];
+db.Employees.aggregate(pipe7);
+
+$gte - Greater than and Equal to
+var pipe8 =[{$match:{age:{$gte:19}}}];
+db.Employees.aggregate(pipe8);

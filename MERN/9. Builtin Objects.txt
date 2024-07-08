@@ -1,0 +1,197 @@
+Inbuilt Objects:
+console.log(window);// window object contains nested objects, properties, functions
+
+NESTED OBJECTS OF WINDOW:
+
+location
+document
+console
+screen
+navigator
+history
+
+FUNCTIONS OF WINDOW:
+
+alert(), prompt(), confirm(), setTimeout(), setInterval(), open(), close(), scroll()
+
+PROPERTIES OF WINDOW:
+
+width, height, innerWidth, innerHeight
+
+PROPERTIES AND FUNCTIONS OF WINDOW OBJECT:
+
+the window object represents the browser window or the frame that contains the HTML document. It is a global object and has several properties and methods. Here's a brief overview along with a code snippet:
+
+// Accessing properties of the window object
+console.log(window.innerWidth); // Returns the width of the browser window's content area (viewport)
+console.log(window.innerHeight); // Returns the height of the browser window's content area (viewport)
+console.log(window.location.href); // Returns the complete URL of the current page
+console.log(window.document); // Returns the Document object for the window
+
+// Accessing functions of the window object
+window.alert('Hello, world!'); // Displays an alert dialog with the specified content
+window.confirm('Are you sure?'); // Displays a confirmation dialog with OK and Cancel buttons
+window.prompt('Please enter your name:'); // Displays a dialog with an input field where the user can enter text
+window.open('https://example.com', '_blank'); // Opens a new browser window/tab with the specified URL
+
+// You can also directly call methods without 'window.' prefix
+alert('Hello, world!');
+confirm('Are you sure?');
+prompt('Please enter your name:');
+open('https://example.com', '_blank');
+
+PROPERTIES AND FUNCTIONS OF HISTORY OBJECT:
+the history object represents the user's browsing history for the current window. It allows you to navigate through the browser history, manipulate the browser session history, and query various properties related to the browsing history.
+
+Here's a brief overview of some commonly used properties and functions of the history object along with a code snippet:
+
+   // Check if the browser supports the History API
+   if (window.history) {
+  // Get the length of the browsing history
+  console.log("Length of history: ", window.history.length);
+
+  // Go back in the history by one step
+  // Equivalent to clicking the browser's back button
+  window.history.back();
+
+  // Go forward in the history by one step
+  // Equivalent to clicking the browser's forward button
+  window.history.forward();
+
+  // Go to a specific point in the browsing history
+  // Negative values for 'go' indicate moving backwards in history
+  // Positive values for 'go' indicate moving forwards in history
+  window.history.go(-2);
+
+  // Add a new entry to the browsing history
+  // This will add a new entry without reloading the page
+  window.history.pushState({ page: "newPage" }, "New Page", "/new-page");
+
+  // Replace the current entry in the browsing history
+  // This will replace the current entry without adding a new entry
+  window.history.replaceState({ page: "newPage" }, "New Page", "/new-page");
+}
+
+History Object:
+
+length property:
+This property represents the number of elements in the browsing history session history.
+console.log(window.history.length);
+
+go() method:
+This method loads a specific page from the session history, identified by its relative position to the current page.
+// Move back one page in history
+window.history.go(-1);
+
+back() method:
+This method loads the previous URL in the history list, the same as clicking the browser's back button.
+// Same as clicking the back button
+window.history.back();
+
+forward() method:
+This method loads the next URL in the history list, the same as clicking the browser's forward button.
+// Same as clicking the forward button
+window.history.forward();
+
+pushState() method:
+This method adds a new state to the browser history stack.
+window.history.pushState({page: 1}, "Title", "/new-url");
+
+Navigator Object:
+
+userAgent property:
+This property returns the user-agent header sent by the browser to the server.
+console.log(window.navigator.userAgent);
+
+language property:
+This property returns the language of the browser.
+console.log(window.navigator.language);
+
+platform property:
+This property returns the platform of the browser.
+console.log(window.navigator.platform);
+
+appVersion property:
+This property returns version information about the browser.
+console.log(window.navigator.appVersion);
+
+cookieEnabled property:
+This property returns true if cookies are enabled; otherwise, false.
+console.log(window.navigator.cookieEnabled);
+
+Location Object:
+
+href property:
+This property returns the entire URL of the current page.
+console.log(window.location.href);
+
+hostname property:
+This property returns the hostname of the current URL.
+console.log(window.location.hostname);
+
+pathname property:
+This property returns the pathname of the current URL.
+console.log(window.location.pathname);
+
+reload() method:
+This method reloads the current page.
+window.location.reload();
+
+assign() method:
+This method loads a new document.
+window.location.assign("https://www.example.com");
+
+Window:
+
+1. BOM - Browser Object Model - history, location, screen, navigator
+2. DOM -  Document Object Model - document - CRUD to the webpage
+
+Create, Retrieve, Update, Delete - Element<img>,<ul>,<h1>/Style {color;font-size}/Attribute colspan, width, src, alt - Manipulate using Javascript document object
+
+------------
+DOCUMENT
+
+CRUD TO ELEMENTS:
+
+document.getElementById();
+document.getElementById().value;
+document.getElementById().innerHTML;
+textContent
+onclick()
+querySelector();
+querySelectorAll();
+firstElementChild;
+lastElementChild;
+remove()
+document.body.appendChild();
+children[]
+insertBefore()
+removeChild()
+replaceChild()
+createElement()
+
+CRUD TO STYLES:
+
+.style.color
+.style.backgroundColor
+.style.animationPlayState
+
+CRUD TO ATTRIBUTES:
+
+src, height, width, href, alt, id, class, name, value, style etc
+
+.getAttribute()
+.setAttribute()
+.removeAttribute()
+.hasAttribute()
+
+ACTIVITY:
+
+create a box with border red, bg color yellow, width 400, height 400
+1. show box - show the box
+2. remove the box
+3. change the colors of the box - change color
+4. change the size of the box - square->rectangle 
+5. add some contents to the box  - add data
+
+
