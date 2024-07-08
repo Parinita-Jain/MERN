@@ -1,0 +1,45 @@
+Javascript Full Stack - Web App Development - 3.5 months
+1. Javascript as a Front end Language ---> variable to DOM --> 15 days
+2. Javascript as a Backend Language(j/py) --> Template strings to Async/Await ---> 15 days
+3. Library of Javascript ----> NodeJs - Gives Backend support to JS - Runs JS as a backend Language
+(File management, Network Management, Server Management, DB Connectivity) ---> 15 days
+4. Framework of Nodejs ---> ExpressJs - helps in Web App creation by managing servers ---> 15 days
+5. Database---> MongoDB ------> 15 days
+6. Library of Javascript ---> React - Front end Support in Javascript--> 1 month
+Framework of Javascript - Angular, React Native, Vue, NextJs
+Library of Javascript - jQuery, React, Nodejs, P5.play.js, Matter.js
+---------------------------------------------
+mysql - 1month
+java/python-1.5month
+springboot/django-1 month
+webdesign ess+prof - 1 month
+--------------------------------------------------> JFS/PFS - 4.5 months
+1. Old Batch - NO Self Assesment/Self Assignment 
+-> Assignments will be less - 15 days max duration to complete an assignment
+-> Daily visit Wings - note assignments+ deadline
+-> Assessment - 3 assesments - 40% 75% 100%
+-> Project Demo + Mock - Grade + 100%
+----------------------------------
+1. MovieFlix web App - CRUD - EJS+Express+NodeJS+MongoDB
+2. Blog App - Assignment - CRUD - EJS+Express+NodeJS+MongoDB
+3. Counters, Github search, Shopping Cart - React
+4. Workout Buddy App - Authentication+CRUD - React+Express+Node+MongoDB (MERN)
+5. Payment Gateway Integration
+--------
+In class - MovieFlix, Workout Buddy, React mini apps
+You - Blog App
+
+FE 			+ BE 			 	+ DB = Full stack Web App
+js			node/exp js			mongodb
+html/css		java				mysql
+react		py					FIREBASE
+angular		springboot/Django
+
+------
+Angular+springboot+Mysql
+React+springboot+Mysql
+Angular+Django+Mysql
+React+Django+Mysql
+React+express/node+MongoDB
+
+
